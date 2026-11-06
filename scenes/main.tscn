@@ -1,0 +1,179 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://src/world/main_scene.gd" id="1_main"]
+[ext_resource type="Script" path="res://src/world/voxel_world.gd" id="2_world"]
+[ext_resource type="Script" path="res://src/camera/orbit_camera.gd" id="3_camera"]
+[ext_resource type="Script" path="res://src/debug/debug_panel.gd" id="4_debug"]
+[ext_resource type="Script" path="res://src/world/world_config.gd" id="5_config"]
+[ext_resource type="Script" path="res://src/core/terrain/block_palette.gd" id="6_palette"]
+
+[sub_resource type="Resource" id="Resource_config"]
+script = ExtResource("5_config")
+world_seed = 1337
+base_height = 24.0
+terrain_height = 26.0
+terrain_frequency = 0.008
+fractal_octaves = 4
+view_distance_voxels = 128
+
+[sub_resource type="Resource" id="Resource_palette"]
+script = ExtResource("6_palette")
+soil_depth = 4
+grass_color = Color(0.36, 0.62, 0.29, 1)
+dirt_color = Color(0.45, 0.33, 0.22, 1)
+stone_color = Color(0.52, 0.52, 0.56, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_main"]
+sky_top_color = Color(0.25, 0.45, 0.75, 1)
+sky_horizon_color = Color(0.65, 0.72, 0.8, 1)
+ground_bottom_color = Color(0.2, 0.2, 0.22, 1)
+ground_horizon_color = Color(0.6, 0.68, 0.75, 1)
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("SkyMaterial_main")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 3
+ambient_light_sky_contribution = 1.0
+ambient_light_energy = 0.6
+tonemap_mode = 2
+
+[node name="Main" type="Node3D" node_paths=PackedStringArray("world", "camera", "debug_panel")]
+script = ExtResource("1_main")
+world = NodePath("World")
+camera = NodePath("InspectionCamera")
+debug_panel = NodePath("DebugLayer/DebugPanel")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.664364, -0.597181, 0.449439, 0, 0.601329, 0.799002, -0.747409, -0.530828, 0.399501, 0, 40, 0)
+light_energy = 1.1
+shadow_enabled = true
+directional_shadow_max_distance = 160.0
+
+[node name="World" type="Node3D" parent="."]
+script = ExtResource("2_world")
+config = SubResource("Resource_config")
+palette = SubResource("Resource_palette")
+
+[node name="InspectionCamera" type="Camera3D" parent="."]
+current = true
+fov = 70.0
+far = 1000.0
+script = ExtResource("3_camera")
+target = Vector3(0, 30, 0)
+distance = 110.0
+
+[node name="VoxelViewer" type="VoxelViewer" parent="InspectionCamera" groups=["voxel_viewers"]]
+view_distance = 128
+view_distance_vertical_ratio = 0.5
+requires_collisions = false
+requires_visuals = true
+
+[node name="DebugLayer" type="CanvasLayer" parent="."]
+
+[node name="DebugPanel" type="Control" parent="DebugLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_debug")
+
+[node name="PanelContainer" type="PanelContainer" parent="DebugLayer/DebugPanel"]
+unique_name_in_owner = true
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 392.0
+offset_bottom = 356.0
+
+[node name="Margin" type="MarginContainer" parent="DebugLayer/DebugPanel/PanelContainer"]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="DebugLayer/DebugPanel/PanelContainer/Margin"]
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
+theme_override_font_sizes/font_size = 16
+text = "Procedural World — M0.1"
+
+[node name="Grid" type="GridContainer" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 6
+columns = 2
+
+[node name="SeedLabel" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Grid"]
+text = "World seed"
+
+[node name="SeedSpin" type="SpinBox" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Grid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+min_value = -1000000000.0
+max_value = 1000000000.0
+allow_greater = true
+allow_lesser = true
+value = 1337.0
+select_all_on_focus = true
+
+[node name="HeightLabel" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Grid"]
+text = "Terrain height"
+
+[node name="HeightSpin" type="SpinBox" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Grid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+max_value = 128.0
+value = 26.0
+select_all_on_focus = true
+
+[node name="FrequencyLabel" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Grid"]
+text = "Frequency"
+
+[node name="FrequencySpin" type="SpinBox" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Grid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+min_value = 0.0001
+max_value = 0.05
+step = 0.0001
+value = 0.008
+select_all_on_focus = true
+
+[node name="ViewDistanceLabel" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Grid"]
+text = "View distance"
+
+[node name="ViewDistanceSpin" type="SpinBox" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Grid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+min_value = 32.0
+max_value = 512.0
+step = 16.0
+value = 128.0
+select_all_on_focus = true
+
+[node name="Buttons" type="HBoxContainer" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
+theme_override_constants/separation = 8
+
+[node name="RegenerateButton" type="Button" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Buttons"]
+unique_name_in_owner = true
+text = "Regenerate"
+
+[node name="RandomSeedButton" type="Button" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox/Buttons"]
+unique_name_in_owner = true
+text = "Random seed"
+
+[node name="StatusLabel" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
+unique_name_in_owner = true
+theme_override_font_sizes/font_size = 12
+text = "initialising…"
+
+[node name="HintLabel" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
+theme_override_font_sizes/font_size = 11
+text = "Drag: orbit  ·  Wheel / pinch: zoom  ·  Middle drag: pan
+R: regenerate  ·  F3: hide panel"

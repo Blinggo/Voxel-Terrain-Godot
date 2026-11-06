@@ -1,0 +1,40 @@
+; Engine configuration file.
+; Procedural World Generator - milestone M0.1
+;
+; Target platforms: Android ARM64 (primary), Windows x86_64 (secondary),
+; Linux x86_64 (development).
+
+config_version=5
+
+[application]
+
+config/name="Procedural World Generator"
+config/description="Procedural voxel terrain generator built on Voxel Tools."
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.7", "Mobile")
+config/icon="res://icon.svg"
+
+[display]
+
+; Landscape orientation, and a viewport size that is a reasonable windowed
+; default on desktop while scaling cleanly to handheld screens.
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[input_devices]
+
+; The camera reads touch events directly. If Godot also emulated a mouse from
+; touch, a single finger drag would be handled twice and the view would spin at
+; double speed on Android.
+pointing/emulate_mouse_from_touch=false
+
+[rendering]
+
+; The Mobile renderer is the mobile baseline and also runs on desktop, so the
+; project is developed against what it will ship with.
+renderer/rendering_method="mobile"
+renderer/rendering_method.mobile="mobile"
+lights_and_shadows/directional_shadow/soft_shadow_filter_quality=1

@@ -1,0 +1,11 @@
+# Godot 4 import cache and editor state
+.godot/
+*.translation
+
+# Exports
+build/
+export/
+
+# OS noise
+.DS_Store
+Thumbs.db

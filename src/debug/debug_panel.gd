@@ -15,10 +15,10 @@ signal regenerate_requested(request: Dictionary)
 
 const RANDOM_SEED_LIMIT := 100000
 
-@onready var _seed_spin: SpinBox = %SeedSpin
-@onready var _height_spin: SpinBox = %HeightSpin
-@onready var _frequency_spin: SpinBox = %FrequencySpin
-@onready var _view_distance_spin: SpinBox = %ViewDistanceSpin
+@onready var _seed_field: NumericField = %SeedField
+@onready var _height_field: NumericField = %HeightField
+@onready var _frequency_field: NumericField = %FrequencyField
+@onready var _view_distance_field: NumericField = %ViewDistanceField
 @onready var _regenerate_button: Button = %RegenerateButton
 @onready var _random_seed_button: Button = %RandomSeedButton
 @onready var _status_label: Label = %StatusLabel
@@ -35,10 +35,10 @@ func _ready() -> void:
 func configure_from_config(config: WorldConfig) -> void:
 	if config == null:
 		return
-	_seed_spin.set_value_no_signal(config.world_seed)
-	_height_spin.set_value_no_signal(config.terrain_height)
-	_frequency_spin.set_value_no_signal(config.terrain_frequency)
-	_view_distance_spin.set_value_no_signal(config.view_distance_voxels)
+	_seed_field.set_value_silent(config.world_seed)
+	_height_field.set_value_silent(config.terrain_height)
+	_frequency_field.set_value_silent(config.terrain_frequency)
+	_view_distance_field.set_value_silent(config.view_distance_voxels)
 
 
 ## Renders a status snapshot produced by [method VoxelWorld.get_status].
@@ -77,14 +77,23 @@ func _randomise_seed() -> void:
 	# recorded world seed. No global RNG is involved in terrain generation.
 	var rng := RandomNumberGenerator.new()
 	rng.randomize()
-	_seed_spin.set_value_no_signal(rng.randi_range(0, RANDOM_SEED_LIMIT))
+	_seed_field.set_value_silent(rng.randi_range(0, RANDOM_SEED_LIMIT))
 	_emit_regeneration()
 
 
 func _emit_regeneration() -> void:
+	# Apply any text the user is still typing before it is read, so that
+	# "type a seed, then press Regenerate" uses what is on screen. Invalid or
+	# half-typed text is discarded by the field itself and the previous good
+	# value is used instead.
+	_seed_field.commit_pending()
+	_height_field.commit_pending()
+	_frequency_field.commit_pending()
+	_view_distance_field.commit_pending()
+
 	regenerate_requested.emit({
-		"world_seed": int(_seed_spin.value),
-		"terrain_height": float(_height_spin.value),
-		"terrain_frequency": float(_frequency_spin.value),
-		"view_distance_voxels": int(_view_distance_spin.value),
+		"world_seed": int(_seed_field.get_value()),
+		"terrain_height": float(_height_field.get_value()),
+		"terrain_frequency": float(_frequency_field.get_value()),
+		"view_distance_voxels": int(_view_distance_field.get_value()),
 	})

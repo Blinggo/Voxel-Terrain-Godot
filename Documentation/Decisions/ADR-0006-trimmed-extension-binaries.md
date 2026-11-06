@@ -36,3 +36,28 @@ missing files are inert.
   release archive over `addons/zylann.voxel/bin/`; no code change is needed.
 - Upgrading the extension means re-applying this trim; the platform list is
   stated above and in the foundation document.
+
+## Update 2026-11-06 (M0.2 pre-work)
+
+At the project owner's request the Windows and Android libraries above were
+removed as well, so the snapshot ships **Linux x86_64 only**:
+
+| Kept | Removed |
+|---|---|
+| `libvoxel.linux.editor.x86_64.so` | `libvoxel.windows.editor.x86_64.dll` |
+| `libvoxel.linux.template_release.x86_64.so` | `libvoxel.windows.template_release.x86_64.dll` |
+| | `libvoxel.android.editor.arm64.so` |
+| | `libvoxel.android.template_release.arm64.so` |
+
+`addons/zylann.voxel` drops from 58 MB to 22 MB and the whole project from
+61 MB to 26 MB. The owner maintains the full Voxel Tools archive and will
+restore binaries when a non-Linux target is actually built.
+
+Verified after the trim on Linux: the extension still loads
+(`Voxel Tools extension loaded: true`) and all 86 automated checks pass,
+including terrain generation, streaming, seams and rebuild determinism. Nothing
+else in the project was modified.
+
+The consequences above are unchanged and now apply to Windows and Android too:
+restoring a removed library means unzipping `GodotVoxelExtension.zip` over
+`addons/zylann.voxel/bin/`, with no code change.

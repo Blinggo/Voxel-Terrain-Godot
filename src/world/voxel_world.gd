@@ -41,6 +41,8 @@ var _height_field: TerrainHeightField
 var _generator: TerrainBlockGenerator
 var _library: VoxelBlockyLibrary
 var _build_count := 0
+## Duration of the last [method rebuild] call, in milliseconds (main thread).
+var _last_rebuild_ms := 0.0
 
 
 func _ready() -> void:
@@ -95,6 +97,13 @@ func get_surface_height(x: int, z: int) -> float:
 
 ## Tears down the current terrain and generates a fresh one from [member config].
 func rebuild() -> void:
+	# Main-thread cost of reconfiguring the world: teardown, snapshotting the
+	# configuration, rebuilding the generation stack and the blocky library, and
+	# adding the new terrain node. Streaming afterwards happens on worker
+	# threads and is not part of this number. Measured unconditionally because a
+	# single clock read costs nothing; whether it is displayed is the overlay's
+	# business.
+	var started_usec := Time.get_ticks_usec()
 	_teardown()
 
 	if config == null:
@@ -107,16 +116,22 @@ func rebuild() -> void:
 	# observe a changing parameter halfway through.
 	var cfg := config.duplicate_config()
 
+	# Same reasoning for the palette. The generator and the blocky library are
+	# both built from this one snapshot, so the voxels a block is made of and
+	# the model used to draw them cannot disagree even if the editor-facing
+	# package is edited mid-generation. The next rebuild picks up the edit.
+	var palette_snapshot := palette.create_snapshot()
+
 	# Generation stack: noise -> height field -> block adapter. Each link is
 	# replaceable without touching the others.
 	var noise := FastNoiseLiteSource.new(cfg.world_seed, cfg.terrain_frequency, cfg.fractal_octaves)
 	_height_field = TerrainHeightField.new(noise, cfg.base_height, cfg.terrain_height)
 
 	_generator = TerrainBlockGenerator.new()
-	_generator.configure(_height_field, palette)
+	_generator.configure(_height_field, palette_snapshot)
 
 	# Voxel Tools stack: block library -> mesher -> terrain node.
-	_library = BlockyLibraryBuilder.build_library(palette)
+	_library = BlockyLibraryBuilder.build_library(palette_snapshot)
 	var mesher := BlockyLibraryBuilder.build_mesher(_library)
 	var material := BlockyLibraryBuilder.build_material()
 
@@ -126,6 +141,7 @@ func rebuild() -> void:
 	_configure_viewers(cfg.view_distance_voxels)
 
 	_build_count += 1
+	_last_rebuild_ms = float(Time.get_ticks_usec() - started_usec) / 1000.0
 	terrain_rebuilt.emit(cfg.world_seed)
 
 
@@ -166,6 +182,7 @@ func get_status() -> Dictionary:
 		"view_distance": config.view_distance_voxels if config != null else 0,
 		"build_count": _build_count,
 		"terrain_present": is_instance_valid(_terrain),
+		"last_rebuild_ms": _last_rebuild_ms,
 	}
 
 	if is_instance_valid(_terrain):
@@ -184,11 +201,15 @@ func get_status() -> Dictionary:
 		status["viewer_position"] = viewer_position
 		status["dropped_loads"] = int(stats.get("dropped_block_loads", 0))
 		status["dropped_meshes"] = int(stats.get("dropped_block_meshs", 0))
+		# Passed through untouched: the overlay displays whichever keys exist
+		# rather than assuming a schema.
+		status["voxel_statistics"] = stats
 	else:
 		status["streaming_ready"] = false
 		status["viewer_position"] = Vector3.ZERO
 		status["dropped_loads"] = 0
 		status["dropped_meshes"] = 0
+		status["voxel_statistics"] = {}
 
 	return status
 

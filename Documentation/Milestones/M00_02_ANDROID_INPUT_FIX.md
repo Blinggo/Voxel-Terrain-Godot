@@ -220,31 +220,35 @@ than reporting a vacuous pass.
 
 ## 6. Android results
 
-**Not tested on Android. No Android device, SDK or JDK is available here.**
+### 6.1 Confirmed on a physical Android device
 
-The report above is Linux evidence about the exact code path Android uses
-(raw `InputEventScreenTouch` with mouse emulation off). It is not a substitute
-for a device run, and this milestone does not claim the Android problem is
-confirmed fixed.
+Corrected on 2026-11-07. The project owner ran the project from the Godot Editor
+on an Android device and confirmed, specifically for this fix:
 
-Still to be observed on hardware:
+- all four numerical fields — world seed, terrain height, terrain frequency,
+  view distance — accept touch input;
+- each field opens the keyboard and accepts a custom numerical value;
+- the values reach the world: Regenerate applies them, and changing the seed or
+  Random seed produces different terrain.
 
-1. tapping each field focuses it and the keyboard actually appears;
-2. the keyboard is the numeric one (decimal point only for frequency);
-3. typing a value and pressing Done commits it and hides the keyboard;
-4. dismissing the keyboard with the back gesture, then tapping the same field
-   again, re-opens it (the explicit `virtual_keyboard_show()` call exists for
-   this case but is unverified outside a device);
-5. the panel still fits the screen and the field/step buttons are usable with a
-   fingertip at the device's DPI;
-6. consecutive fields, repeated editing, and empty/invalid entry behave as they
-   do on desktop.
+That is the acceptance test this document previously listed as outstanding, and
+it passed.
 
----
+### 6.2 Still not confirmed
+
+The device run was an **Editor run (debug)**, not an exported release build:
+
+- a separately exported release APK has not been run on the device;
+- release-build extension loading is therefore still unverified;
+- long-duration and thermal behaviour are unverified.
+
+See `M00_02_ANDROID_VALIDATION.md` §3.4 and §7.2 for the exact status of the
+exported APK.
 
 ## 7. Limitations
 
-1. **No device verification.** Section 6. This is the main gap.
+1. **Release-build verification is outstanding.** The Editor run on device
+   passed (§6.1); an exported release APK has not been run (§6.2).
 2. **Synthetic input only.** The 45 checks push `InputEventScreenTouch` into a
    desktop viewport. They exercise the handler, not the platform keyboard, the
    IME, or the back-gesture dismissal.

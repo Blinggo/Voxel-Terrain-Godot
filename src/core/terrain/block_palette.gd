@@ -42,6 +42,30 @@ func classify(y: int, surface_height: float) -> int:
 	return STONE
 
 
+## Independent copy of the configurable parts of the palette.
+##
+## [b]Why.[/b] Generation runs on Voxel Tools worker threads while the palette
+## can still be edited from the inspector. The generator holding a reference to
+## the live resource would mean a block generated with `soil_depth = 4` and the
+## next block with `soil_depth = 8`, which shows up as a visible discontinuity
+## and destroys same-seed reproducibility. The world therefore hands the
+## generator a snapshot taken before generation starts.
+##
+## The copy is explicit rather than [method Resource.duplicate] so that adding an
+## exported field is a decision someone has to make here (and think about
+## whether generation reads it), rather than being copied by accident.
+## The type ids are [constant] constants, so they are shared by construction and
+## cannot drift between a snapshot and its source - block ids and material
+## assignments are preserved exactly.
+func create_snapshot() -> BlockPalette:
+	var snapshot := BlockPalette.new()
+	snapshot.soil_depth = soil_depth
+	snapshot.grass_color = grass_color
+	snapshot.dirt_color = dirt_color
+	snapshot.stone_color = stone_color
+	return snapshot
+
+
 ## Highest type id the palette can produce. Used to validate the blocky
 ## library, which must contain a model for every id in 0..max_type_id().
 func max_type_id() -> int:

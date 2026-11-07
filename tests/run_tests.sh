@@ -2,7 +2,8 @@
 #
 # Runs the test suites.
 #
-#   ./tests/run_tests.sh              # core + voxel, plus UI input if a display exists
+#   ./tests/run_tests.sh              # core + voxel + reliability + perf,
+#                                     # plus UI input when a display exists
 #   ./tests/run_tests.sh --screenshot # also render a PNG proof of the terrain
 #
 # Override the engine binary with GODOT=/path/to/godot.
@@ -58,18 +59,43 @@ echo "test mode: ${MODE}"
 
 run_suite core
 run_suite voxel
+run_suite reliability
+run_suite perf
 run_suite ui
 
 if [[ "${1:-}" == "--screenshot" ]]; then
-	mkdir -p "${SHOT_DIR}"
+	if ! mkdir -p "${SHOT_DIR}"; then
+		echo "cannot create screenshot directory: ${SHOT_DIR}" >&2
+		FAILURES=$((FAILURES + 1))
+	fi
+
 	for seed in 1337 90210; do
+		local_shot="${SHOT_DIR}/terrain_seed_${seed}.png"
 		echo ""
-		echo "### screenshot, seed ${seed}"
-		"${GODOT}" --path "${PROJECT_DIR}" res://tests/capture_screenshot.tscn -- \
-			"--out=${SHOT_DIR}/terrain_seed_${seed}.png" --warmup=12 --seed="${seed}" \
-			--distance=100 --pitch=-28 --yaw=35
+		echo "### screenshot, seed ${seed} -> ${local_shot}"
+		shot_log="$(mktemp)"
+		# A display is mandatory for this step; without one the capture script
+		# exits non-zero and the failure is propagated below.
+		"${GODOT}" "${SUITE_FLAGS[@]}" --path "${PROJECT_DIR}" \
+			res://tests/capture_screenshot.tscn -- \
+			"--out=${local_shot}" --warmup=12 --seed="${seed}" \
+			--distance=100 --pitch=-28 --yaw=35 2>&1 | tee "${shot_log}"
+		shot_status=${PIPESTATUS[0]}
+
+		if [[ ${shot_status} -ne 0 ]]; then
+			echo "screenshot for seed ${seed} FAILED (exit ${shot_status})" >&2
+			FAILURES=$((FAILURES + 1))
+		elif ! grep -q "SCREENSHOT_OK" "${shot_log}"; then
+			echo "screenshot for seed ${seed} produced no SCREENSHOT_OK line" >&2
+			FAILURES=$((FAILURES + 1))
+		elif [[ ! -s "${local_shot}" ]]; then
+			echo "screenshot ${local_shot} is missing or empty" >&2
+			FAILURES=$((FAILURES + 1))
+		else
+			echo "verified: ${local_shot} ($(wc -c < "${local_shot}") bytes)"
+		fi
+		rm -f "${shot_log}"
 	done
-	echo "screenshots written to ${SHOT_DIR}"
 fi
 
 echo ""
@@ -79,7 +105,7 @@ if [[ ${FAILURES} -eq 0 && ${SKIPPED} -eq 0 ]]; then
 elif [[ ${FAILURES} -eq 0 ]]; then
 	echo "# ALL RUNNABLE SUITES PASSED (${SKIPPED} skipped - needs a display)"
 else
-	echo "# ${FAILURES} SUITE(S) FAILED"
+	echo "# ${FAILURES} FAILURE(S): suites or screenshots"
 fi
 echo "##########################################################"
 exit "${FAILURES}"

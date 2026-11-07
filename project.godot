@@ -22,7 +22,10 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/handheld/orientation=1
+; DisplayServer.SCREEN_LANDSCAPE (0). This was 1, which is SCREEN_PORTRAIT, so
+; the value contradicted the landscape comment above and the exported APK was
+; portrait-locked. Found during the M0.2 Android export validation.
+window/handheld/orientation=0
 
 [input_devices]
 
@@ -32,6 +35,11 @@ window/handheld/orientation=1
 pointing/emulate_mouse_from_touch=false
 
 [rendering]
+
+; Required by the Android exporter: without ETC2/ASTC import variants the
+; export is refused. It only adds compressed texture variants at import time;
+; it changes nothing about terrain generation or desktop rendering.
+textures/vram_compression/import_etc2_astc=true
 
 ; The Mobile renderer is the mobile baseline and also runs on desktop, so the
 ; project is developed against what it will ship with.

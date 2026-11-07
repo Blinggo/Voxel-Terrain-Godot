@@ -7,6 +7,8 @@ extends Node
 ##   godot --headless --path . res://tests/test_runner.tscn -- --suite=voxel
 ##   godot --headless --path . res://tests/test_runner.tscn -- --suite=all
 ##   godot --path . res://tests/test_runner.tscn -- --suite=ui   (needs a display)
+##   godot --headless --path . res://tests/test_runner.tscn -- --suite=perf
+##   godot --headless --path . res://tests/test_runner.tscn -- --suite=reliability
 ##
 ## Exits with status 0 when every check passed, 1 otherwise, so it can be used
 ## directly in CI.
@@ -15,6 +17,8 @@ const TestSupport = preload("res://tests/test_support.gd")
 const CoreSuite = preload("res://tests/suites/core_suite.gd")
 const VoxelSuite = preload("res://tests/suites/voxel_suite.gd")
 const UiInputSuite = preload("res://tests/suites/ui_input_suite.gd")
+const PerfSuite = preload("res://tests/suites/perf_suite.gd")
+const ReliabilitySuite = preload("res://tests/suites/reliability_suite.gd")
 
 ## Hard stop so a broken streaming wait cannot hang a CI job.
 const MAX_RUNTIME_SECONDS := 150.0
@@ -57,6 +61,16 @@ func _ready() -> void:
 		await VoxelSuite.run(report, get_tree())
 
 	var ui_was_skipped := false
+	if suite == "all" or suite == "reliability":
+		print("")
+		print("-- generation input stability ----------------------------")
+		await ReliabilitySuite.run(report, get_tree())
+
+	if suite == "all" or suite == "perf":
+		print("")
+		print("-- performance instrumentation ---------------------------")
+		await PerfSuite.run(report, get_tree())
+
 	if suite == "all" or suite == "ui":
 		if DisplayServer.get_name() == "headless":
 			# Godot does not deliver GUI input in headless mode, so these checks

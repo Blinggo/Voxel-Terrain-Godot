@@ -64,7 +64,10 @@ Behaviour that the panel relies on:
   `tests/suites/ui_input_suite.gd`.
 - The field is a debug-overlay component, not a general form framework. Growing
   it into one would need a real design, not incremental patching.
-- **This decision is not evidence that the fix works on Android.** No Android
-  device or SDK is available in this environment; the touch path is exercised
-  with synthetic `InputEventScreenTouch` events only. Device verification is
-  still owed.
+- **Verified on a physical Android device** (2026-11-07, Godot Editor run by the
+  project owner): all four fields take touch input and custom values, and the
+  values reach the world. The synthetic-event tests in
+  `tests/suites/ui_input_suite.gd` remain the automated regression guard, but
+  they are no longer the only evidence.
+- **Not verified in an exported release build.** The device run was an Editor
+  (debug) run. See `Milestones/M00_02_ANDROID_VALIDATION.md`.

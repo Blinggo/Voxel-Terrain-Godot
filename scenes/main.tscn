@@ -104,7 +104,7 @@ theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
 theme_override_font_sizes/font_size = 16
-text = "Procedural World — M0.1"
+text = "Procedural World — M0.2"
 
 [node name="Grid" type="GridContainer" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
 theme_override_constants/h_separation = 10
@@ -172,7 +172,12 @@ unique_name_in_owner = true
 theme_override_font_sizes/font_size = 12
 text = "initialising…"
 
+[node name="PerformanceLabel" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
+unique_name_in_owner = true
+theme_override_font_sizes/font_size = 11
+text = "perf: waiting…"
+
 [node name="HintLabel" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
 theme_override_font_sizes/font_size = 11
 text = "Drag: orbit  ·  Wheel / pinch: zoom  ·  Middle drag: pan
-R: regenerate  ·  F3: hide panel"
+R: regenerate  ·  F3: hide panel  ·  F4: profiling"

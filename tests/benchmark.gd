@@ -16,7 +16,7 @@ const REPEATS := 3
 
 func _ready() -> void:
 	print("")
-	print("=== M0.1 generation benchmark ===")
+	print("=== generation benchmark (M1 pipeline) ===")
 	print("engine: %s" % Engine.get_version_info()["string"])
 	print("cpu count: %d" % OS.get_processor_count())
 
@@ -27,10 +27,11 @@ func _ready() -> void:
 
 
 func _make_generator(world_seed: int) -> TerrainBlockGenerator:
-	var noise := FastNoiseLiteSource.new(world_seed, 0.008, 4)
-	var field := TerrainHeightField.new(noise, 24.0, 26.0)
+	var config := WorldConfig.new()
+	config.world_seed = world_seed
+	var surface := GeographicSurface.new(config)
 	var generator := TerrainBlockGenerator.new()
-	generator.configure(field, BlockPalette.new())
+	generator.configure(surface, BlockPalette.new())
 	return generator
 
 

@@ -47,10 +47,11 @@ func _make_palette(soil_depth: int = 4) -> BlockPalette:
 func _make_generator(palette: BlockPalette) -> TerrainBlockGenerator:
 	# The default world parameters, so the surface falls inside the blocks used
 	# below and the grass/dirt/stone bands are all exercised.
-	var noise := FastNoiseLiteSource.new(1337, 0.008, 4)
-	var height_field := TerrainHeightField.new(noise, 24.0, 26.0)
+	var config := WorldConfig.new()
+	config.world_seed = 1337
+	var surface := GeographicSurface.new(config)
 	var generator := TerrainBlockGenerator.new()
-	generator.configure(height_field, palette)
+	generator.configure(surface, palette)
 	return generator
 
 

@@ -10,6 +10,9 @@ extends Node
 ##   godot --path . res://tests/capture_screenshot.tscn -- \
 ##       --out=/tmp/shot.png --warmup=8 --seed=1337 --distance=110 --pitch=-32 --yaw=35
 ##
+## An optional --center=x,z frames the shot on that column instead of the world
+## origin, which is how the milestone screenshots reach specific landforms.
+##
 ## [b]Exit codes.[/b] This script is consumed by CI, so a screenshot that was not
 ## written must not look like success:
 ##   0  PNG written, verified on disk, and reported with a SCREENSHOT_OK line
@@ -22,6 +25,8 @@ extends Node
 var _out_path := "/tmp/voxel_shot.png"
 var _warmup := 8.0
 var _seed := -1
+var _center := Vector2.ZERO
+var _center_set := false
 var _distance := -1.0
 var _pitch := 999.0
 var _yaw := 999.0
@@ -54,6 +59,11 @@ func _ready() -> void:
 			_pitch = float(arg.get_slice("=", 1))
 		elif arg.begins_with("--yaw="):
 			_yaw = float(arg.get_slice("=", 1))
+		elif arg.begins_with("--center="):
+			var parts := arg.get_slice("=", 1).split(",")
+			if parts.size() == 2:
+				_center = Vector2(float(parts[0]), float(parts[1]))
+				_center_set = true
 
 	_scene = load("res://scenes/main.tscn").instantiate()
 	add_child.call_deferred(_scene)
@@ -78,7 +88,11 @@ func _apply_overrides() -> void:
 		camera.pitch_degrees = _pitch
 	if _yaw < 900.0:
 		camera.yaw_degrees = _yaw
-	camera.focus_on(Vector3(0.0, world.get_surface_height(0, 0), 0.0))
+	# A capture can be framed on an arbitrary column, which is how the M1 shots
+	# reach a mountain range or a coastline without hand-driving the camera.
+	var focus_x := int(_center.x) if _center_set else 0
+	var focus_z := int(_center.y) if _center_set else 0
+	camera.focus_on(Vector3(float(focus_x), world.get_surface_height(focus_x, focus_z), float(focus_z)))
 
 
 func _process(delta: float) -> void:

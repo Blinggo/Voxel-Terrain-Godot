@@ -1,5 +1,5 @@
 ; Engine configuration file.
-; Procedural World Generator - milestone M0.1
+; Procedural World Generator - milestone M1 (deterministic terrain foundation)
 ;
 ; Target platforms: Android ARM64 (primary), Windows x86_64 (secondary),
 ; Linux x86_64 (development).

@@ -6,7 +6,7 @@ extends VoxelGeneratorScript
 ## Its responsibility is narrow on purpose: translate a block of voxel
 ## coordinates into type ids and write them into the [VoxelBuffer] Voxel Tools
 ## hands us. It performs no terrain mathematics of its own - it asks
-## [TerrainHeightField] for the surface and [BlockPalette] for the material.
+## [GeographicSurface] for the column heights and [BlockPalette] for the material.
 ## Geography therefore stays in `src/core/` and can be replaced without editing
 ## this file.
 ##
@@ -17,22 +17,23 @@ extends VoxelGeneratorScript
 ## arguments. The only shared objects touched are the height field and the
 ## palette, both documented as read-only once configured.
 ##
-## [b]Cost.[/b] One noise evaluation per column plus at most three
-## [method VoxelBuffer.fill_area] calls per column, instead of one noise call and
-## one [method VoxelBuffer.set_voxel] per voxel. That is ~1/32 the noise cost and
-## ~1/3 the script-to-native calls of the naive version, which matters because
-## each crossing between GDScript and C++ is comparatively expensive.
+## [b]Cost.[/b] One [method GeographicSurface.sample_block_heights] call per block
+## - which shares node lookups and interpolation weights across all of the
+## block's columns - plus at most three [method VoxelBuffer.fill_area] calls per
+## column, instead of one noise call and one [method VoxelBuffer.set_voxel] per
+## voxel. Crossing between GDScript and C++ is comparatively expensive, so both
+## reductions matter on mobile.
 
-var _height_field: TerrainHeightField
+var _surface: GeographicSurface
 var _palette: BlockPalette
 
 
 ## Must be called on the main thread before the generator is given to a terrain.
-func configure(height_field: TerrainHeightField, palette: BlockPalette) -> void:
-	if height_field == null or palette == null:
-		push_error("TerrainBlockGenerator.configure(): height field and palette are required.")
+func configure(surface: GeographicSurface, palette: BlockPalette) -> void:
+	if surface == null or palette == null:
+		push_error("TerrainBlockGenerator.configure(): surface and palette are required.")
 		return
-	_height_field = height_field
+	_surface = surface
 	_palette = palette
 
 
@@ -43,7 +44,7 @@ func _get_used_channels_mask() -> int:
 
 
 func _generate_block(out_buffer: VoxelBuffer, origin_in_voxels: Vector3i, _lod: int) -> void:
-	if _height_field == null or _palette == null:
+	if _surface == null or _palette == null:
 		# configure() was never called. Leave the block empty rather than
 		# spamming errors from worker threads.
 		return
@@ -52,14 +53,16 @@ func _generate_block(out_buffer: VoxelBuffer, origin_in_voxels: Vector3i, _lod: 
 	var soil_depth := _palette.soil_depth
 	var origin := origin_in_voxels
 
-	for z in range(block_size.z):
-		var world_z := origin.z + z
-		for x in range(block_size.x):
-			var world_x := origin.x + x
+	# All column heights for this block in one call. The surface evaluates its
+	# regional fields on a coarse node grid, so asking per block instead of per
+	# column lets it reuse the same nodes for all 256 columns.
+	var heights := _surface.sample_block_heights(
+			Vector2i(origin.x, origin.z), Vector2i(block_size.x, block_size.z)
+	)
 
-			# One noise evaluation per column. This is what keeps generation
-			# affordable on mobile.
-			var surface := _height_field.get_surface_height(world_x, world_z)
+	for z in range(block_size.z):
+		for x in range(block_size.x):
+			var surface := heights[z * block_size.x + x]
 
 			# Local y of the topmost solid voxel of the column (the grass one).
 			# Derived purely from the world position, never from the block, so

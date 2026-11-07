@@ -2,10 +2,16 @@ extends RefCounted
 
 ## Engine-light tests for the generation core.
 ##
-## These exercise [NoiseSource], [TerrainHeightField], [BlockPalette] and
+## These exercise [GeographicSurface], [BlockPalette] and
 ## [TerrainBlockGenerator] by writing voxels into standalone [VoxelBuffer]s. No
 ## terrain node, no viewer and no streaming are involved, so a failure here
 ## points at generation logic rather than at Voxel Tools setup.
+##
+## Since M1 the surface is produced by the module pipeline in
+## `src/core/generation/`; the suite that tests that pipeline's determinism,
+## fields and registry lives in `generation_suite.gd`. This suite covers the
+## contract between the surface and the voxel adapter: pure sampling, block
+## content, and seams.
 
 const GRID_ORIGIN := Vector2i(-64, -64)
 const GRID_SIZE := Vector2i(128, 128)
@@ -20,24 +26,25 @@ const _RIGHT_SAMPLE_COLUMNS: Array[int] = [0, 1, 15]
 
 
 static func run(report) -> void:
-	_test_noise_contract(report)
+	_test_surface_contract(report)
 	_test_seed_determinism(report)
 	_test_seed_changes_terrain(report)
-	_test_height_field_shape(report)
+	_test_surface_shape(report)
 	_test_palette_layers(report)
 	_test_block_content_is_order_independent(report)
 	_test_no_seams_between_adjacent_blocks(report)
 	_test_concurrent_sampling_matches_serial(report)
 
 
-static func _make_height_field(world_seed: int, amplitude: float = 26.0, frequency: float = 0.008) -> TerrainHeightField:
-	var noise := FastNoiseLiteSource.new(world_seed, frequency, 4)
-	return TerrainHeightField.new(noise, 24.0, amplitude)
+static func _make_surface(world_seed: int) -> GeographicSurface:
+	var config := WorldConfig.new()
+	config.world_seed = world_seed
+	return GeographicSurface.new(config)
 
 
-static func _make_generator(height_field: TerrainHeightField) -> TerrainBlockGenerator:
+static func _make_generator(surface: GeographicSurface) -> TerrainBlockGenerator:
 	var generator := TerrainBlockGenerator.new()
-	generator.configure(height_field, BlockPalette.new())
+	generator.configure(surface, BlockPalette.new())
 	return generator
 
 
@@ -55,51 +62,57 @@ static func _block_fingerprint(buffer: VoxelBuffer) -> PackedByteArray:
 	return buffer.get_channel_as_byte_array(VoxelBuffer.CHANNEL_TYPE)
 
 
-static func _test_noise_contract(report) -> void:
-	var source := FastNoiseLiteSource.new(1234, 0.01, 4)
-	var in_range := true
+static func _test_surface_contract(report) -> void:
+	var surface := _make_surface(1234)
+
 	var finite := true
+	var in_bounds := true
 	for z in range(-32, 32, 3):
 		for x in range(-32, 32, 3):
-			var v := source.sample_2d(float(x), float(z))
-			if v < -1.0 or v > 1.0:
-				in_range = false
-			if is_nan(v) or is_inf(v):
+			var height := surface.get_surface_height(x, z)
+			if is_nan(height) or is_inf(height):
 				finite = false
-	report.check("noise output is finite", finite)
-	report.check("noise output stays within [-1, 1]", in_range)
+			if height < SurfaceModule.MIN_HEIGHT or height > SurfaceModule.MAX_HEIGHT:
+				in_bounds = false
+	report.check("surface heights are finite", finite)
+	report.check("surface heights stay within the documented bounds", in_bounds)
 
-	var a := source.sample_2d(12.5, -7.25)
-	var b := source.sample_2d(12.5, -7.25)
-	report.check_equal("noise is a pure function of its arguments", a, b)
+	var a := surface.get_surface_height(12, -7)
+	var b := surface.get_surface_height(12, -7)
+	report.check_equal("surface height is a pure function of its coordinates", a, b)
+
+	report.check("the surface reports a valid module pipeline", surface.is_valid())
+	report.info("execution order: %s" % String(", ".join(surface.get_module_ids())))
 
 
 static func _test_seed_determinism(report) -> void:
-	var field_a := _make_height_field(98765)
-	var field_b := _make_height_field(98765)
+	var surface_a := _make_surface(98765)
+	var surface_b := _make_surface(98765)
 
 	var mismatch := 0
+	var compared := 0
 	for z in range(GRID_ORIGIN.y, GRID_ORIGIN.y + GRID_SIZE.y, 7):
 		for x in range(GRID_ORIGIN.x, GRID_ORIGIN.x + GRID_SIZE.x, 7):
-			if field_a.get_surface_height(x, z) != field_b.get_surface_height(x, z):
+			compared += 1
+			if surface_a.get_surface_height(x, z) != surface_b.get_surface_height(x, z):
 				mismatch += 1
 	report.check_equal("same seed produces identical heights from independent instances", mismatch, 0)
-	report.info("compared %d columns across two independent height fields" % ((GRID_SIZE.y / 7) * (GRID_SIZE.x / 7)))
+	report.info("compared %d columns across two independent surfaces" % compared)
 
 
 static func _test_seed_changes_terrain(report) -> void:
-	var field_a := _make_height_field(1111)
-	var field_b := _make_height_field(2222)
+	var surface_a := _make_surface(1111)
+	var surface_b := _make_surface(2222)
 
 	var differing := 0
 	var total := 0
 	for z in range(GRID_ORIGIN.y, GRID_ORIGIN.y + GRID_SIZE.y, 7):
 		for x in range(GRID_ORIGIN.x, GRID_ORIGIN.x + GRID_SIZE.x, 7):
 			total += 1
-			if absf(field_a.get_surface_height(x, z) - field_b.get_surface_height(x, z)) > 0.001:
+			if absf(surface_a.get_surface_height(x, z) - surface_b.get_surface_height(x, z)) > 0.001:
 				differing += 1
 
-	# Noise could coincidentally agree on a few columns; requiring that the vast
+	# Terrain could coincidentally agree on a few columns; requiring that the vast
 	# majority differ is enough to prove the seed is actually applied.
 	var fraction := float(differing) / float(maxi(total, 1))
 	report.check(
@@ -109,21 +122,26 @@ static func _test_seed_changes_terrain(report) -> void:
 	)
 
 
-static func _test_height_field_shape(report) -> void:
-	var flat := _make_height_field(42, 0.0, 0.008)
-	report.check_equal("zero amplitude yields a flat surface at base height", flat.get_surface_height(500, -300), 24.0)
-
-	var bumpy := _make_height_field(42, 26.0, 0.008)
-	var within_bounds := true
-	var max_deviation := 0.0
+static func _test_surface_shape(report) -> void:
+	var surface := _make_surface(42)
+	var minimum := INF
+	var maximum := -INF
 	for z in range(-200, 200, 11):
 		for x in range(-200, 200, 11):
-			var h := bumpy.get_surface_height(x, z)
-			max_deviation = maxf(max_deviation, absf(h - 24.0))
-			if h < 24.0 - 26.0 - 0.001 or h > 24.0 + 26.0 + 0.001:
-				within_bounds = false
-	report.check("surface stays within base_height +/- amplitude", within_bounds, "max deviation %.2f" % max_deviation)
-	report.check("amplitude actually varies the surface", max_deviation > 1.0, "max deviation %.2f" % max_deviation)
+			var height := surface.get_surface_height(x, z)
+			minimum = minf(minimum, height)
+			maximum = maxf(maximum, height)
+
+	report.check(
+			"surface stays within the composed height bounds",
+			minimum >= SurfaceModule.MIN_HEIGHT and maximum <= SurfaceModule.MAX_HEIGHT,
+			"range %.2f..%.2f" % [minimum, maximum]
+	)
+	report.check(
+			"the surface actually has relief",
+			maximum - minimum > 10.0,
+			"range %.2f..%.2f" % [minimum, maximum]
+	)
 
 
 static func _test_palette_layers(report) -> void:
@@ -140,7 +158,7 @@ static func _test_palette_layers(report) -> void:
 ## The core guarantee: a block's content depends only on where it is, never on
 ## what was generated before it. Generating neighbours first must not change it.
 static func _test_block_content_is_order_independent(report) -> void:
-	var generator := _make_generator(_make_height_field(2024))
+	var generator := _make_generator(_make_surface(2024))
 	var origin := Vector3i(0, 0, 0)
 
 	var isolated := _generate_block(generator, origin)
@@ -163,8 +181,8 @@ static func _test_block_content_is_order_independent(report) -> void:
 ## written by two different blocks and compare against the analytic height.
 ## If shared or adjacent columns disagreed, terrain would show a seam.
 static func _test_no_seams_between_adjacent_blocks(report) -> void:
-	var field := _make_height_field(777)
-	var generator := _make_generator(field)
+	var surface := _make_surface(777)
+	var generator := _make_generator(surface)
 
 	# Blocks that share the plane x = 32, plus a vertical neighbour pair so that
 	# both horizontal and vertical boundaries are covered.
@@ -179,14 +197,14 @@ static func _test_no_seams_between_adjacent_blocks(report) -> void:
 	# column must equal floor(surface) regardless of which block wrote it.
 	for z in range(0, BLOCK_SIZE, 5):
 		for x in _LEFT_SAMPLE_COLUMNS:
-			var expected_left := _expected_top_in_block(field.get_surface_height(x, z))
+			var expected_left := _expected_top_in_block(surface.get_surface_height(x, z))
 			var actual_left := _top_solid_voxel(left, x, z)
 			if expected_left != actual_left:
 				mismatches += 1
 				report.info("mismatch at x=%d z=%d: expected top %d, got %d" % [x, z, expected_left, actual_left])
 			checked += 1
 		for x_local in _RIGHT_SAMPLE_COLUMNS:
-			var expected_right := _expected_top_in_block(field.get_surface_height(BLOCK_SIZE + x_local, z))
+			var expected_right := _expected_top_in_block(surface.get_surface_height(BLOCK_SIZE + x_local, z))
 			var actual_right := _top_solid_voxel(right, x_local, z)
 			if expected_right != actual_right:
 				mismatches += 1
@@ -203,7 +221,7 @@ static func _test_no_seams_between_adjacent_blocks(report) -> void:
 	var vertical_checked := 0
 	for z in range(0, BLOCK_SIZE, 5):
 		for x in range(0, BLOCK_SIZE, 5):
-			var expected := _expected_top_in_stack(field.get_surface_height(x, z))
+			var expected := _expected_top_in_stack(surface.get_surface_height(x, z))
 			# Reconstruct the full column by stacking the two vertical blocks.
 			var combined := _top_solid_voxel_stacked(left, upper, x, z)
 			if expected != combined:
@@ -252,15 +270,16 @@ static func _top_solid_voxel_stacked(lower: VoxelBuffer, upper: VoxelBuffer, x: 
 	return _top_solid_voxel(lower, x, z)
 
 
-## Sampling the height field from several threads at once must give exactly the
-## same answers as sampling it serially. This is the property Voxel Tools relies
-## on when it generates blocks on the thread pool.
+## Sampling the surface from several threads at once must give exactly the same
+## answers as sampling it serially. This is the property Voxel Tools relies on
+## when it generates blocks on the thread pool - and since M1 it also exercises
+## the mutex-guarded node cache those threads share.
 static func _test_concurrent_sampling_matches_serial(report) -> void:
-	var field := _make_height_field(31337)
+	var surface := _make_surface(31337)
 
 	var serial: Array[float] = []
 	for i in range(512):
-		serial.append(field.get_surface_height(i - 256, 128 - i))
+		serial.append(surface.get_surface_height(i - 256, 128 - i))
 
 	var results := []
 	results.resize(4)
@@ -273,7 +292,7 @@ static func _test_concurrent_sampling_matches_serial(report) -> void:
 		thread.start(func() -> void:
 			var out: Array[float] = []
 			for i in range(512):
-				out.append(field.get_surface_height(i - 256, 128 - i))
+				out.append(surface.get_surface_height(i - 256, 128 - i))
 			results[slot] = out
 		)
 

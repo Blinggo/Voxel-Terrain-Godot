@@ -1,8 +1,8 @@
 # Project Continuation
 
 Last updated: 2026-11-07
-Milestone: **M0.2 complete pending review** (M0.1 reviewed and accepted).
-M1 not started.
+Milestone: **M1 complete pending review** (M0.1 and M0.2 reviewed and accepted).
+M2 not started.
 
 Read this first, then `Documentation/Architecture/OVERVIEW.md`.
 
@@ -13,9 +13,16 @@ Read this first, then `Documentation/Architecture/OVERVIEW.md`.
 The project opens, loads Voxel Tools, generates seeded procedural blocky terrain
 on worker threads, streams it around a camera, and renders it in 3D.
 
-- 151 automated checks: 17 core + 24 voxel + 24 reliability + 41 perf (headless)
-  + 45 UI input (needs a display), plus two verified screenshot captures.
-  `./tests/run_tests.sh` runs windowed when a display exists, headless otherwise.
+Since M1 the terrain is a **geographic** one: continentalness, multi-scale
+elevation, mountains, hills and a surface composer run as registered modules, and
+the live Voxel Tools generator is driven by their output. A world shows oceans,
+coastlines, plains, hills and continuous mountain ranges, regenerates identically
+from the same seed, and the overlay reports the terrain type under the viewer.
+
+- 196 automated checks: 17 core + 45 generation + 24 voxel + 24 reliability + 41
+  perf (headless) + 45 UI input (needs a display), plus verified screenshot
+  captures. `./tests/run_tests.sh` runs windowed when a display exists, headless
+  otherwise.
 - Verified end to end on **Linux x86_64** with software Vulkan.
 - **Android: confirmed running on a physical device** from the Godot Editor —
   terrain, streaming, touch camera, regenerate, random seed, default-seed
@@ -25,7 +32,9 @@ on worker threads, streams it around a camera, and renders it in 3D.
   installed.** Signature, ABI, packaged extension and permissions all check out;
   runtime behaviour of the release build is unknown.
 - Windows: never exported or run.
-- Generation throughput: ~36 µs per 16³ block, ~27,700 blocks/s single-threaded, GDScript.
+- Generation throughput: ~44 µs per 16³ block in the project benchmark (M0.1: 36 µs),
+  ~22,800 blocks/s single-threaded, GDScript; ~126 µs/block in a worst-case
+  scattered-block probe. Streaming region at view distance 128: 0.18 s (M0.2: 0.16 s).
 
 Nothing is stubbed. There are no placeholder scripts and no disabled features
 hiding behind flags except those explicitly listed as out of scope.
@@ -46,6 +55,9 @@ hiding behind flags except those explicitly listed as out of scope.
 | 0008 | Numerical fields are a custom `NumericField` (`LineEdit` + step buttons), not `SpinBox`, because stock `SpinBox` ignores `InputEventScreenTouch` when mouse emulation is off |
 | 0009 | Performance instrumentation reports only measurements that exist: frame window, Godot memory, pass-through Voxel Tools statistics, and generic named phase timings |
 | 0010 | Generation reads a `BlockPalette` snapshot taken before worker threads start; the generator and the blocky library share it |
+| 0011 | Terrain is a pipeline of registered **single-field modules** with declared dependencies; one registration point, deterministic order, independent testability. Supersedes ADR-0003's implementation, not its rule |
+| 0012 | Deterministic randomness is hand-written hashing in **32-bit lanes** (FNV-1a + MurmurHash3), because GDScript cannot write hex literals ≥ 2^63 or shift negatives |
+| 0013 | Regional fields are evaluated on a **node grid** 8 voxels apart and interpolated; detail is a bulk per-column term; nodes are cached behind a mutex |
 
 ---
 
@@ -57,10 +69,20 @@ icon.svg
 
 scenes/main.tscn                    World, camera + VoxelViewer, sun, environment, debug overlay
 
-src/core/noise/noise_source.gd      abstract pure/thread-safe 2D field contract
-src/core/noise/fast_noise_lite_source.gd  FastNoiseLite implementation (seeded once)
-src/core/terrain/terrain_height_field.gd  noise → surface height per column
-src/core/terrain/block_palette.gd        type ids, colours, soil depth, classify()
+src/core/generation/terrain_hash.gd        deterministic coordinate hashing
+src/core/generation/generation_context.gd  seed + versions + frozen config; per-module noise
+src/core/generation/generation_module.gd   module contract (one output field, declared deps)
+src/core/generation/generation_registry.gd registration + dependency resolution
+src/core/generation/generation_engine.gd   node-grid execution, cache, interpolation, bounds
+src/core/generation/terrain_generation_stack.gd  the one place modules are registered
+src/core/generation/geographic_surface.gd  what the voxel layer sees (heights, fields, classify)
+src/core/generation/modules/continentalness_module.gd  domain-warped continent field
+src/core/generation/modules/elevation_module.gd        three-band broad elevation
+src/core/generation/modules/mountain_module.gd         ridged ranges x belt mask x inland gate
+src/core/generation/modules/hills_module.gd            shaped hills, damped under mountains
+src/core/generation/modules/surface_module.gd          depth model, land base, relief ramp, coast
+src/core/generation/modules/detail_module.gd           per-column fine roughness
+src/core/terrain/block_palette.gd          type ids, colours, soil depth, classify()
 
 src/voxel/terrain_block_generator.gd     VoxelGeneratorScript adapter (no geography)
 src/voxel/blocky_library_builder.gd      library (slot 0 = air) + mesher + material, baked
@@ -77,12 +99,14 @@ src/debug/debug_panel.gd            parameter widgets + status; emits regenerate
 
 tests/test_runner.gd|.tscn          suite dispatcher, exit codes, watchdog
 tests/test_support.gd               PASS/FAIL recorder
-tests/suites/core_suite.gd          17 checks, engine-light
+tests/suites/core_suite.gd          17 checks, engine-light (surface contract, seams, threads)
+tests/suites/generation_suite.gd    45 checks, determinism + fields + module system + integration
 tests/suites/voxel_suite.gd         24 checks, live scene
 tests/suites/ui_input_suite.gd      45 checks, touch/mouse numeric input (needs a display)
 tests/suites/reliability_suite.gd   24 checks, palette snapshot stability
 tests/suites/perf_suite.gd          41 checks, instrumentation arithmetic and schema
-tests/capture_screenshot.gd|.tscn   rendered PNG proof (needs a display)
+tests/capture_screenshot.gd|.tscn   rendered PNG proof (needs a display); --center=x,z frames a landmark
+tests/render_map.gd                 hillshaded top-down map of the surface (geography tuning tool)
 tests/benchmark.gd|.tscn            throughput + streaming timings
 tests/run_tests.sh                  CI entry point (+ optional --screenshot), propagates failures
 
@@ -111,6 +135,11 @@ Documentation/                      this documentation set
   handles it — see `Milestones/M00_02_ANDROID_INPUT_FIX.md` and ADR-0008.
 - Inspection camera: orbit, zoom, pan, on mouse and touch code paths.
 - Automated suites (151 checks) plus screenshot, benchmark and export tooling.
+- M1: modular generation pipeline (`src/core/generation/`), deterministic hashing,
+  two-resolution sampling with a node cache, five geographic fields plus a detail
+  term, coastal softening, classification, sea plane, module/field/statistics
+  reporting in the overlay, and 45 new checks. See
+  `Milestones/M01_DETERMINISTIC_TERRAIN_FOUNDATION.md`.
 - M0.2: Android release APK exported and verified (see
   `Milestones/M00_02_ANDROID_VALIDATION.md` §3); performance overlay with F4
   toggle; screenshot harness with real exit codes; palette snapshot for worker
@@ -123,9 +152,9 @@ Documentation/                      this documentation set
 1. **Single-colour cubes.** A grass voxel's side faces are green; layered
    materials only appear where the surface is cut deeper than `soil_depth`.
    Fixing this properly needs a multi-material cube model.
-2. **Height field only.** No caves, overhangs, cliffs or floating geometry — by
-   design for M0.1. The current interface (`get_surface_height`) cannot express
-   them; a volume query is the future shape.
+2. **Height-field world.** No caves, overhangs or floating geometry — by design.
+   `get_surface_height`/`sample_block_heights` cannot express them; a volume query
+   is the future interface shape. M1 made the *geography* rich, not the geometry.
 3. **Full rebuild on parameter change.** Necessary given Voxel Tools' caching
    (ADR-0004). Costs a re-stream, visible as "loading…".
 4. **Vertical streaming limited to ±64 voxels** around the camera. Terrain
@@ -133,9 +162,10 @@ Documentation/                      this documentation set
 5. **`updated_blocks` statistic is dead** in Voxel Tools 1.7; progress is
    reported via `is_area_meshed` around the viewer instead.
 6. **No collisions generated.** Fine until something needs to stand on the ground.
-7. **GDScript generation cost.** 36 µs/block is good for script, but a native
-   generator would be far faster; this is the known ceiling until a bottleneck is
-   proven.
+7. **GDScript generation cost.** ~44 µs/block in the benchmark, ~126 µs/block in
+   a scattered-block probe. Far richer terrain than M0.1 for ~20-30 % more time in
+   the benchmark, but a native generator would still be much faster; this is the
+   known ceiling until a device measurement proves a bottleneck.
 8. **The exported release APK is unrun.** Editor runtime on the device is
    confirmed; an exported build has never been installed. This is the one
    outstanding acceptance test for M0.2.
@@ -149,6 +179,14 @@ Documentation/                      this documentation set
    cannot reach the world configuration.
 12. **Orientation changed to landscape** (`DisplayServer.SCREEN_LANDSCAPE = 0`);
    the old value was portrait despite a landscape comment. Needs a device check.
+13. **M1 terrain characteristics** — gentle slopes read as terraces (integer column
+    heights); low coastal plains are large on some seeds (the price of removing
+    coastal scarps); mountains are noise-driven belts, not tectonic simulation.
+14. **M1 rebuild cost** measured 8.8–26.7 ms on this machine (module construction)
+    against ~0.7 ms in M0.2; it is a one-off on the main thread, but it is the
+    number to watch on a phone.
+15. **Android/Windows for M1 are untested.** Every M1 number in this file is Linux
+    x86_64 with software Vulkan. This is the milestone's biggest evidence gap.
 
 ---
 
@@ -162,7 +200,8 @@ external to the code: the exported release APK has never been run on a device.
 
 | Proven | Unproven |
 |---|---|
-| 151 automated checks on Linux x86_64, software Vulkan | release APK at runtime |
+| 196 automated checks on Linux x86_64, software Vulkan | release APK at runtime |
+| M1 geographic fields, determinism, module system | M1 behaviour on Android/Windows |
 | terrain generation, streaming, seams, rebuild determinism | release-build extension loading |
 | touch/mouse numerical input (synthetic events) | device process memory and thermals |
 | Android Editor run on hardware (owner) | any second Android device |
@@ -177,7 +216,7 @@ external to the code: the exported release APK has never been run on a device.
 
 # single suite
 godot --headless --path . res://tests/test_runner.tscn -- --suite=voxel
-# suites: core | voxel | reliability | perf | ui | all
+# suites: core | generation | voxel | reliability | perf | ui | all
 
 # run the game
 godot --path .
@@ -203,10 +242,29 @@ A verified build from this environment is kept in
 `artifacts/android/procedural-world-arm64.apk` (sha256 in `SHA256SUMS.txt`). It is
 signed with a throwaway key: uninstall any differently-signed build first.
 
-### 6.3 Next steps (M1 not started — awaiting approval)
+### 6.3 Next steps (M1 complete, awaiting approval; M2 not started)
 
-1. **Run the exported APK on the device.** This is the only outstanding
-   acceptance test for M0.2 and it is one install away. Step-by-step checklist:
+**Immediate: review M1.** The full report is the fourteen-section documentary
+artifact `Milestones/M01_DETERMINISTIC_TERRAIN_FOUNDATION.md`; the most important
+things to look at are §5 (determinism), §10 (real 3D results with screenshots) and
+§11 (performance, including what is *not* measured).
+
+**Then, for M2, in value order** (detail in the milestone doc §15):
+
+1. **Climate as modules** — `temperature` and `humidity` depending on
+   continentalness/elevation. Resolve the one-field-per-module limit first.
+2. **Biome → palette mapping** — `BlockPalette.classify()` is the seam; terrain
+   becomes visibly richer without touching Voxel Tools integration.
+3. **Hydrology, if wanted** — no licence allows copying the researched projects;
+   a flow-accumulation pass over the node grid is the cheap path.
+4. **Device performance pass** before adding cost: decide whether
+   `sampling_stride` stays 8 and whether detail keeps 4 octaves.
+
+### 6.4 Older next steps (M0.2 era, still valid where not superseded)
+
+1. **Run the exported APK on the device.** Still the only outstanding acceptance
+   test for M0.2 (the APK in `artifacts/android/` is the M0.2 build; M1 did not
+   regenerate it, as the milestone required). Step-by-step checklist:
    `Milestones/M00_02_ANDROID_TESTING_CHECKLIST.md`.
 2. **Then measure on the device**, not on the desktop: the overlay reports frame
    time and Godot memory, and `adb shell dumpsys meminfo` reports process

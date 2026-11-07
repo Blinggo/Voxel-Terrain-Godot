@@ -1,7 +1,7 @@
 class_name DebugPanel
 extends Control
 
-## Debug overlay for M0.1: exposes the generation parameters, reports generation
+## Debug overlay: exposes the generation parameters, reports generation
 ## status, and asks for a regeneration.
 ##
 ## The panel is deliberately dumb: it knows nothing about [VoxelWorld] or Voxel
@@ -10,6 +10,10 @@ extends Control
 ## scene hands it through [method set_status]. That keeps debug UI out of the
 ## generation code, and means the panel can be deleted without touching the
 ## world.
+##
+## Since M1 the status block also reports the geography under the viewer -
+## terrain type, continentalness and mountainness - so a world can be read while
+## flying over it.
 
 signal regenerate_requested(request: Dictionary)
 
@@ -82,6 +86,16 @@ func set_status(status: Dictionary) -> void:
 		"dropped         %d loads / %d meshes" % [
 			int(status.get("dropped_loads", 0)),
 			int(status.get("dropped_meshes", 0)),
+		],
+		# Geography under the viewer, from the module pipeline (M1). Absent keys
+		# are tolerated so the panel keeps working with a bare status dictionary.
+		"terrain         %s @ %.1f" % [
+			String(status.get("terrain_type", "?")),
+			float(status.get("surface_height_here", 0.0)),
+		],
+		"fields          cont %+.2f  mtn %.2f" % [
+			float(status.get("continentalness", 0.0)),
+			float(status.get("mountainness", 0.0)),
 		],
 	])
 

@@ -4,6 +4,7 @@ extends Node
 ##
 ## Usage:
 ##   godot --headless --path . res://tests/test_runner.tscn -- --suite=core
+##   godot --headless --path . res://tests/test_runner.tscn -- --suite=generation
 ##   godot --headless --path . res://tests/test_runner.tscn -- --suite=voxel
 ##   godot --headless --path . res://tests/test_runner.tscn -- --suite=all
 ##   godot --path . res://tests/test_runner.tscn -- --suite=ui   (needs a display)
@@ -15,6 +16,7 @@ extends Node
 
 const TestSupport = preload("res://tests/test_support.gd")
 const CoreSuite = preload("res://tests/suites/core_suite.gd")
+const GenerationSuite = preload("res://tests/suites/generation_suite.gd")
 const VoxelSuite = preload("res://tests/suites/voxel_suite.gd")
 const UiInputSuite = preload("res://tests/suites/ui_input_suite.gd")
 const PerfSuite = preload("res://tests/suites/perf_suite.gd")
@@ -54,6 +56,11 @@ func _ready() -> void:
 		print("")
 		print("-- core generation ---------------------------------------")
 		CoreSuite.run(report)
+
+	if suite == "all" or suite == "generation":
+		print("")
+		print("-- terrain generation pipeline ---------------------------")
+		GenerationSuite.run(report)
 
 	if suite == "all" or suite == "voxel":
 		print("")

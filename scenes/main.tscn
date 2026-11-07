@@ -10,12 +10,6 @@
 
 [sub_resource type="Resource" id="Resource_config"]
 script = ExtResource("5_config")
-world_seed = 1337
-base_height = 24.0
-terrain_height = 26.0
-terrain_frequency = 0.008
-fractal_octaves = 4
-view_distance_voxels = 128
 
 [sub_resource type="Resource" id="Resource_palette"]
 script = ExtResource("6_palette")
@@ -104,7 +98,7 @@ theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
 theme_override_font_sizes/font_size = 16
-text = "Procedural World — M0.2"
+text = "Procedural World — M1"
 
 [node name="Grid" type="GridContainer" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
 theme_override_constants/h_separation = 10

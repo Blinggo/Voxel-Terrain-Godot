@@ -36,8 +36,14 @@ const VIEWER_GROUP := "voxel_viewers"
 ## shrinking this cuts a large amount of needless generation on mobile.
 @export var viewer_vertical_ratio: float = 0.5
 
+## Size of the visual water plane, in voxels. Larger than the streaming radius so
+## the sea reaches the horizon in every direction; the camera's far plane clips
+## it long before its edge.
+const SEA_PLANE_SIZE := 2048.0
+
 var _terrain: VoxelTerrain
-var _height_field: TerrainHeightField
+var _surface: GeographicSurface
+var _sea_plane: MeshInstance3D
 var _generator: TerrainBlockGenerator
 var _library: VoxelBlockyLibrary
 var _build_count := 0
@@ -59,8 +65,10 @@ func get_terrain() -> VoxelTerrain:
 	return _terrain
 
 
-func get_height_field() -> TerrainHeightField:
-	return _height_field
+## The geographic surface driving the terrain: module pipeline, cached fields and
+## classification. Read-only once built.
+func get_surface() -> GeographicSurface:
+	return _surface
 
 
 func get_generator() -> TerrainBlockGenerator:
@@ -90,8 +98,8 @@ func set_world_seed(value: int) -> void:
 
 ## Surface height of a column, in voxels. Safe before the first build.
 func get_surface_height(x: int, z: int) -> float:
-	if _height_field != null:
-		return _height_field.get_surface_height(x, z)
+	if _surface != null:
+		return _surface.get_surface_height(x, z)
 	return config.base_height if config != null else 0.0
 
 
@@ -122,13 +130,17 @@ func rebuild() -> void:
 	# package is edited mid-generation. The next rebuild picks up the edit.
 	var palette_snapshot := palette.create_snapshot()
 
-	# Generation stack: noise -> height field -> block adapter. Each link is
-	# replaceable without touching the others.
-	var noise := FastNoiseLiteSource.new(cfg.world_seed, cfg.terrain_frequency, cfg.fractal_octaves)
-	_height_field = TerrainHeightField.new(noise, cfg.base_height, cfg.terrain_height)
+	# Generation stack: module pipeline -> geographic surface -> block adapter.
+	# The surface snapshots the configuration again internally, so the fields a
+	# module reads can never differ from the ones the block palette was built
+	# from.
+	_surface = GeographicSurface.new(cfg)
+	if not _surface.is_valid():
+		push_error("VoxelWorld.rebuild(): generation pipeline failed to build.")
+		return
 
 	_generator = TerrainBlockGenerator.new()
-	_generator.configure(_height_field, palette_snapshot)
+	_generator.configure(_surface, palette_snapshot)
 
 	# Voxel Tools stack: block library -> mesher -> terrain node.
 	_library = BlockyLibraryBuilder.build_library(palette_snapshot)
@@ -138,7 +150,11 @@ func rebuild() -> void:
 	_terrain = VoxelTerrainBuilder.create_terrain(_generator, mesher, material, cfg.view_distance_voxels)
 	add_child(_terrain)
 
-	_configure_viewers(cfg.view_distance_voxels)
+	configure_viewers(cfg.view_distance_voxels)
+
+	if cfg.show_sea_plane:
+		_sea_plane = _build_sea_plane(cfg.sea_level)
+		add_child(_sea_plane)
 
 	_build_count += 1
 	_last_rebuild_ms = float(Time.get_ticks_usec() - started_usec) / 1000.0
@@ -148,7 +164,7 @@ func rebuild() -> void:
 ## Pushes the streaming radius onto every registered viewer. Viewers are plain
 ## nodes in the scene (the camera owns one), so the world only configures them
 ## instead of owning them.
-func _configure_viewers(view_distance_voxels: int) -> void:
+func configure_viewers(view_distance_voxels: int) -> void:
 	var tree := get_tree()
 	if tree == null:
 		return
@@ -163,12 +179,48 @@ func _configure_viewers(view_distance_voxels: int) -> void:
 		viewer.requires_visuals = true
 
 
+## A flat translucent plane at sea level, purely so submerged terrain reads as
+## water. No simulation, no depth, no interaction: it exists because without it a
+## world with real oceans looks like a world with holes in it.
+func _build_sea_plane(sea_level: float) -> MeshInstance3D:
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(SEA_PLANE_SIZE, SEA_PLANE_SIZE)
+	plane.subdivide_width = 0
+	plane.subdivide_depth = 0
+
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.13, 0.35, 0.55, 0.62)
+	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	material.cull_mode = BaseMaterial3D.CULL_DISABLED
+	# Rough enough that the directional light does not produce a blown-out
+	# specular patch on a perfectly flat plane.
+	material.roughness = 0.62
+	material.metallic = 0.0
+
+	var sea := MeshInstance3D.new()
+	sea.name = "SeaPlane"
+	sea.mesh = plane
+	sea.material_override = material
+	# Ground surface height s fills voxels up to floor(s); the water surface sits
+	# at the first empty voxel row above sea level, nudged to avoid z-fighting
+	# with a ground face that lands exactly on it.
+	sea.position = Vector3(0.0, sea_level + 0.02, 0.0)
+	sea.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	return sea
+
+
 func _teardown() -> void:
 	if is_instance_valid(_terrain):
 		if _terrain.get_parent() == self:
 			remove_child(_terrain)
 		_terrain.queue_free()
 	_terrain = null
+
+	if is_instance_valid(_sea_plane):
+		if _sea_plane.get_parent() == self:
+			remove_child(_sea_plane)
+		_sea_plane.queue_free()
+	_sea_plane = null
 
 
 ## Snapshot of generation state, consumed by the debug overlay.
@@ -183,7 +235,21 @@ func get_status() -> Dictionary:
 		"build_count": _build_count,
 		"terrain_present": is_instance_valid(_terrain),
 		"last_rebuild_ms": _last_rebuild_ms,
+		"sea_level": config.sea_level if config != null else 0.0,
 	}
+
+	# Geography under the viewer: what the module pipeline thinks this place is.
+	# Sampled at the viewer's own column so the panel reports the terrain the
+	# camera is actually looking at.
+	if _surface != null:
+		var here := get_viewer_position()
+		var geography := _surface.describe_at(int(floor(here.x)), int(floor(here.z)))
+		status["terrain_type"] = geography["terrain_type"]
+		status["surface_height_here"] = geography["surface_height"]
+		status["continentalness"] = geography["continentalness"]
+		status["mountainness"] = geography["mountainness"]
+	else:
+		status["terrain_type"] = &"unknown"
 
 	if is_instance_valid(_terrain):
 		var stats: Dictionary = _terrain.get_statistics()

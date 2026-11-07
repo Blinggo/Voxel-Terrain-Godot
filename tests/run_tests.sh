@@ -2,7 +2,7 @@
 #
 # Runs the test suites.
 #
-#   ./tests/run_tests.sh              # core + voxel + reliability + perf,
+#   ./tests/run_tests.sh              # core + generation + voxel + reliability + perf,
 #                                     # plus UI input when a display exists
 #   ./tests/run_tests.sh --screenshot # also render a PNG proof of the terrain
 #
@@ -58,6 +58,7 @@ run_suite() {
 echo "test mode: ${MODE}"
 
 run_suite core
+run_suite generation
 run_suite voxel
 run_suite reliability
 run_suite perf

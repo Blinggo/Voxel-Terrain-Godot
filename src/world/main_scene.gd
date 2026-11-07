@@ -1,7 +1,10 @@
 class_name MainScene
 extends Node3D
 
-## Scene wiring for M0.1.
+## Scene wiring for the running game.
+##
+## Since M1 the camera also picks a sensible place to look at on startup, because
+## a world can now legitimately be mostly ocean.
 ##
 ## Connects the three independent pieces - world, camera, debug overlay - and
 ## nothing else. Keeping the wiring here means [VoxelWorld] does not need to know
@@ -9,6 +12,15 @@ extends Node3D
 ## world exists. It is a plain node in the scene, not a singleton.
 
 const STATUS_REFRESH_INTERVAL := 0.25
+
+## How far out, and in what steps, the startup camera searches for land. 192
+## voxels keeps the framed spot inside the streaming radius, so the view is
+## already meshed by the time the first frames are drawn.
+const LAND_SEARCH_RADIUS := 192
+const LAND_SEARCH_STEP := 16
+
+## Height above sea level that counts as "land worth framing".
+const LAND_MARGIN := 4.0
 
 @export var world: VoxelWorld
 @export var camera: OrbitCamera
@@ -56,8 +68,54 @@ func _on_regenerate_requested(request: Dictionary) -> void:
 	world.apply_config(config)
 
 
-## Aims the camera at the surface directly above the world origin, so a fresh
-## world is always framed sensibly regardless of its seed.
+## Aims the camera at land near the world origin.
+##
+## Since M1 a world can legitimately be mostly ocean, and a camera parked on the
+## seabed at the origin would show nothing but water on first launch. The search
+## walks outwards in rings and takes the first ring that contains a column
+## comfortably above sea level, preferring the highest column in that ring. It is
+## deterministic: the same seed always frames the same place.
 func _focus_camera_on_origin() -> void:
-	var surface := world.get_surface_height(0, 0)
-	camera.focus_on(Vector3(0.0, surface, 0.0))
+	var surface := world.get_surface()
+	if surface == null:
+		camera.focus_on(Vector3(0.0, world.get_surface_height(0, 0), 0.0))
+		return
+
+	var sea_level := surface.get_sea_level()
+	var target := Vector2i.ZERO
+	var target_height := surface.get_surface_height(0, 0)
+	var found := false
+
+	for radius in range(0, LAND_SEARCH_RADIUS + 1, LAND_SEARCH_STEP):
+		var best_height := -INF
+		var best_column := Vector2i.ZERO
+		for offset in _ring_offsets(radius):
+			var height := surface.get_surface_height(offset.x, offset.y)
+			if height > best_height:
+				best_height = height
+				best_column = offset
+		if best_height >= sea_level + LAND_MARGIN:
+			target = best_column
+			target_height = best_height
+			found = true
+			break
+
+	if not found:
+		# No land within the search radius: frame whatever is at the origin.
+		target_height = surface.get_surface_height(target.x, target.y)
+
+	camera.focus_on(Vector3(float(target.x), target_height, float(target.y)))
+
+
+## Columns on the square ring at [param radius], plus the origin at radius 0.
+func _ring_offsets(radius: int) -> Array[Vector2i]:
+	var offsets: Array[Vector2i] = []
+	if radius == 0:
+		offsets.append(Vector2i.ZERO)
+		return offsets
+	for offset in range(-radius, radius + 1, LAND_SEARCH_STEP):
+		offsets.append(Vector2i(offset, -radius))
+		offsets.append(Vector2i(offset, radius))
+		offsets.append(Vector2i(-radius, offset))
+		offsets.append(Vector2i(radius, offset))
+	return offsets

@@ -1,6 +1,6 @@
 # ADR-0003 — Coordinate-deterministic height field behind a noise interface
 
-**Status:** Accepted
+**Status:** Accepted — implementation superseded by ADR-0011 (M1), rule still binding
 **Date:** 2026-11-06
 
 ## Context

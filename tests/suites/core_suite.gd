@@ -1,5 +1,8 @@
 extends RefCounted
 
+# M3: 2..96 below is the historical DEFAULT-config regression envelope,
+# not a generator constraint. Tall/deep configurations are tested in m3_suite.
+
 ## Engine-light tests for the generation core.
 ##
 ## These exercise [GeographicSurface], [BlockPalette] and
@@ -72,7 +75,7 @@ static func _test_surface_contract(report) -> void:
 			var height := surface.get_surface_height(x, z)
 			if is_nan(height) or is_inf(height):
 				finite = false
-			if height < SurfaceModule.MIN_HEIGHT or height > SurfaceModule.MAX_HEIGHT:
+			if height < 2.0 or height > 96.0:
 				in_bounds = false
 	report.check("surface heights are finite", finite)
 	report.check("surface heights stay within the documented bounds", in_bounds)
@@ -134,7 +137,7 @@ static func _test_surface_shape(report) -> void:
 
 	report.check(
 			"surface stays within the composed height bounds",
-			minimum >= SurfaceModule.MIN_HEIGHT and maximum <= SurfaceModule.MAX_HEIGHT,
+			minimum >= 2.0 and maximum <= 96.0,
 			"range %.2f..%.2f" % [minimum, maximum]
 	)
 	report.check(

@@ -178,3 +178,10 @@ Since M1 the world also adds one purely visual object: a translucent
 not a fluid simulation and nothing queries it. M2 changed nothing about it, which is
 why carved inland basins are held above sea level: a basin below the sea plane would
 fill, and nothing in M2 can drain it.
+
+## M3 implementation update (supersedes camera/vertical/mesher descriptions above)
+The world now selects blocky or smooth adapters over the same GeographicSurface.
+Independent horizontal/vertical streaming replaces the fixed 0.5 ratio; composition
+has no fixed altitude clamp. One camera/viewer switches between orbit and flight.
+See [M3 camera, streaming and adapter guide](M3_CAMERA_STREAMING_ADAPTERS.md) for
+controls, density semantics, launch instructions and remaining validation limits.

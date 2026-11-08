@@ -43,7 +43,7 @@ extends Resource
 
 ## Overall relief amplitude, in voxels. Scales hills, mountains and fine detail
 ## together.
-@export_range(0.0, 128.0, 1.0) var terrain_height: float = 26.0
+@export_range(0.0, 128.0, 1.0, "or_greater") var terrain_height: float = 26.0
 
 ## Height of the sea surface, in voxels. Terrain below this level is under water.
 @export var sea_level: float = 20.0
@@ -141,6 +141,9 @@ extends Resource
 ## Streaming radius around the viewer, in voxels.
 @export_range(32, 512, 16) var view_distance_voxels: int = 128
 
+## Independent vertical radius. Finite nearby streaming follows the viewer.
+@export_range(32, 512, 16, "or_greater") var vertical_view_distance_voxels: int = 128
+
 ## Spacing of the node grid the geographic fields are evaluated on, in voxels.
 ## Larger is cheaper and coarser. Must stay well below the wavelength of the
 ## finest field or detail is lost; 8 is one block face at the default block size.
@@ -185,6 +188,7 @@ func duplicate_config() -> WorldConfig:
 	other.terrain_frequency = terrain_frequency
 	other.fractal_octaves = fractal_octaves
 	other.view_distance_voxels = view_distance_voxels
+	other.vertical_view_distance_voxels = vertical_view_distance_voxels
 	other.sampling_stride = sampling_stride
 	other.show_sea_plane = show_sea_plane
 	return other
@@ -223,6 +227,7 @@ func to_dictionary() -> Dictionary:
 		"terrain_frequency": terrain_frequency,
 		"fractal_octaves": fractal_octaves,
 		"view_distance_voxels": view_distance_voxels,
+		"vertical_view_distance_voxels": vertical_view_distance_voxels,
 		"sampling_stride": sampling_stride,
 		"show_sea_plane": show_sea_plane,
 	}

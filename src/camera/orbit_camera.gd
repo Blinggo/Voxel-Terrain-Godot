@@ -54,6 +54,21 @@ func reset_view() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F:
+		set_fly_mode(not fly_mode)
+		get_viewport().set_input_as_handled()
+		return
+	if fly_mode:
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_RIGHT:
+				_fly_looking = event.pressed
+			if event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_UP:
+				fly_speed = minf(fly_speed * 1.25, 2048.0)
+			if event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+				fly_speed = maxf(fly_speed / 1.25, 1.0)
+		elif event is InputEventMouseMotion and _fly_looking:
+			fly_look(event.relative)
+		return
 	if event is InputEventMouseButton:
 		_handle_mouse_button(event)
 	elif event is InputEventMouseMotion:
@@ -179,3 +194,58 @@ func _refresh_transform() -> void:
 	)
 	global_position = target + offset
 	look_at(target, Vector3.UP)
+
+
+# M3: one camera/viewer, mutually exclusive input paths. Orbit code remains intact.
+var fly_mode := false
+var fly_speed := 32.0
+var fly_velocity := Vector3.ZERO
+var touch_move := Vector3.ZERO
+var touch_boost := false
+var _fly_looking := false
+
+func set_fly_mode(enabled: bool) -> void:
+	if enabled == fly_mode:
+		return
+	fly_mode = enabled
+	_orbiting = false
+	_panning = false
+	_fly_looking = false
+	_touches.clear()
+	_pinch_reference = 0.0
+	fly_velocity = Vector3.ZERO
+	touch_move = Vector3.ZERO
+	touch_boost = false
+	if not enabled:
+		# Recover orbit parameters from the current view without moving it.
+		target = global_position - global_basis.z * distance
+		var offset := global_position - target
+		yaw_degrees = rad_to_deg(atan2(offset.x, offset.z))
+		pitch_degrees = rad_to_deg(-asin(clampf(offset.y / distance, -1.0, 1.0)))
+
+func fly_look(relative: Vector2) -> void:
+	if not fly_mode:
+		return
+	rotation.y -= deg_to_rad(relative.x * orbit_sensitivity)
+	rotation.x = clampf(rotation.x - deg_to_rad(relative.y * orbit_sensitivity), deg_to_rad(-89.0), deg_to_rad(89.0))
+
+func advance_fly(delta: float, movement: Vector3, boost: bool) -> void:
+	if not fly_mode:
+		return
+	var direction := global_basis.x * movement.x - global_basis.z * movement.z + Vector3.UP * movement.y
+	if direction.length() > 1.0:
+		direction = direction.normalized()
+	fly_velocity = fly_velocity.lerp(direction * fly_speed * (4.0 if boost else 1.0), 1.0 - exp(-10.0 * delta))
+	global_position += fly_velocity * delta
+
+func _process(delta: float) -> void:
+	if not fly_mode:
+		return
+	var move := touch_move
+	var boost := touch_boost
+	if get_viewport().gui_get_focus_owner() == null:
+		move += Vector3(float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A)),
+			float(Input.is_physical_key_pressed(KEY_SPACE)) - float(Input.is_physical_key_pressed(KEY_CTRL)),
+			float(Input.is_physical_key_pressed(KEY_W)) - float(Input.is_physical_key_pressed(KEY_S)))
+		boost = boost or Input.is_physical_key_pressed(KEY_SHIFT)
+	advance_fly(delta, move, boost)

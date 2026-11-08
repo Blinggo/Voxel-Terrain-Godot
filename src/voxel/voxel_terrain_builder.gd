@@ -28,6 +28,8 @@ static func create_terrain(
 	# configured, so generation never has to reallocate.
 	var format := VoxelFormat.new()
 	format.set_channel_depth(VoxelBuffer.CHANNEL_TYPE, VoxelBuffer.DEPTH_16_BIT)
+	if mesher is VoxelMesherTransvoxel:
+		format.set_channel_depth(VoxelBuffer.CHANNEL_SDF, VoxelBuffer.DEPTH_32_BIT)
 	terrain.format = format
 
 	terrain.generator = generator

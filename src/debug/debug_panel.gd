@@ -22,6 +22,7 @@ const RANDOM_SEED_LIMIT := 100000
 ## Key that turns the performance readout on and off.
 const PROFILING_TOGGLE_KEY := KEY_F4
 
+@onready var _vertical_field: NumericField = %VerticalField
 @onready var _seed_field: NumericField = %SeedField
 @onready var _height_field: NumericField = %HeightField
 @onready var _frequency_field: NumericField = %FrequencyField
@@ -54,6 +55,7 @@ func configure_from_config(config: WorldConfig) -> void:
 	_height_field.set_value_silent(config.terrain_height)
 	_frequency_field.set_value_silent(config.terrain_frequency)
 	_view_distance_field.set_value_silent(config.view_distance_voxels)
+	_vertical_field.set_value_silent(config.vertical_view_distance_voxels)
 
 
 ## Renders a status snapshot produced by [method VoxelWorld.get_status].
@@ -224,10 +226,12 @@ func _emit_regeneration() -> void:
 	_height_field.commit_pending()
 	_frequency_field.commit_pending()
 	_view_distance_field.commit_pending()
+	_vertical_field.commit_pending()
 
 	regenerate_requested.emit({
 		"world_seed": int(_seed_field.get_value()),
 		"terrain_height": float(_height_field.get_value()),
 		"terrain_frequency": float(_frequency_field.get_value()),
 		"view_distance_voxels": int(_view_distance_field.get_value()),
+		"vertical_view_distance_voxels": int(_vertical_field.get_value()),
 	})

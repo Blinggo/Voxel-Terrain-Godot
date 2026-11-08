@@ -1,0 +1,38 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+libxkbcommon.so.0: cannot open shared object file: No such file or directory
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libasound.so.2: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+libasound.so.2: cannot open shared object file: No such file or directory
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+M3_MEASURE smooth=false vertical=64 move=(0.0, 0.0, 0.0) ready=true ready_ms=4215 mean_frame_ms=355.44 static_mb=75.03
+M3_MEASURE smooth=false vertical=64 move=(128.0, 0.0, 0.0) ready=true ready_ms=1388 mean_frame_ms=354.40 static_mb=77.93
+M3_MEASURE smooth=false vertical=64 move=(0.0, 256.0, 0.0) ready=true ready_ms=715 mean_frame_ms=112.74 static_mb=66.79
+M3_GENERATE smooth=false vertical=64 us_per_block=293.92
+M3_MEASURE smooth=false vertical=128 move=(0.0, 0.0, 0.0) ready=true ready_ms=3850 mean_frame_ms=431.80 static_mb=103.83
+M3_MEASURE smooth=false vertical=128 move=(128.0, 0.0, 0.0) ready=true ready_ms=1317 mean_frame_ms=357.97 static_mb=106.04
+M3_MEASURE smooth=false vertical=128 move=(0.0, 256.0, 0.0) ready=true ready_ms=609 mean_frame_ms=117.72 static_mb=84.80
+M3_GENERATE smooth=false vertical=128 us_per_block=284.92
+M3_MEASURE smooth=false vertical=192 move=(0.0, 0.0, 0.0) ready=true ready_ms=4149 mean_frame_ms=425.37 static_mb=131.55
+M3_MEASURE smooth=false vertical=192 move=(128.0, 0.0, 0.0) ready=true ready_ms=1430 mean_frame_ms=370.78 static_mb=133.77
+M3_MEASURE smooth=false vertical=192 move=(0.0, 256.0, 0.0) ready=true ready_ms=646 mean_frame_ms=117.38 static_mb=102.35
+M3_GENERATE smooth=false vertical=192 us_per_block=289.89
+M3_MEASURE smooth=true vertical=64 move=(0.0, 0.0, 0.0) ready=true ready_ms=4823 mean_frame_ms=366.93 static_mb=215.97
+M3_MEASURE smooth=true vertical=64 move=(128.0, 0.0, 0.0) ready=true ready_ms=1312 mean_frame_ms=351.46 static_mb=216.67
+M3_MEASURE smooth=true vertical=64 move=(0.0, 256.0, 0.0) ready=true ready_ms=611 mean_frame_ms=148.88 static_mb=214.34
+M3_GENERATE smooth=true vertical=64 us_per_block=632.74
+M3_MEASURE smooth=true vertical=128 move=(0.0, 0.0, 0.0) ready=true ready_ms=5760 mean_frame_ms=411.63 static_mb=276.95
+M3_MEASURE smooth=true vertical=128 move=(128.0, 0.0, 0.0) ready=true ready_ms=1388 mean_frame_ms=365.61 static_mb=277.23
+M3_MEASURE smooth=true vertical=128 move=(0.0, 256.0, 0.0) ready=true ready_ms=739 mean_frame_ms=175.93 static_mb=274.89
+M3_GENERATE smooth=true vertical=128 us_per_block=661.29
+M3_MEASURE smooth=true vertical=192 move=(0.0, 0.0, 0.0) ready=true ready_ms=6097 mean_frame_ms=435.76 static_mb=319.22
+M3_MEASURE smooth=true vertical=192 move=(128.0, 0.0, 0.0) ready=true ready_ms=1348 mean_frame_ms=403.97 static_mb=319.51
+M3_MEASURE smooth=true vertical=192 move=(0.0, 256.0, 0.0) ready=true ready_ms=623 mean_frame_ms=179.04 static_mb=317.17
+M3_GENERATE smooth=true vertical=192 us_per_block=621.04
+WARNING: 255 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 14 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

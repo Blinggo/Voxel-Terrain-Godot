@@ -1,5 +1,8 @@
 extends RefCounted
 
+# M3: 2..96 below is the historical DEFAULT-config regression envelope,
+# not a generator constraint. Tall/deep configurations are tested in m3_suite.
+
 ## Tests for the M1 generation pipeline: determinism, fields, module system and
 ## integration with the voxel adapter.
 ##
@@ -272,7 +275,7 @@ static func _test_negative_coordinates(report) -> void:
 		var height := first.get_surface_height(point.x, point.y)
 		if height != second.get_surface_height(point.x, point.y):
 			mismatched += 1
-		if not is_finite(height) or height < SurfaceModule.MIN_HEIGHT or height > SurfaceModule.MAX_HEIGHT:
+		if not is_finite(height) or height < 2.0 or height > 96.0:
 			out_of_bounds += 1
 
 	report.check_equal("negative coordinates are deterministic", mismatched, 0, "%d columns" % checked)
@@ -283,7 +286,7 @@ static func _test_negative_coordinates(report) -> void:
 	var crossing_issues := 0
 	for x in range(-16, 17):
 		var height := first.get_surface_height(x, -1)
-		if not is_finite(height) or height < SurfaceModule.MIN_HEIGHT or height > SurfaceModule.MAX_HEIGHT:
+		if not is_finite(height) or height < 2.0 or height > 96.0:
 			crossing_issues += 1
 	report.check_equal("the surface is well defined across the origin", crossing_issues, 0)
 
@@ -304,11 +307,11 @@ static func _test_large_coordinates(report) -> void:
 			var height := first.get_surface_height(x, z)
 			if height != second.get_surface_height(x, z):
 				mismatched += 1
-			if not is_finite(height) or height < SurfaceModule.MIN_HEIGHT or height > SurfaceModule.MAX_HEIGHT:
+			if not is_finite(height) or not _inside_configuration_envelope(first.get_config(), height):
 				out_of_bounds += 1
 
 	report.check_equal("large coordinates are deterministic", mismatched, 0, "%d columns" % checked)
-	report.check_equal("large coordinates stay within the height bounds", out_of_bounds, 0)
+	report.check_equal("large coordinates stay inside the configuration-derived envelope", out_of_bounds, 0)
 
 	# Honest limitation check: float32 noise coordinates lose resolution far from
 	# the origin, so terrain is still defined there but coarser. Recorded rather
@@ -473,7 +476,7 @@ static func _test_surface_bounds_across_seeds(report) -> void:
 		for point in _grid(16, Vector2i(-64, -64)):
 			checked += 1
 			var height := surface.get_surface_height(point.x, point.y)
-			if not is_finite(height) or height < SurfaceModule.MIN_HEIGHT or height > SurfaceModule.MAX_HEIGHT:
+			if not is_finite(height) or height < 2.0 or height > 96.0:
 				out_of_bounds += 1
 	report.check_equal(
 			"surface height stays within the documented bounds for every seed",
@@ -885,3 +888,11 @@ class DummyModule:
 
 	func evaluate_node(_x: int, _z: int, values: PackedFloat32Array) -> void:
 		values[get_output_index()] = 0.5
+
+
+# Fixed 2..96 clipping is deliberately removed in M3. The default amplitude
+# budget, not an arbitrary world ceiling, bounds this far-coordinate fixture.
+static func _inside_configuration_envelope(config: WorldConfig, height: float) -> bool:
+	var lower := minf(config.sea_level - config.ocean_depth * 1.15, config.base_height) - config.terrain_height * config.detail_scale - 3.0
+	var upper := maxf(config.sea_level, config.base_height + config.inland_rise + config.elevation_gain) + config.terrain_height * (config.mountain_scale + config.hill_scale + config.detail_scale) + config.plateau_uplift
+	return height >= lower and height <= upper

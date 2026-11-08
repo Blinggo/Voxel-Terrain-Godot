@@ -34,6 +34,10 @@ func _ready() -> void:
 		push_error("MainScene is missing one of its node references.")
 		return
 
+	var flight_controls := FlightControls.new()
+	flight_controls.camera = camera
+	$DebugLayer.add_child(flight_controls)
+
 	world.terrain_rebuilt.connect(_on_terrain_rebuilt)
 	debug_panel.regenerate_requested.connect(_on_regenerate_requested)
 
@@ -56,7 +60,8 @@ func _on_terrain_rebuilt(_world_seed: int) -> void:
 	# Keep the widgets truthful when the world is rebuilt by anything other than
 	# the panel itself (a script, or a test).
 	debug_panel.configure_from_config(world.config)
-	_focus_camera_on_origin()
+	if not camera.fly_mode:
+		_focus_camera_on_origin()
 
 
 func _on_regenerate_requested(request: Dictionary) -> void:
@@ -65,6 +70,7 @@ func _on_regenerate_requested(request: Dictionary) -> void:
 	config.terrain_height = float(request.get("terrain_height", config.terrain_height))
 	config.terrain_frequency = float(request.get("terrain_frequency", config.terrain_frequency))
 	config.view_distance_voxels = int(request.get("view_distance_voxels", config.view_distance_voxels))
+	config.vertical_view_distance_voxels = int(request.get("vertical_view_distance_voxels", config.vertical_view_distance_voxels))
 	world.apply_config(config)
 
 

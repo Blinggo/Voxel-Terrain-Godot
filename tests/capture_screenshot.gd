@@ -65,7 +65,11 @@ func _ready() -> void:
 				_center = Vector2(float(parts[0]), float(parts[1]))
 				_center_set = true
 
-	_scene = load("res://scenes/main.tscn").instantiate()
+	var scene_path := "res://scenes/main.tscn"
+	for arg in OS.get_cmdline_user_args():
+		if arg == "--smooth":
+			scene_path = "res://scenes/smooth_terrain.tscn"
+	_scene = load(scene_path).instantiate()
 	add_child.call_deferred(_scene)
 	await get_tree().process_frame
 	_apply_overrides()
@@ -81,6 +85,13 @@ func _apply_overrides() -> void:
 
 	if _seed >= 0 and _seed != world.config.world_seed:
 		world.set_world_seed(_seed)
+
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--height="):
+			var config := world.config.duplicate_config()
+			config.terrain_height = float(arg.get_slice("=", 1))
+			config.vertical_view_distance_voxels = 192
+			world.apply_config(config)
 
 	if _distance > 0.0:
 		camera.distance = _distance

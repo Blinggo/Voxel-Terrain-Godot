@@ -95,10 +95,7 @@ const PLATEAU_VALLEY_FADE := 0.90
 ## valley floors line up across a region instead of following the mountains.
 const VALLEY_FLOOR_MARGIN := 3.0
 
-## Hard limits on the surface, in voxels. Bounded height keeps the number of voxels
-## the mesher must consider predictable.
-const MIN_HEIGHT := 2.0
-const MAX_HEIGHT := 96.0
+## No fixed altitude bounds: streaming, not geographical clipping, bounds work.
 
 ## Classification thresholds, shared with [method classify].
 const DEEP_OCEAN_EDGE := -0.30
@@ -165,7 +162,7 @@ func configure(context: GenerationContext) -> void:
 
 ## The world-unit limits of the composed surface, in voxels.
 func get_output_bounds() -> Vector2:
-	return Vector2(MIN_HEIGHT, MAX_HEIGHT)
+	return Vector2.ZERO # GenerationEngine sentinel: no output clamp.
 
 
 func evaluate_node(_x: int, _z: int, values: PackedFloat32Array) -> void:
@@ -227,7 +224,7 @@ func evaluate_node(_x: int, _z: int, values: PackedFloat32Array) -> void:
 	height = lerpf(height, maxf(height, _sea_level + DRAINAGE_FLOOR), land)
 
 	# 6. Coastal softening, then bounds.
-	values[get_output_index()] = clampf(soften_coast(height), MIN_HEIGHT, MAX_HEIGHT)
+	values[get_output_index()] = soften_coast(height)
 
 
 ## Compresses the height towards sea level inside [constant COAST_BAND] voxels of

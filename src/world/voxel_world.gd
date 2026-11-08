@@ -31,10 +31,8 @@ const VIEWER_GROUP := "voxel_viewers"
 ## Build a terrain as soon as the node enters the tree.
 @export var build_on_ready: bool = true
 
-## Vertical extent of the streaming region, as a fraction of the horizontal
-## view distance. A heightmap world is mostly air above and stone below, so
-## shrinking this cuts a large amount of needless generation on mobile.
-@export var viewer_vertical_ratio: float = 0.5
+## Adapter selection only; both modes construct the same GeographicSurface.
+@export var smooth_terrain: bool = false
 
 ## Size of the visual water plane, in voxels. Larger than the streaming radius so
 ## the sea reaches the horizon in every direction; the camera's far plane clips
@@ -47,7 +45,7 @@ var _terrain: VoxelTerrain
 var _viewer: VoxelViewer
 var _surface: GeographicSurface
 var _sea_plane: MeshInstance3D
-var _generator: TerrainBlockGenerator
+var _generator: VoxelGeneratorScript
 var _library: VoxelBlockyLibrary
 var _build_count := 0
 ## Duration of the last [method rebuild] call, in milliseconds (main thread).
@@ -74,7 +72,7 @@ func get_surface() -> GeographicSurface:
 	return _surface
 
 
-func get_generator() -> TerrainBlockGenerator:
+func get_generator() -> VoxelGeneratorScript:
 	return _generator
 
 
@@ -142,15 +140,28 @@ func rebuild() -> void:
 		push_error("VoxelWorld.rebuild(): generation pipeline failed to build.")
 		return
 
-	_generator = TerrainBlockGenerator.new()
-	_generator.configure(_surface, palette_snapshot)
-
-	# Voxel Tools stack: block library -> mesher -> terrain node.
-	_library = BlockyLibraryBuilder.build_library(palette_snapshot)
-	var mesher := BlockyLibraryBuilder.build_mesher(_library)
-	var material := BlockyLibraryBuilder.build_material()
-
-	_terrain = VoxelTerrainBuilder.create_terrain(_generator, mesher, material, cfg.view_distance_voxels)
+	var mesher: VoxelMesher
+	var material: StandardMaterial3D
+	if smooth_terrain:
+		var adapter := TerrainSmoothGenerator.new()
+		adapter.configure(_surface)
+		_generator = adapter
+		var smooth := VoxelMesherTransvoxel.new()
+		smooth.transitions_enabled = false
+		smooth.edge_clamp_margin = 0.0
+		mesher = smooth
+		material = StandardMaterial3D.new()
+		material.albedo_color = palette_snapshot.grass_color
+		material.roughness = 0.95
+	else:
+		var adapter := TerrainBlockGenerator.new()
+		adapter.configure(_surface, palette_snapshot)
+		_generator = adapter
+		_library = BlockyLibraryBuilder.build_library(palette_snapshot)
+		mesher = BlockyLibraryBuilder.build_mesher(_library)
+		material = BlockyLibraryBuilder.build_material()
+	_terrain = VoxelTerrainBuilder.create_terrain(_generator, mesher, material,
+		maxi(cfg.view_distance_voxels, cfg.vertical_view_distance_voxels))
 	add_child(_terrain)
 
 	configure_viewers(cfg.view_distance_voxels)
@@ -177,7 +188,7 @@ func configure_viewers(view_distance_voxels: int) -> void:
 		if viewer == null:
 			continue
 		viewer.view_distance = view_distance_voxels
-		viewer.view_distance_vertical_ratio = viewer_vertical_ratio
+		viewer.view_distance_vertical_ratio = float(config.vertical_view_distance_voxels) / float(maxi(1, view_distance_voxels))
 		# No collision meshes are generated in M0.1, so do not ask for them.
 		viewer.requires_collisions = false
 		viewer.requires_visuals = true

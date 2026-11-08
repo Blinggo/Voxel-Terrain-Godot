@@ -47,6 +47,9 @@ run_suite() {
 	if grep -q "RESULT: SKIP" "${log}"; then
 		SKIPPED=$((SKIPPED + 1))
 	fi
+	if grep -qE "SCRIPT ERROR|Parse Error" "${log}"; then
+		status=1
+	fi
 	rm -f "${log}"
 	if [[ ${status} -ne 0 ]]; then
 		echo "suite '${suite}' FAILED (exit ${status})"
@@ -60,6 +63,7 @@ echo "test mode: ${MODE}"
 run_suite core
 run_suite generation
 run_suite m2
+run_suite m3
 run_suite voxel
 run_suite reliability
 run_suite perf

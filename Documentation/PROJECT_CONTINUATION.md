@@ -344,3 +344,13 @@ executed checks) and §13 (performance, including the honest per-node regression
 Deliberately deferred, and why: LOD (`VoxelLodTerrain`) competes with a streaming
 budget that has not yet been measured on a device; world saving and collision
 meshing both cost time and solve no current problem.
+
+## Active milestone: M3 implementation checkpoint
+See `Milestones/M03_VERTICAL_WORLD_FLYCAM_DUAL_MESHING.md` and
+`Architecture/M3_CAMERA_STREAMING_ADAPTERS.md`. Working smooth inherited scene,
+exclusive orbit/fly input with touch pads, independent vertical radius and unclamped
+height geography are in place. Full Linux suite: 303 checks, exit 0, no SCRIPT ERROR.
+Do NOT mark M3 fully accepted yet: shutdown resource/get_global_transform diagnostics,
+smooth memory cost, long-flight validation, complete visual landmark comparison and
+Android Editor touch lifecycle/performance remain. Evidence and reproducible measurement
+script are included. No APK, artifacts/ or .android/ generated.

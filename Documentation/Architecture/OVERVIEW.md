@@ -1,5 +1,8 @@
 # Architecture Overview
 
+> Current addition: [M4 hydrology architecture](HYDROLOGY.md). The historical
+> camera/mesher overview below is supplemented by M3 and M4 sections.
+
 ## Principle
 
 One direction of dependency, no cycles:
@@ -185,3 +188,18 @@ Independent horizontal/vertical streaming replaces the fixed 0.5 ratio; composit
 has no fixed altitude clamp. One camera/viewer switches between orbit and flight.
 See [M3 camera, streaming and adapter guide](M3_CAMERA_STREAMING_ADAPTERS.md) for
 controls, density semantics, launch instructions and remaining validation limits.
+
+
+## M4 hydrology and ownership update
+
+The existing registry includes `hydrology` (v1, dependency `surface`, scalar
+`runoff_potential`). Its bounded network reads the same engine's uncarved columns;
+GeographicSurface applies the spatial shape stage afterwards and exposes shared
+river/lake/ocean queries. Both voxel adapters remain unchanged. A separate shared
+water view builds diagnostic meshes; it does not route or invent rivers.
+
+Module-to-registry links are now weak, fixing the ownership cycle that caused M3
+shutdown leaks. Drainage-to-engine links are weak as well. Native terrain teardown
+frees the node while still attached, fixing transform lookups outside the tree.
+See HYDROLOGY.md for all cache bounds, threading rules and incomplete outlet/terrace
+work; do not infer a full hydrological simulation from the rendered water.

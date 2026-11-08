@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+M4_PERF hydrology=false cold64_ms=13.743
+M4_PERF hydrology=false smooth=false warm_us_per_block=221.109375
+M4_PERF hydrology=false smooth=true warm_us_per_block=668.635416666667
+M4_PERF hydrology=false water_query_us=13.989 static_delta_MB=0.11616897583008
+M4_PERF hydrology=true cold64_ms=721.456
+M4_PERF hydrology=true smooth=false warm_us_per_block=105.614583333333
+M4_PERF hydrology=true smooth=true warm_us_per_block=408.6875
+M4_PERF hydrology=true water_query_us=25.923 static_delta_MB=0.79395294189453
+M4_TRAVEL phase=0 static_MB=33.984691619873 stats={ "tiles": 32, "routes": 438, "nodes": 3098, "lakes": 151, "builds": 152, "hits": 1062, "build_usec": 6969809, "rejected_routes": 202 }
+M4_TRAVEL phase=1 static_MB=37.8077964782715 stats={ "tiles": 32, "routes": 650, "nodes": 5959, "lakes": 296, "builds": 302, "hits": 1062, "build_usec": 13445914, "rejected_routes": 400 }
+M4_TRAVEL phase=2 static_MB=34.0047798156738 stats={ "tiles": 32, "routes": 862, "nodes": 608, "lakes": 440, "builds": 452, "hits": 1062, "build_usec": 20003253, "rejected_routes": 598 }

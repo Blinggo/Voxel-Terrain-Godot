@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+
+M4_RENDER smooth=false hydrology=false ready=true ready_ms=5475 mean_frame_ms=406.3906 static_MB=105.948652267456
+M4_RENDER smooth=false hydrology=true ready=true ready_ms=8519 mean_frame_ms=393.3592 static_MB=108.364507675171
+M4_RENDER smooth=true hydrology=false ready=true ready_ms=5741 mean_frame_ms=412.34435 static_MB=274.88952255249
+M4_RENDER smooth=true hydrology=true ready=true ready_ms=9288 mean_frame_ms=410.6513 static_MB=276.965171813965

@@ -79,3 +79,14 @@ No APK or release package generated. Default main scene unchanged. Removed artif
 
 ## 14. Next work
 Finish M3 validation first: investigate teardown warnings and smooth memory, perform a complete matched blocky/smooth landmark tour, add explicit mesh-normal and long-travel checks, validate Android touch cancellation and performance. Only then choose M4; do not start rivers/biomes/volumetric generation as part of M3.
+
+
+## M4 validation follow-up (historical findings above retained)
+The M4 full Linux regression run executes 333 checks with no former ObjectDB/resource
+leak warnings or out-of-tree transform warnings. A registry/module reference cycle
+was fixed with a weak back-reference; native terrain is now freed while attached.
+A real Transvoxel plane test confirms upward outward normals for negative-inside SDF.
+Pause/focus input reset paths are implemented and tested, but Android lifecycle and
+multi-hour rendered streaming remain unverified. The owner reports working scenes at
+approximately 50 FPS blocky / 48 FPS smooth; these are observations, not controlled
+benchmarks. See the M4 report for evidence and remaining limits.

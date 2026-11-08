@@ -23,6 +23,15 @@ extends RefCounted
 var _stack: TerrainGenerationStack
 var _config: WorldConfig
 
+## Measured M4 hotspot: identical carved columns regenerated for every vertical
+## block (~1.7 ms/16² on Linux). Cache only the standard 16² footprint, at most
+## 512 * 256 float32 values (~512 KiB payload). No larger arbitrary rectangles.
+const HYDRO_COLUMNS_CAPACITY := 512
+var _hydro_columns: Dictionary = {}
+var _hydro_columns_mutex := Mutex.new()
+var _hydro_columns_hits := 0
+var _hydro_columns_enabled := true
+
 
 func _init(world_config: WorldConfig) -> void:
 	_config = world_config.duplicate_config() if world_config != null else WorldConfig.new()
@@ -41,7 +50,7 @@ func is_valid() -> bool:
 func get_surface_height(x: int, z: int) -> float:
 	if not is_valid():
 		return _config.base_height
-	return _stack.engine.sample_height(x, z)
+	return sample_block_heights(Vector2i(x,z), Vector2i.ONE)[0]
 
 
 ## Convenience wrapper for callers holding a 2D vector (x, z).
@@ -60,7 +69,24 @@ func sample_block_heights(origin: Vector2i, size: Vector2i) -> PackedFloat32Arra
 		fallback.resize(size.x * size.y)
 		fallback.fill(_config.base_height)
 		return fallback
-	return _stack.engine.sample_columns(origin, size)
+	var cacheable := _config.hydrology_enabled and _hydro_columns_enabled and size == Vector2i(16,16)
+	if cacheable:
+		_hydro_columns_mutex.lock()
+		if _hydro_columns.has(origin):
+			var cached: PackedFloat32Array = _hydro_columns[origin]
+			_hydro_columns_hits += 1
+			_hydro_columns_mutex.unlock()
+			return cached
+		_hydro_columns_mutex.unlock()
+	var heights := _stack.engine.sample_columns(origin, size)
+	_stack.hydrology.shape_columns(heights, origin, size)
+	if cacheable:
+		_hydro_columns_mutex.lock()
+		if _hydro_columns.size() >= HYDRO_COLUMNS_CAPACITY:
+			_hydro_columns.erase(_hydro_columns.keys()[0])
+		_hydro_columns[origin] = heights
+		_hydro_columns_mutex.unlock()
+	return heights
 
 
 # --- Fields ------------------------------------------------------------------
@@ -147,11 +173,62 @@ func get_module_ids() -> PackedStringArray:
 func get_cache_stats() -> Dictionary:
 	if not is_valid():
 		return {}
-	return _stack.engine.get_cache_stats()
+	var stats := _stack.engine.get_cache_stats()
+	_hydro_columns_mutex.lock()
+	stats["hydrology_column_entries"] = _hydro_columns.size()
+	stats["hydrology_column_hits"] = _hydro_columns_hits
+	_hydro_columns_mutex.unlock()
+	return stats
 
 
 ## Turns node caching off or on. Same terrain either way; used by tests to prove
 ## the cache cannot influence results.
 func set_cache_enabled(enabled: bool) -> void:
+	_hydro_columns_mutex.lock()
+	_hydro_columns_enabled = enabled
+	if not enabled:
+		_hydro_columns.clear()
+	_hydro_columns_mutex.unlock()
 	if is_valid():
 		_stack.engine.set_cache_enabled(enabled)
+
+
+## Renderer-independent water classification. Heights are world-space voxels.
+func get_water_at(x: int, z: int) -> Dictionary:
+	var p := Vector2i(x,z)
+	var original := _stack.engine.sample_height(x,z)
+	var network := get_drainage()
+	var v := Vector4(original, -INF, 0, 0)
+	var tile: Dictionary = {}
+	if network != null:
+		tile = network.tile_at(p)
+		v = network.sample(Vector2(p), original, tile)
+	elif original < _config.sea_level:
+		v = Vector4(original, _config.sea_level, 0, 1)
+	var identity := ""
+	if int(v.w) == 1:
+		identity = "ocean"
+	elif int(v.w) == 3:
+		for lake in tile.lakes:
+			if lake.cells.has(Vector2i(roundi(float(x)/8.0), roundi(float(z)/8.0))) and is_equal_approx(float(lake.level), v.y):
+				identity = lake.id
+				break
+	elif int(v.w) == 2:
+		for edge in tile.segments:
+			var a: Vector2 = edge.a
+			var ab: Vector2 = edge.b - a
+			var t := clampf((Vector2(p)-a).dot(ab)/ab.length_squared(),0.0,1.0)
+			if Vector2(p).distance_to(a+t*ab) < lerpf(float(edge.wa),float(edge.wb),t) and absf(lerpf(float(edge.ya),float(edge.yb),t)-v.y) < 0.0001:
+				identity = edge.reach_id
+				break
+	return {"kind": ["dry", "ocean", "river", "lake"][int(v.w)], "water_height": v.y, "ground_height": v.x, "river_width": v.z * 2.0, "body_id": identity}
+
+func get_drainage() -> DrainageNetwork:
+	return _stack.hydrology.network
+
+func get_unmodified_height(x: int, z: int) -> float:
+	return _stack.engine.sample_height(x,z)
+
+
+func sample_unmodified_heights(origin: Vector2i, size: Vector2i) -> PackedFloat32Array:
+	return _stack.engine.sample_columns(origin, size)

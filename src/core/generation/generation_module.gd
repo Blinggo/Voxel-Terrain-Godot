@@ -46,7 +46,7 @@ var output_field: StringName
 var contributes_columns := false
 
 var _context: GenerationContext
-var _registry: GenerationRegistry
+var _registry: WeakRef
 ## Field slot of this module's output, assigned by the registry.
 var _output_index := -1
 
@@ -66,7 +66,7 @@ func _init(
 ## Set by the engine before [method configure], so a module can resolve the field
 ## slots of the modules it declared as dependencies.
 func bind(registry_ref: GenerationRegistry) -> void:
-	_registry = registry_ref
+	_registry = weakref(registry_ref)
 
 
 ## Field slot of a dependency, for modules that need to read one.
@@ -80,7 +80,10 @@ func dependency_index(module_id: StringName) -> int:
 				% [id, module_id]
 		)
 		return -1
-	var index := _registry.get_module_output_index(module_id)
+	var registry: GenerationRegistry = _registry.get_ref()
+	if registry == null:
+		return -1
+	var index := registry.get_module_output_index(module_id)
 	if index < 0:
 		push_error(
 				"GenerationModule '%s' reads undeclared or unknown dependency '%s'."

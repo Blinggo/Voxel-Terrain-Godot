@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BEST_LAKE seed=1337 center=(928.0, -864.0) count=51 level=34.8478553771973
+BEST_LAKE seed=1337 center=(256.0, -544.0) count=121 level=31.6610401153564
+SEED_SURVEY 1337 lakes=9 { "tiles": 32, "routes": 841, "nodes": 1208, "lakes": 55, "builds": 289, "hits": 0, "build_usec": 2790950, "rejected_routes": 74 }
+BEST_LAKE seed=90210 center=(704.0, -288.0) count=138 level=39.4107292175293
+BEST_LAKE seed=90210 center=(608.0, 1056.0) count=181 level=40.9718902587891
+BEST_LAKE seed=90210 center=(32.0, 1216.0) count=250 level=34.8746574401855
+SEED_SURVEY 90210 lakes=22 { "tiles": 32, "routes": 841, "nodes": 1161, "lakes": 64, "builds": 289, "hits": 0, "build_usec": 2887530, "rejected_routes": 62 }
+SEED_SURVEY 4242 lakes=10 { "tiles": 32, "routes": 841, "nodes": 1227, "lakes": 59, "builds": 289, "hits": 0, "build_usec": 2893648, "rejected_routes": 73 }

@@ -1,8 +1,9 @@
 # Project Continuation
 
-Last updated: 2026-11-07
-Milestone: **M2 complete pending review** (M0.1, M0.2 and M1 reviewed and accepted).
-The full M2 record is `Milestones/M02_ADVANCED_GEOGRAPHICAL_FORMATIONS.md`.
+Active milestone: **M4 implementation checkpoint — not fully complete**.
+Current authoritative report: `Milestones/M04_HYDROLOGY_AND_NATURAL_LANDFORMS.md`.
+The older M2/M3 state sections below are retained as historical context; the M4
+handoff at the end supersedes them where changed.
 
 Read this first, then `Documentation/Architecture/OVERVIEW.md`.
 
@@ -354,3 +355,18 @@ Do NOT mark M3 fully accepted yet: shutdown resource/get_global_transform diagno
 smooth memory cost, long-flight validation, complete visual landmark comparison and
 Android Editor touch lifecycle/performance remain. Evidence and reproducible measurement
 script are included. No APK, artifacts/ or .android/ generated.
+
+
+## Active handoff — M4 hydrology
+
+- Shared `hydrology` v1 module + DrainageNetwork reads the existing pre-carve engine; GeographicSurface applies shaping and exposes water queries to both scenes. No second terrain architecture.
+- Complete bounded D8 source routes; reject unsupported/over-budget sources entirely. Fixed-support halo reconstruction, source-count accumulation, curved variable-width channels, floodplain envelopes, enclosed basin lakes below minimax spill level, waterfall candidates.
+- Water meshes are shared diagnostic geometry, asynchronously built and conservatively clipped to streaming range. `Lake demo (seed 1337)` frames the matched screenshot location on Android without a keyboard.
+- Final full Linux run: **333 checks, exit 0**, no SCRIPT ERROR, shutdown leaks or out-of-tree transform warnings. Logs: `Milestones/m4-evidence/`.
+- Definite M3 fixes: registry/module cycle removed via weak back-reference; terrain freed while attached. Smooth native normals tested. Pause/focus reset implemented/tested at code-path level, not on Android hardware.
+- User reports M3 approximately 50 FPS blocky / 48 FPS smooth. No M4 device measurements. Cold hydrology remains costly (721 ms first 64 column blocks in one measured lake region); warm repetition benefits from a measured, bounded 512-entry 16² final-column cache.
+- **DO NOT mark M4 complete yet:** routed lake outlets/overflowing chains and dedicated river terraces are absent. Lake shore raster is coarse (8 voxels); sub-grid enclosure, cold latency and device streaming need refinement.
+- Next work: spill/outlet canonical graph, then terraces/high-resolution shores and Android validation; do not start foliage/biomes/erosion.
+- Research: `Research/M04_VINTAGE_STORY_TERRAIN.md`; detailed architecture: `Architecture/HYDROLOGY.md`; decision: ADR-0018.
+- `tests/benchmark.gd` historical denominator corrected (previous count 250 vs actual 50). Do not reuse old headline microseconds as comparable baselines.
+- No APK, release package, artifacts/ or .android/ created.

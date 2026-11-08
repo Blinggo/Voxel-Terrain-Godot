@@ -95,6 +95,9 @@ static func run(report) -> void:
 static func _make_config(world_seed: int = 1337) -> WorldConfig:
 	var config := WorldConfig.new()
 	config.world_seed = world_seed
+	# Isolate M2 parameter contracts: rerouting water after changing a valley is
+	# not a monotonic height operation. M4-enabled integration has its own suite.
+	config.hydrology_enabled = false
 	return config
 
 
@@ -335,7 +338,7 @@ static func _test_module_ids_and_dependencies(report) -> void:
 	var expected := [
 		"detail", "continentalness", "tectonics", "archipelago", "coast_detail",
 		"landmass", "elevation", "mountainness", "hills", "plateaus", "valleys",
-		"surface",
+		"surface", "hydrology",
 	]
 	report.check_equal("the pipeline executes the M1 and M2 modules in dependency order",
 			Array(ids), expected)

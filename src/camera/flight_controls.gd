@@ -5,6 +5,7 @@ extends Control
 var camera: OrbitCamera
 var _fingers: Dictionary = {}
 var _mode: Button
+var _last_fly_mode := false
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -69,4 +70,19 @@ func _input(event: InputEvent) -> void:
 			4: camera.touch_boost = true
 
 func _process(_delta: float) -> void:
+	if camera != null and camera.fly_mode != _last_fly_mode:
+		clear_input()
+		_last_fly_mode = camera.fly_mode
 	queue_redraw()
+
+
+func clear_input() -> void:
+	_fingers.clear()
+	if is_instance_valid(camera):
+		camera.touch_move = Vector3.ZERO
+		camera.touch_boost = false
+		camera.fly_velocity = Vector3.ZERO
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
+		clear_input()

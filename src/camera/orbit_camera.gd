@@ -249,3 +249,15 @@ func _process(delta: float) -> void:
 			float(Input.is_physical_key_pressed(KEY_W)) - float(Input.is_physical_key_pressed(KEY_S)))
 		boost = boost or Input.is_physical_key_pressed(KEY_SHIFT)
 	advance_fly(delta, move, boost)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
+		_orbiting = false
+		_panning = false
+		_fly_looking = false
+		_touches.clear()
+		_pinch_reference = 0.0
+		fly_velocity = Vector3.ZERO
+		touch_move = Vector3.ZERO
+		touch_boost = false

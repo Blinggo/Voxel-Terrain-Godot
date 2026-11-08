@@ -1,0 +1,697 @@
+test mode: windowed (display: :99)
+
+##########################################################
+# suite: core
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: core
+==========================================================
+
+-- core generation ---------------------------------------
+  PASS  surface heights are finite
+  PASS  surface heights stay within the documented bounds
+  PASS  surface height is a pure function of its coordinates   (actual=20.5355262756348 expected=20.5355262756348)
+  PASS  the surface reports a valid module pipeline
+        execution order: detail, continentalness, tectonics, archipelago, coast_detail, landmass, elevation, mountainness, hills, plateaus, valleys, surface, hydrology
+  PASS  same seed produces identical heights from independent instances   (actual=0 expected=0)
+        compared 361 columns across two independent surfaces
+  PASS  different seeds produce different terrain   (100.0% of 361 columns differ)
+  PASS  surface stays within the composed height bounds   (range 6.05..57.88)
+  PASS  the surface actually has relief   (range 6.05..57.88)
+  PASS  voxel above the surface is air   (actual=0 expected=0)
+  PASS  voxel at the surface is grass   (actual=1 expected=1)
+  PASS  voxel one below the surface is dirt   (actual=2 expected=2)
+  PASS  voxel at soil depth is dirt   (actual=2 expected=2)
+  PASS  voxel below soil depth is stone   (actual=3 expected=3)
+  PASS  block content is independent of generation order
+  PASS  column surfaces reconstructed from block data match the analytic height field   (actual=0 expected=0)
+        checked 42 columns across the x=32 block boundary
+  PASS  columns spanning a vertical block boundary are continuous   (actual=0 expected=0)
+        checked 49 columns across the y=32 block boundary
+  PASS  concurrent height sampling matches serial results on 4 threads   (actual=0 expected=0)
+
+----------------------------------------------------------
+RESULT: PASS  (17 checks)
+----------------------------------------------------------
+
+##########################################################
+# suite: generation
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: generation
+==========================================================
+
+-- terrain generation pipeline ---------------------------
+  PASS  coordinate hash is a pure function of its inputs   (actual=0 expected=0)
+  PASS  changing the world seed changes every stream   (500 of 500 samples differ)
+  PASS  different module ids produce independent streams   (500 of 500 samples differ)
+  PASS  adjacent x coordinates hash differently   (500 of 500 samples differ)
+  PASS  adjacent z coordinates hash differently   (500 of 500 samples differ)
+  PASS  changing the generation version reshuffles the stream   (500 of 500 samples differ)
+  PASS  hashed unit values stay in [0, 1)   (actual=0 expected=0)
+  PASS  hash of extreme coordinates stays a positive 32-bit value   (actual=0 expected=0)
+  PASS  module seeds are stable across instances   (actual=2690260653 expected=2690260653)
+  PASS  every module gets a distinct noise seed   (actual=0 expected=0 ids=detail, continentalness, tectonics, archipelago, coast_detail, landmass, elevation, mountainness, hills, plateaus, valleys, surface)
+  PASS  bumping one module's version changes its seed
+  PASS  bumping one module's version leaves other modules alone
+  PASS  same seed produces identical heights from independent pipelines   (actual=0 expected=0 576 columns)
+  PASS  same seed produces identical module fields   (actual=0 expected=0)
+  PASS  different seeds produce different terrain   (99.8% of 400 columns differ)
+  PASS  bumping the generation version changes the world   (99.6% of 256 columns differ)
+  PASS  negative coordinates are deterministic   (actual=0 expected=0 256 columns)
+  PASS  negative coordinates stay within the height bounds   (actual=0 expected=0)
+  PASS  the surface is well defined across the origin   (actual=0 expected=0)
+  PASS  large coordinates are deterministic   (actual=0 expected=0 160 columns)
+  PASS  large coordinates stay inside the configuration-derived envelope   (actual=0 expected=0)
+        far from the origin, 14 of 40 adjacent columns still differ (height stays valid)
+  PASS  heights do not depend on how the area is split into blocks   (actual=0 expected=0)
+  PASS  single-column queries agree with block heights   (actual=0 expected=0)
+  PASS  disabling the node cache does not change a single height   (actual=0 expected=0)
+  PASS  concurrent sampling matches serial results on 4 threads   (actual=0 expected=0 shared node cache included)
+  PASS  continentalness stays within [-1, 1]   (actual=0 expected=0)
+  PASS  elevation stays within [-1, 1]   (actual=0 expected=0)
+  PASS  mountainness stays within [0, 1]   (actual=0 expected=0)
+  PASS  hills stay within [0, 1]   (actual=0 expected=0)
+  PASS  ocean covers a meaningful part of the sampled area   (484 of 1024)
+  PASS  land covers a meaningful part of the sampled area   (540 of 1024)
+  PASS  surface height stays within the documented bounds for every seed   (actual=0 expected=0 1280 columns over 5 seeds)
+  PASS  mountains form continuous ranges rather than isolated spikes   (435 mountain cells, 0.0% isolated)
+  PASS  plains, hills and mountains all appear in the sampled area   (plains=1380 hills=327 mountains=1688)
+  PASS  hills are visibly rougher than plains at close range   (plains 0.376, hills 0.529 (ratio 1.41))
+  PASS  hills sit above plains   (plains mean 39.7, hills mean 44.5)
+  PASS  mountains rise well above hills   (hills mean 44.5, mountains mean 56.7)
+  PASS  the waterline is a gentle apron, not a step   (mean 0.243 voxels per column (n=796))
+  PASS  the shoreline is gentler than the terrain inland   (near sea 0.243, elsewhere 0.375)
+  PASS  no column-to-column cliff exists anywhere in the terrain   (steepest step 3.50 voxels (limit 8.0))
+  PASS  some terrain is below sea level   (488 of 1024 columns)
+  PASS  some terrain is above sea level   (536 of 1024 columns)
+  PASS  every M1 module is still registered   (registered order: detail, continentalness, tectonics, archipelago, coast_detail, landmass, elevation, mountainness, hills, plateaus, valleys, surface, hydrology)
+  PASS  every module runs after the modules it depends on   (actual=0 expected=0)
+  PASS  the first registration succeeds
+ERROR: GenerationRegistry.register(): duplicate module id 'dummy'.
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] register (res://src/core/generation/generation_registry.gd:32)
+       [1] _test_registry_rejects_duplicates (res://tests/suites/generation_suite.gd:707)
+       [2] run (res://tests/suites/generation_suite.gd:60)
+       [3] _ready (res://tests/test_runner.gd:67)
+  PASS  a duplicate module id is rejected
+ERROR: GenerationRegistry.register(): duplicate output field 'dummy_field' (module 'other').
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] register (res://src/core/generation/generation_registry.gd:35)
+       [1] _test_registry_rejects_duplicates (res://tests/suites/generation_suite.gd:710)
+       [2] run (res://tests/suites/generation_suite.gd:60)
+       [3] _ready (res://tests/test_runner.gd:67)
+  PASS  a duplicate output field is rejected
+ERROR: GenerationRegistry.resolve(): module 'needs_ghost' depends on unknown module(s).
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] resolve (res://src/core/generation/generation_registry.gd:90)
+       [1] _test_registry_rejects_unknown_dependency (res://tests/suites/generation_suite.gd:717)
+       [2] run (res://tests/suites/generation_suite.gd:61)
+       [3] _ready (res://tests/test_runner.gd:67)
+  PASS  a dependency on an unregistered module fails resolution
+ERROR: GenerationRegistry.resolve(): dependency cycle or unknown dependency among alpha, beta.
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] resolve (res://src/core/generation/generation_registry.gd:95)
+       [1] _test_registry_rejects_cycles (res://tests/suites/generation_suite.gd:724)
+       [2] run (res://tests/suites/generation_suite.gd:62)
+       [3] _ready (res://tests/test_runner.gd:67)
+  PASS  a dependency cycle fails resolution
+  PASS  a module can be evaluated in isolation   (actual=0 expected=0)
+  PASS  a module evaluated twice at the same node is stable   (actual=0 expected=0)
+  PASS  editing the configuration after build does not change the terrain   (actual=0 expected=0)
+  PASS  the surface reports the configuration it was built with   (actual=20.0 expected=20.0)
+  PASS  an additional module can be registered and resolved
+  PASS  adding a module leaves existing module values untouched   (actual=0 expected=0)
+  PASS  Voxel Tools receives the surface the pipeline reports   (64 columns across 4 blocks, 0 mismatched)
+  PASS  the composed surface has real relief across a streamed region   (range 2.7..62.2 (59.5 voxels))
+
+----------------------------------------------------------
+RESULT: PASS  (57 checks)
+----------------------------------------------------------
+
+##########################################################
+# suite: m2
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: m2
+==========================================================
+
+-- M2 geographical formations ----------------------------
+  PASS  M2 fields are identical between two builds of the same seed   (1008 field samples)
+  PASS  every M2 field takes a different shape under a different seed   (smallest differing fraction 0.95; tectonics 0.96/399 archipelago 0.99/103 coast_detail 0.99/134 landmass 0.99/398 mountainness 0.96/369 valleys 0.97/310 plateaus 0.95/86 )
+  PASS  sampling order does not change any M2 value   (actual=0 expected=0)
+  PASS  repeated sampling of the same column is stable   (actual=0 expected=0)
+  PASS  the node cache cannot change M2 terrain   (144 columns)
+  PASS  bumping the generation version reshuffles the tectonic layout   (91 of 100 samples differ)
+  PASS  the pipeline executes the M1 and M2 modules in dependency order   (actual=["detail", "continentalness", "tectonics", "archipelago", "coast_detail", "landmass", "elevation", "mountainness", "hills", "plateaus", "valleys", "surface", "hydrology"] expected=["detail", "continentalness", "tectonics", "archipelago", "coast_detail", "landmass", "elevation", "mountainness", "hills", "plateaus", "valleys", "surface", "hydrology"])
+  PASS  every M2 module is registered exactly once   (actual=0 expected=0)
+  PASS  the module graph resolves
+  PASS  the tectonic field has no discontinuity   (largest adjacent step 0.1809 at (1745, -2077) (limit 0.25))
+  PASS  every M2 field is continuous at voxel resolution   (tectonics=0.112 archipelago=0.143 coast_detail=0.048 landmass=0.080 mountainness=0.176 valleys=0.334 plateaus=0.256 )
+  PASS  crossing a plate cell border does not produce a seam   (largest step 0.1719 at (540, 0) (limit 0.25))
+  PASS  no new formation introduces a surface cliff   (largest step 3.03 voxels at (-51, -160) (limit 8.0))
+  PASS  block borders are continuous   (largest step across a block border 2.84 voxels)
+  PASS  a column sampled in isolation matches the same column inside a block   (4 scattered coordinates)
+  PASS  mountain terrain stands above the land around it   (mountains 56.9 vs lowland 36.6 (239 / 282 columns))
+  PASS  mountains stand well above hills   (mountains 56.9 vs hills 42.3 (63 hill columns))
+  PASS  mountain regions form connected systems   (693 mountain cells, largest component 26% of them)
+  PASS  mountain country is not a scatter of isolated peaks   (12 components of at least 12 cells)
+  PASS  different parts of the world reach different heights   (tile peaks span 45.1 voxels (26.1 .. 71.1))
+  PASS  convergent boundaries carry more mountain mass than plate interiors   (uplifted 0.526 (283) vs quiet 0.222 (163))
+  PASS  rift boundaries sit lower than plate interiors   (rift 33.6 vs interior 36.2 (104 / 443 columns))
+  PASS  valley floors are lower than the land beside them   (valleys 41.4 vs uplands 47.4 (271 / 357 columns))
+  PASS  valleys join into connected networks   (1363 valley cells in 82 components, largest 31%)
+  PASS  enclosed depressions occur on land   (188 enclosed low points in 1614 land columns)
+  PASS  plateau interiors are flatter than ordinary land   (interior relief 1.52 vs open land 6.04 voxels per 16 (18 / 998 columns))
+  PASS  plateau margins hold at distinct shelves   (190 of 283 margin columns sit on a shelf level (3 steps))
+  PASS  the terrace is monotonic
+  PASS  the terrace never jumps   (largest step 0.0023 (a jump would be 0.333 or more))
+  PASS  the terrace reproduces shelf boundaries exactly   (largest error 0.000000)
+  PASS  the terrace produces flat shelves between risers   (68% of the range is flat)
+  PASS  terrace with one step is the identity   (actual=0.37 expected=0.37)
+  PASS  the archipelago field creates islands   (520 island cells over a 1500-voxel square)
+  PASS  islands group into archipelagos rather than scattering   (175 island groups, largest 7% of island cells)
+  PASS  islands carry real relief   (tallest island column 55.6 voxels (sea level 20.0))
+  PASS  the shoreline is a beach rather than a wall   (worst waterline slope 0.72 voxels per column over 339 transects (limit 2.0))
+  PASS  the mean waterline slope matches the M1 coastal behaviour   (mean 0.18 voxels per column over 233 crossings)
+  PASS  the shelf band exists between land and deep water   (5710 shelf samples across the transects)
+  PASS  islands and coastline detail leave the continental layout intact   (correlation of landmass with continentalness 0.9623 over 2304 samples)
+  PASS  only coastline columns change side of the waterline   (7.8% of columns changed side)
+  PASS  deep ocean columns are below sea level   (389 deep columns, 0 wrong)
+  PASS  inland columns are above sea level   (667 inland columns, 0 wrong)
+  PASS  every seed has both ocean and land in a plausible proportion   (seed 1337: 56% seed 90210: 66% seed 4242: 46% )
+  PASS  the landmass module can be resolved on its own
+  PASS  landmass is continentalness plus islands plus coast detail   (0.5470 vs 0.5470)
+  PASS  landmass stays within [-1, 1]   (1.000)
+  PASS  the mountain module can be resolved on its own
+  PASS  mountains are zero under the ocean   (0.000)
+  PASS  uplift builds higher terrain than a rift at the same coordinate   (uplift 0.461 vs rift 0.048)
+  PASS  the valley module can be resolved on its own
+  PASS  valleys are not carved into the seafloor   (0.000)
+  PASS  the plateau module can be resolved on its own
+  PASS  plateaus do not form under the ocean   (0.000)
+  PASS  plateaus do form inland   (highest mask 1.000)
+  PASS  island strength can be switched off   (110 columns changed when island strength was zeroed)
+  PASS  with island strength off, landmass is continentalness plus coast detail
+  PASS  valley depth controls carving and never raises terrain   (267 columns higher without carving, 0 lower)
+  PASS  mountain scale controls the height of ranges   (peak 71.1 with ranges vs 57.2 without)
+  PASS  the block height array matches the surface in mountain terrain   (block at (-32, -192), peak height 68.7)
+  PASS  that block really is mountain terrain   (68.7 voxels)
+        cold pass over a fresh region: 205.1 us per block
+  PASS  a 16^3 block of the M2 pipeline generates in a mobile-plausible time   (114.8 us per block (8713 blocks/s))
+  PASS  one node of the full field set costs less than a tenth of a millisecond   (22.4 us per node)
+  PASS  the node cache is doing work   (hits 1983, evaluations 818)
+        M2 performance: 114.8 us/block, 22.4 us/node, cache { "entries": 818, "hits": 1983, "evaluations": 818, "enabled": true, "hydrology_column_entries": 0, "hydrology_column_hits": 0 }
+
+----------------------------------------------------------
+RESULT: PASS  (63 checks)
+----------------------------------------------------------
+
+##########################################################
+# suite: m3
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: m3
+==========================================================
+  PASS  vertical streaming configuration does not change geography
+  PASS  real geographical stack produces heights above former ceiling   (peak 3016.55)
+  PASS  geography has no fixed floor at y=2
+  PASS  smooth density is negative below shared surface
+  PASS  smooth density is positive above shared surface
+  PASS  adapter samples same heights with continuous unit vertical increments
+  PASS  overlapping block density samples agree   (actual=0.62240982055664 expected=0.62240982055664)
+  PASS  switch to fly preserves transform: res://scenes/main.tscn
+  PASS  fly movement changes position: res://scenes/main.tscn
+  PASS  raw touch pad drives flight: res://scenes/main.tscn
+  PASS  fly touch does not enter orbit handler: res://scenes/main.tscn
+  PASS  touch release stops commanded movement: res://scenes/main.tscn
+  PASS  switch to orbit preserves transform: res://scenes/main.tscn
+  PASS  reconstructed orbit preserves view: res://scenes/main.tscn
+  PASS  independent vertical radius reaches viewer: res://scenes/main.tscn
+  PASS  scene uses shared geographical modules: res://scenes/main.tscn
+  PASS  scene selects intended mesher: res://scenes/main.tscn
+  PASS  scene actually streams and meshes: res://scenes/main.tscn   (0 ms)
+  PASS  switch to fly preserves transform: res://scenes/smooth_terrain.tscn
+  PASS  fly movement changes position: res://scenes/smooth_terrain.tscn
+  PASS  raw touch pad drives flight: res://scenes/smooth_terrain.tscn
+  PASS  fly touch does not enter orbit handler: res://scenes/smooth_terrain.tscn
+  PASS  touch release stops commanded movement: res://scenes/smooth_terrain.tscn
+  PASS  switch to orbit preserves transform: res://scenes/smooth_terrain.tscn
+  PASS  reconstructed orbit preserves view: res://scenes/smooth_terrain.tscn
+  PASS  independent vertical radius reaches viewer: res://scenes/smooth_terrain.tscn
+  PASS  scene uses shared geographical modules: res://scenes/smooth_terrain.tscn
+  PASS  scene selects intended mesher: res://scenes/smooth_terrain.tscn
+  PASS  scene actually streams and meshes: res://scenes/smooth_terrain.tscn   (0 ms)
+
+----------------------------------------------------------
+RESULT: PASS  (29 checks)
+----------------------------------------------------------
+
+##########################################################
+# suite: m4
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: m4
+==========================================================
+M4 cold survey 81 tiles ms=1412.464 stats={ "tiles": 32, "routes": 441, "nodes": 625, "lakes": 27, "builds": 81, "hits": 0, "build_usec": 1404526, "rejected_routes": 40 }
+  PASS  network reconstruction is identical in reverse tile order
+  PASS  different seeds give different active drainage layouts   (56 / 56 active tiles)
+  PASS  survey contains river reaches   (168 chord segments)
+  PASS  survey contains enclosed lakes   (4 basins)
+  PASS  all sampled river water profiles are nonascending
+  PASS  source accumulation is nondecreasing downstream
+  PASS  multiple source contributions merge into shared reaches
+  PASS  river networks include ocean terminals
+  PASS  river networks include basin-lake terminals
+  PASS  hydrology carves the actual geographical surface
+  PASS  waterfall candidates have real descending reach drops   (48 waterfall chords)
+M4 LAKE lake:8:-17 samples=121 level=31.6610401153564
+M4 LAKE lake:10:-9 samples=42 level=34.0346649169922
+M4 LAKE lake:14:-5 samples=105 level=29.5131156921387
+M4 LAKE lake:10:1 samples=29 level=37.6768882751465
+  PASS  lakes occupy lower terrain within validated flood components
+  PASS  queried lake levels are constant per body
+  PASS  adjacent hydrology indexes agree exactly on shared boundary
+  PASS  river width agrees across regional boundary
+  PASS  carved bulk columns equal independent arbitrary samples
+  PASS  disabled hydrology allocates no drainage service
+  PASS  hydrology off reproduces pre-carve height   (actual=31.2160778045654 expected=31.2160778045654)
+  PASS  accepted river sources are elevated, not uniform plain decoration
+  PASS  every accepted complete route reaches ocean or enclosed basin
+  PASS  all drainage caches obey explicit capacity limits
+  PASS  repeat water queries do not change results   (actual={ "kind": "river", "water_height": 34.0346641540527, "ground_height": 31.2160778045654, "river_width": 5.0, "body_id": "reach:10:-8" } expected={ "kind": "river", "water_height": 34.0346641540527, "ground_height": 31.2160778045654, "river_width": 5.0, "body_id": "reach:10:-8" })
+  PASS  generation registry is released with its owning surface
+  PASS  smooth adapter includes carved height in density
+  PASS  blocky adapter includes same carved height
+  PASS  M3 smooth negative-inside plane has outward upward normals
+  PASS  bounded final-column cache does not change carved geometry   (actual=[32.6236686706543, 32.3454055786133, 32.1047821044922, 31.8095207214355, 31.4223556518555, 30.9649276733398, 30.5070552825928, 30.114429473877, 29.8177070617676, 29.7911243438721, 29.6489639282227, 29.4412670135498, 29.245906829834, 29.0425682067871, 28.774787902832, 28.4110565185547, 32.2840156555176, 32.0122566223145, 31.7832374572754, 31.5117626190186, 31.1430969238281, 30.6959915161133, 30.2582626342773, 29.9050197601318, 29.6122913360596, 29.5527801513672, 29.3968486785889, 29.2095241546631, 29.0231151580811, 28.7954902648926, 28.5053577423096, 28.1651992797852, 32.066535949707, 31.7609233856201, 31.5040225982666, 31.2298164367676, 30.8762702941895, 30.4511737823486, 30.0362491607666, 29.6974086761475, 29.382152557373, 29.2799224853516, 29.1133422851562, 28.9386444091797, 28.7557125091553, 28.522611618042, 28.2403583526611, 27.9507102966309, 31.9015979766846, 31.5741672515869, 31.2745456695557, 30.9592685699463, 30.5876960754395, 30.1656093597412, 29.7542457580566, 29.4134216308594, 29.0816593170166, 28.9731407165527, 28.8298587799072, 28.6966094970703, 28.5358848571777, 28.3074626922607, 28.0451793670654, 27.8036212921143, 31.6819858551025, 31.358226776123, 31.0390434265137, 30.6910762786865, 30.288990020752, 29.8508358001709, 29.4464836120605, 29.1230812072754, 28.8030471801758, 28.7097187042236, 28.6069469451904, 28.5262870788574, 28.3922119140625, 28.1656875610352, 27.9138317108154, 27.689245223999, 31.4046478271484, 31.0872020721436, 30.7705821990967, 30.4170112609863, 30.0107116699219, 29.5866718292236, 29.2188205718994, 28.9129943847656, 28.5921249389648, 28.5148105621338, 28.4552707672119, 28.4030456542969, 28.2736930847168, 28.0509510040283, 27.8066539764404, 27.5788764953613, 31.1263484954834, 30.802074432373, 30.4795589447021, 30.1415271759033, 29.7712535858154, 29.3932991027832, 29.0490036010742, 28.7235107421875, 28.3755722045898, 28.3117179870605, 28.2906932830811, 28.2651462554932, 28.1433639526367, 27.935338973999, 27.7139167785645, 27.5097694396973, 30.8582515716553, 30.5199413299561, 30.1971416473389, 29.8776264190674, 29.5514259338379, 29.2117137908936, 28.8530349731445, 28.4800796508789, 28.1131248474121, 28.0724296569824, 28.0846977233887, 28.0878791809082, 27.9888572692871, 27.8035106658936, 27.6170177459717, 27.4649276733398, 30.5947074890137, 30.2366428375244, 29.9115886688232, 29.6017189025879, 29.2990188598633, 28.9729423522949, 28.5986976623535, 28.2158584594727, 27.8711624145508, 27.8806552886963, 27.917896270752, 27.9077262878418, 27.7914390563965, 27.6092853546143, 27.4463157653809, 27.3378372192383, 30.5923042297363, 30.2056617736816, 29.8651065826416, 29.5449848175049, 29.2237243652344, 28.8792152404785, 28.5186100006104, 28.1886768341064, 27.906867980957, 27.9542255401611, 27.9671211242676, 27.8785820007324, 27.6890411376953, 27.472827911377, 27.3004112243652, 27.1912803649902, 30.6014099121094, 30.2102355957031, 29.8444309234619, 29.474250793457, 29.0873279571533, 28.7105255126953, 28.4003448486328, 28.1741256713867, 27.976375579834, 28.0426387786865, 28.0062351226807, 27.8466949462891, 27.6104507446289, 27.3785972595215, 27.2035293579102, 27.0830669403076, 30.6147537231445, 30.2341156005859, 29.8205261230469, 29.3777523040771, 28.9279899597168, 28.5363578796387, 28.2751712799072, 28.122465133667, 27.9687747955322, 28.0314502716064, 27.962308883667, 27.7900638580322, 27.5712242126465, 27.3805160522461, 27.2402477264404, 27.114429473877, 30.5884170532227, 30.2200050354004, 29.7654247283936, 29.276309967041, 28.8133449554443, 28.4384136199951, 28.1983127593994, 28.0488357543945, 27.8877010345459, 27.924976348877, 27.8451805114746, 27.7036037445068, 27.5494556427002, 27.4269351959229, 27.3318176269531, 27.2194023132324, 30.5710468292236, 30.1886463165283, 29.7133979797363, 29.2138233184814, 28.7674198150635, 28.402250289917, 28.142692565918, 27.9682884216309, 27.7969493865967, 27.8109340667725, 27.7256679534912, 27.6140823364258, 27.5121002197266, 27.4382839202881, 27.3693599700928, 27.2848014831543, 30.6327285766602, 30.2292289733887, 29.7459373474121, 29.2378978729248, 28.7924556732178, 28.4178867340088, 28.1108226776123, 27.8936443328857, 27.7190723419189, 27.7490825653076, 27.6736164093018, 27.5726509094238, 27.4897365570068, 27.4363842010498, 27.3857498168945, 27.3293151855469, 30.7484817504883, 30.3518409729004, 29.8886661529541, 29.3878536224365, 28.9172229766846, 28.5050182342529, 28.1415576934814, 27.8676090240479, 27.6690044403076, 27.7178440093994, 27.6688976287842, 27.5894565582275, 27.543924331665, 27.521312713623, 27.4844341278076, 27.4286098480225] expected=[32.6236686706543, 32.3454055786133, 32.1047821044922, 31.8095207214355, 31.4223556518555, 30.9649276733398, 30.5070552825928, 30.114429473877, 29.8177070617676, 29.7911243438721, 29.6489639282227, 29.4412670135498, 29.245906829834, 29.0425682067871, 28.774787902832, 28.4110565185547, 32.2840156555176, 32.0122566223145, 31.7832374572754, 31.5117626190186, 31.1430969238281, 30.6959915161133, 30.2582626342773, 29.9050197601318, 29.6122913360596, 29.5527801513672, 29.3968486785889, 29.2095241546631, 29.0231151580811, 28.7954902648926, 28.5053577423096, 28.1651992797852, 32.066535949707, 31.7609233856201, 31.5040225982666, 31.2298164367676, 30.8762702941895, 30.4511737823486, 30.0362491607666, 29.6974086761475, 29.382152557373, 29.2799224853516, 29.1133422851562, 28.9386444091797, 28.7557125091553, 28.522611618042, 28.2403583526611, 27.9507102966309, 31.9015979766846, 31.5741672515869, 31.2745456695557, 30.9592685699463, 30.5876960754395, 30.1656093597412, 29.7542457580566, 29.4134216308594, 29.0816593170166, 28.9731407165527, 28.8298587799072, 28.6966094970703, 28.5358848571777, 28.3074626922607, 28.0451793670654, 27.8036212921143, 31.6819858551025, 31.358226776123, 31.0390434265137, 30.6910762786865, 30.288990020752, 29.8508358001709, 29.4464836120605, 29.1230812072754, 28.8030471801758, 28.7097187042236, 28.6069469451904, 28.5262870788574, 28.3922119140625, 28.1656875610352, 27.9138317108154, 27.689245223999, 31.4046478271484, 31.0872020721436, 30.7705821990967, 30.4170112609863, 30.0107116699219, 29.5866718292236, 29.2188205718994, 28.9129943847656, 28.5921249389648, 28.5148105621338, 28.4552707672119, 28.4030456542969, 28.2736930847168, 28.0509510040283, 27.8066539764404, 27.5788764953613, 31.1263484954834, 30.802074432373, 30.4795589447021, 30.1415271759033, 29.7712535858154, 29.3932991027832, 29.0490036010742, 28.7235107421875, 28.3755722045898, 28.3117179870605, 28.2906932830811, 28.2651462554932, 28.1433639526367, 27.935338973999, 27.7139167785645, 27.5097694396973, 30.8582515716553, 30.5199413299561, 30.1971416473389, 29.8776264190674, 29.5514259338379, 29.2117137908936, 28.8530349731445, 28.4800796508789, 28.1131248474121, 28.0724296569824, 28.0846977233887, 28.0878791809082, 27.9888572692871, 27.8035106658936, 27.6170177459717, 27.4649276733398, 30.5947074890137, 30.2366428375244, 29.9115886688232, 29.6017189025879, 29.2990188598633, 28.9729423522949, 28.5986976623535, 28.2158584594727, 27.8711624145508, 27.8806552886963, 27.917896270752, 27.9077262878418, 27.7914390563965, 27.6092853546143, 27.4463157653809, 27.3378372192383, 30.5923042297363, 30.2056617736816, 29.8651065826416, 29.5449848175049, 29.2237243652344, 28.8792152404785, 28.5186100006104, 28.1886768341064, 27.906867980957, 27.9542255401611, 27.9671211242676, 27.8785820007324, 27.6890411376953, 27.472827911377, 27.3004112243652, 27.1912803649902, 30.6014099121094, 30.2102355957031, 29.8444309234619, 29.474250793457, 29.0873279571533, 28.7105255126953, 28.4003448486328, 28.1741256713867, 27.976375579834, 28.0426387786865, 28.0062351226807, 27.8466949462891, 27.6104507446289, 27.3785972595215, 27.2035293579102, 27.0830669403076, 30.6147537231445, 30.2341156005859, 29.8205261230469, 29.3777523040771, 28.9279899597168, 28.5363578796387, 28.2751712799072, 28.122465133667, 27.9687747955322, 28.0314502716064, 27.962308883667, 27.7900638580322, 27.5712242126465, 27.3805160522461, 27.2402477264404, 27.114429473877, 30.5884170532227, 30.2200050354004, 29.7654247283936, 29.276309967041, 28.8133449554443, 28.4384136199951, 28.1983127593994, 28.0488357543945, 27.8877010345459, 27.924976348877, 27.8451805114746, 27.7036037445068, 27.5494556427002, 27.4269351959229, 27.3318176269531, 27.2194023132324, 30.5710468292236, 30.1886463165283, 29.7133979797363, 29.2138233184814, 28.7674198150635, 28.402250289917, 28.142692565918, 27.9682884216309, 27.7969493865967, 27.8109340667725, 27.7256679534912, 27.6140823364258, 27.5121002197266, 27.4382839202881, 27.3693599700928, 27.2848014831543, 30.6327285766602, 30.2292289733887, 29.7459373474121, 29.2378978729248, 28.7924556732178, 28.4178867340088, 28.1108226776123, 27.8936443328857, 27.7190723419189, 27.7490825653076, 27.6736164093018, 27.5726509094238, 27.4897365570068, 27.4363842010498, 27.3857498168945, 27.3293151855469, 30.7484817504883, 30.3518409729004, 29.8886661529541, 29.3878536224365, 28.9172229766846, 28.5050182342529, 28.1415576934814, 27.8676090240479, 27.6690044403076, 27.7178440093994, 27.6688976287842, 27.5894565582275, 27.543924331665, 27.521312713623, 27.4844341278076, 27.4286098480225])
+  PASS  four workers reconstruct the same carved columns
+  PASS  application pause cancels touch movement and boost
+  PASS  focus loss clears orbit gesture ownership
+M4 final cache stats { "tiles": 32, "routes": 455, "nodes": 645, "lakes": 29, "builds": 107, "hits": 629, "build_usec": 1508112, "rejected_routes": 42 }
+
+----------------------------------------------------------
+RESULT: PASS  (30 checks)
+----------------------------------------------------------
+
+##########################################################
+# suite: voxel
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: voxel
+==========================================================
+
+-- voxel integration -------------------------------------
+  PASS  Voxel Tools GDExtension classes are registered   (missing: [])
+  PASS  main scene wires its world reference
+  PASS  main scene wires its camera reference
+  PASS  VoxelTerrain node was created
+  PASS  terrain has a generator
+  PASS  generator is our custom TerrainBlockGenerator
+  PASS  terrain uses the blocky mesher
+  PASS  blocky mesher has a library
+  PASS  block library contains every palette type plus air   (actual=4 expected=4)
+  PASS  terrain format uses a 16-bit type channel   (actual=1 expected=1)
+  PASS  terrain block generation completes   (statistics={ "time_detect_required_blocks": 13, "time_request_blocks_to_load": 2, "time_process_load_responses": 0, "time_request_blocks_to_update": 0, "dropped_block_loads": 0, "dropped_block_meshs": 0, "updated_blocks": 0 })
+  PASS  terrain mesh blocks are meshed around the origin   (area=[P: (-32.0, 32.0, -32.0), S: (64.0, 64.0, 64.0)])
+  PASS  terrain voxel data exists around the origin   (data block at origin)
+  PASS  voxels above the surface are air   (actual=0 expected=0)
+  PASS  voxels below the surface are solid   (actual=0 expected=0)
+  PASS  the top voxel of every column is the grass type   (actual=0 expected=0)
+        checked 49 columns through the live terrain
+  PASS  live terrain has no seam across block boundaries   (actual=0 expected=0)
+        scanned 201 columns across three block boundaries
+  PASS  terrain was ready for determinism sampling
+  PASS  terrain was ready for repeat sampling
+  PASS  same seed reproduces identical terrain   (actual=569590339 expected=569590339)
+  PASS  terrain was ready for alternate-seed sampling
+  PASS  changing the seed changes the terrain   (seed 4242 -> 4243, hash 569590339 vs 1981546572)
+  PASS  the world puts a sea plane in the scene
+  PASS  the sea plane is centred under the streaming viewer   (plane (38, 76) viewer (38, 76), origin distance 87)
+  PASS  the sea plane sits at sea level   (y=20.02 expected 20.02)
+  PASS  camera responds to inspection input   (moved from (37.506245, 83.897079, 76.414833) to (-7.869651, 83.897079, 92.930313))
+  PASS  camera zooms on wheel input   (110.0 -> 98.2)
+
+----------------------------------------------------------
+RESULT: PASS  (27 checks)
+----------------------------------------------------------
+
+##########################################################
+# suite: reliability
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: reliability
+==========================================================
+
+-- generation input stability ----------------------------
+  PASS  the snapshot is a different instance
+  PASS  soil depth is copied   (actual=6 expected=6)
+  PASS  grass colour is copied   (actual=(0.1, 0.2, 0.3, 1.0) expected=(0.1, 0.2, 0.3, 1.0))
+  PASS  dirt colour is copied   (actual=(0.45, 0.33, 0.22, 1.0) expected=(0.45, 0.33, 0.22, 1.0))
+  PASS  stone colour is copied   (actual=(0.52, 0.52, 0.56, 1.0) expected=(0.52, 0.52, 0.56, 1.0))
+  PASS  editing the source leaves the snapshot's soil depth alone   (actual=2 expected=2)
+  PASS  editing the source leaves the snapshot's grass colour alone   (actual=(0.36, 0.62, 0.29, 1.0) expected=(0.36, 0.62, 0.29, 1.0))
+  PASS  editing the source leaves the snapshot's dirt colour alone   (actual=(0.45, 0.33, 0.22, 1.0) expected=(0.45, 0.33, 0.22, 1.0))
+  PASS  the source itself did change (the test can detect edits)   (actual=12 expected=12)
+  PASS  air is still id 0   (actual=0 expected=0)
+  PASS  grass is still id 1   (actual=1 expected=1)
+  PASS  dirt is still id 2   (actual=2 expected=2)
+  PASS  stone is still id 3   (actual=3 expected=3)
+  PASS  the snapshot classifies with the same ids   (actual=2 expected=2)
+  PASS  the snapshot reports the same maximum id   (actual=3 expected=3)
+  PASS  a snapshot makes a non-trivial amount of solid terrain
+  PASS  blocks generated after the edit are identical   (actual=[1960620248816178051, 4164139460690990161, 3763327243287118723] expected=[1960620248816178051, 4164139460690990161, 3763327243287118723])
+  PASS  the same edit does change output when the live palette is used   (snapshot=[1960620248816178051, 4164139460690990161, 3763327243287118723] live=[1960620248816178051, 2431818384753386613, 3763327243287118723])
+  PASS  the library can be built from a snapshot
+  PASS  the library has one model per type id   (actual=4 expected=4)
+  PASS  a later palette edit leaves the library unchanged   (actual=4 expected=4)
+  PASS  the world exposes a configured generator
+  PASS  editing the world's palette does not affect the running generator   (actual=[1960620248816178051, 4164139460690990161, 3763327243287118723] expected=[1960620248816178051, 4164139460690990161, 3763327243287118723])
+  PASS  a rebuild applies the edited palette   (before=[1960620248816178051, 4164139460690990161, 3763327243287118723] after=[1960620248816178051, 2431818384753386613, 3763327243287118723])
+
+----------------------------------------------------------
+RESULT: PASS  (24 checks)
+----------------------------------------------------------
+
+##########################################################
+# suite: perf
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: perf
+==========================================================
+
+-- performance instrumentation ---------------------------
+
+-- performance instrumentation ---------------------------
+  PASS  fps is derived from the window   (fps=100.00)
+  PASS  average frame time is 10 ms   (avg=10.000)
+  PASS  the window counted 100 frames   (actual=100 expected=100)
+  PASS  a new window replaces the previous report   (avg=20.000)
+  PASS  the slowest frame is reported as the maximum   (max=50.00)
+  PASS  the maximum is larger than the average
+  PASS  a disabled sampler reports no frames   (actual=0 expected=0)
+  PASS  a disabled sampler records no sections   (actual=0 expected=0)
+  PASS  re-enabling resumes sampling
+  PASS  the last section duration is reported   (actual=20.0 expected=20.0)
+  PASS  the section average is the mean of every call   (avg=20.000)
+  PASS  an unmeasured section reads zero   (actual=0.0 expected=0.0)
+  PASS  memory report exposes static_bytes
+  PASS  memory report exposes static_max_bytes
+  PASS  memory report exposes object_count
+  PASS  memory report exposes object_node_count
+  PASS  memory report exposes object_resource_count
+  PASS  Godot static memory is non-zero in a live process   (43.6 MB)
+  PASS  object count is non-zero
+  PASS  static memory peak is at least the current value
+  PASS  voxel statistics are stored unchanged   (actual={ "time_request_blocks_to_update": 1234, "dropped_block_loads": 2 } expected={ "time_request_blocks_to_update": 1234, "dropped_block_loads": 2 })
+  PASS  a caller editing its copy does not affect the sampler
+  PASS  the terrain exists for the statistics check
+  PASS  VoxelTerrain.get_statistics() still provides dropped_block_loads   (keys=["time_detect_required_blocks", "time_request_blocks_to_load", "time_process_load_responses", "time_request_blocks_to_update", "dropped_block_loads", "dropped_block_meshs", "updated_blocks"])
+  PASS  VoxelTerrain.get_statistics() still provides dropped_block_meshs   (keys=["time_detect_required_blocks", "time_request_blocks_to_load", "time_process_load_responses", "time_request_blocks_to_update", "dropped_block_loads", "dropped_block_meshs", "updated_blocks"])
+  PASS  VoxelTerrain.get_statistics() still provides time_detect_required_blocks   (keys=["time_detect_required_blocks", "time_request_blocks_to_load", "time_process_load_responses", "time_request_blocks_to_update", "dropped_block_loads", "dropped_block_meshs", "updated_blocks"])
+  PASS  VoxelTerrain.get_statistics() still provides time_process_load_responses   (keys=["time_detect_required_blocks", "time_request_blocks_to_load", "time_process_load_responses", "time_request_blocks_to_update", "dropped_block_loads", "dropped_block_meshs", "updated_blocks"])
+  PASS  VoxelTerrain.get_statistics() still provides time_request_blocks_to_load   (keys=["time_detect_required_blocks", "time_request_blocks_to_load", "time_process_load_responses", "time_request_blocks_to_update", "dropped_block_loads", "dropped_block_meshs", "updated_blocks"])
+  PASS  VoxelTerrain.get_statistics() still provides time_request_blocks_to_update   (keys=["time_detect_required_blocks", "time_request_blocks_to_load", "time_process_load_responses", "time_request_blocks_to_update", "dropped_block_loads", "dropped_block_meshs", "updated_blocks"])
+  PASS  VoxelTerrain.get_statistics() still provides updated_blocks   (keys=["time_detect_required_blocks", "time_request_blocks_to_load", "time_process_load_responses", "time_request_blocks_to_update", "dropped_block_loads", "dropped_block_meshs", "updated_blocks"])
+  PASS  profiling is enabled by default
+  PASS  the performance label exists
+  PASS  the overlay refreshes the readout on its own   (fps measuring…
+godot mem 98.4 MB  objects 2336  nodes 103
+voxel   update 0.00 ms  load 2.00 ms  detect 4.32 ms
+rebuild 23.3 ms)
+  PASS  the readout shows fps   (fps measuring… | godot mem 98.4 MB  objects 2336  nodes 103 | voxel   update 0.00 ms  load 2.00 ms  detect 4.32 ms | rebuild 23.3 ms)
+  PASS  the readout shows Godot memory
+  PASS  the readout names the best-effort voxel timings
+  PASS  the panel report has frame, memory, voxel and section parts
+  PASS  the readout only reports statistics the extension actually provides   (keys=["time_detect_required_blocks", "time_request_blocks_to_load", "time_process_load_responses", "time_request_blocks_to_update", "dropped_block_loads", "dropped_block_meshs", "updated_blocks"])
+  PASS  the label is hidden when profiling is off
+  PASS  no frames are counted while profiling is disabled   (actual=0 expected=0)
+  PASS  profiling can be turned back on
+
+----------------------------------------------------------
+RESULT: PASS  (41 checks)
+----------------------------------------------------------
+
+##########################################################
+# suite: ui
+##########################################################
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.305 - Forward Mobile - Using Device #0: Unknown - llvmpipe (LLVM 19.1.7, 256 bits)
+libpulse.so.0: cannot open shared object file: No such file or directory
+libpulse.so.0: cannot open shared object file: No such file or directory
+ALSA lib confmisc.c:855:(parse_card) cannot find card '0'
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_card_inum returned error: No such file or directory
+ALSA lib confmisc.c:422:(snd_func_concat) error evaluating strings
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_concat returned error: No such file or directory
+ALSA lib confmisc.c:1342:(snd_func_refer) error evaluating name
+ALSA lib conf.c:5205:(_snd_config_evaluate) function snd_func_refer returned error: No such file or directory
+ALSA lib conf.c:5728:(snd_config_expand) Evaluate error: No such file or directory
+ALSA lib pcm.c:2722:(snd_pcm_open_noupdate) Unknown PCM default
+ERROR: Condition "status < 0" is true. Returning: ERR_CANT_OPEN
+   at: init_output_device (drivers/alsa/audio_driver_alsa.cpp:97)
+WARNING: All audio drivers failed, falling back to the dummy driver.
+     at: initialize (servers/audio/audio_server.cpp:258)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: ui
+==========================================================
+
+-- android input fix: numerical fields -------------------
+  PASS  tapping the field with a raw touch focuses its text entry
+  PASS  focus moves to the field that was tapped last
+  PASS  integer field asks for a whole-number keyboard   (actual=2 expected=2)
+  PASS  decimal field asks for a decimal keyboard   (actual=3 expected=3)
+  PASS  virtual keyboard is enabled on the field
+  PASS  desktop mouse click still focuses the field
+  PASS  typed integer is accepted   (actual=4242.0 expected=4242.0)
+  PASS  committed value is readable through get_value   (actual=4242.0 expected=4242.0)
+  PASS  accepted value emits exactly one signal   (actual=1 expected=1)
+  PASS  re-committing the same text emits nothing   (actual=0 expected=0)
+  PASS  rejects "" and keeps the previous value
+  PASS  rejects "   " and keeps the previous value
+  PASS  rejects "abc" and keeps the previous value
+  PASS  rejects "12x" and keeps the previous value
+  PASS  rejects "1.2.3" and keeps the previous value
+  PASS  rejects "--5" and keeps the previous value
+  PASS  rejected input never emits a value   (actual=0 expected=0)
+  PASS  the text entry is restored to the last good value   (actual=123 expected=123)
+  PASS  value below the minimum is clamped   (actual=0.0 expected=0.0)
+  PASS  value above the maximum is clamped   (actual=500.0 expected=500.0)
+  PASS  an explicit plus sign is accepted   (actual=7.0 expected=7.0)
+  PASS  a decimal typed into a whole-number field is rejected   (actual=26.0 expected=26.0)
+  PASS  a decimal typed into the frequency field is accepted   (actual=0.0125 expected=0.0125)
+  PASS  a locale decimal comma is accepted   (actual=0.0125 expected=0.0125)
+  PASS  frequency above its maximum is clamped   (actual=0.05 expected=0.05)
+  PASS  the field exposes two step buttons   (actual=2 expected=2)
+  PASS  touch on '+' increments by one step   (actual=80.0 expected=80.0)
+  PASS  touch on '-' decrements by one step   (actual=48.0 expected=48.0)
+  PASS  increment stops at the maximum   (actual=128.0 expected=128.0)
+  PASS  decrement stops at the minimum   (actual=32.0 expected=32.0)
+  PASS  field has focus before the edit
+  PASS  losing focus commits the typed value   (actual=77.0 expected=77.0)
+  PASS  losing focus with invalid text keeps the old value   (actual=77.0 expected=77.0)
+  PASS  the seed field is populated from the world configuration   (actual=1337.0 expected=1337.0)
+  PASS  a typed seed is applied when Regenerate is touched   (requests=1)
+  PASS  invalid text falls back to the last good seed   (requests=1)
+  PASS  the field shows the value that was actually used   (actual=246810 expected=246810)
+  PASS  Random Seed still emits a request through touch
+  PASS  the random seed is within 0..100000   (seed=8732)
+  PASS  the seed field shows the random seed   (actual=8732 expected=8732)
+  PASS  all four fields commit together on Regenerate
+  PASS  terrain height reaches the request   (actual=40.0 expected=40.0)
+  PASS  terrain frequency reaches the request   (actual=0.012 expected=0.012)
+  PASS  view distance reaches the request   (actual=96 expected=96)
+  PASS  the world configuration received the new values   (height=40.0 frequency=0.012 view=96)
+
+----------------------------------------------------------
+RESULT: PASS  (45 checks)
+----------------------------------------------------------
+
+##########################################################
+# ALL SUITES PASSED
+##########################################################

@@ -16,7 +16,7 @@ const REPEATS := 3
 
 func _ready() -> void:
 	print("")
-	print("=== generation benchmark (M1 pipeline) ===")
+	print("=== generation benchmark (current configured pipeline) ===")
 	print("engine: %s" % Engine.get_version_info()["string"])
 	print("cpu count: %d" % OS.get_processor_count())
 
@@ -37,7 +37,7 @@ func _make_generator(world_seed: int) -> TerrainBlockGenerator:
 
 func _benchmark_generator() -> void:
 	var generator := _make_generator(1337)
-	var total_blocks := BLOCKS_PER_AXIS * BLOCKS_PER_AXIS * BLOCKS_PER_AXIS
+	var total_blocks := BLOCKS_PER_AXIS * BLOCKS_PER_AXIS
 
 	# Warm up once so JIT/allocator warm-up is not counted.
 	var warm := VoxelBuffer.new()
@@ -95,8 +95,9 @@ func _benchmark_streaming() -> void:
 		await get_tree().process_frame
 	var elapsed := Time.get_ticks_msec() - start
 
-	print("  streaming region meshed: %s in %.2f s (view distance 128, vertical ratio 0.5)" % [
-		str(ready), elapsed / 1000.0])
+	print("  streaming region meshed: %s in %.2f s (horizontal %d, vertical %d, ratio %.2f)" % [
+		str(ready), elapsed / 1000.0, viewer.view_distance,
+		world.config.vertical_view_distance_voxels, viewer.view_distance_vertical_ratio])
 
 	var stats := world.get_terrain().get_statistics() if world.get_terrain() != null else {}
 	print("  statistics: %s" % str(stats))

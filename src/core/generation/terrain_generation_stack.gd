@@ -19,6 +19,7 @@ extends RefCounted
 var context: GenerationContext
 var registry: GenerationRegistry
 var engine: GenerationEngine
+var hydrology: HydrologyModule
 
 
 func _init(world_config: WorldConfig) -> void:
@@ -38,6 +39,8 @@ func _init(world_config: WorldConfig) -> void:
 		return
 
 	engine = GenerationEngine.new(context, registry)
+	hydrology = registry.find_module(&"hydrology") as HydrologyModule
+	hydrology.attach_engine(engine)
 
 
 func is_valid() -> bool:
@@ -85,6 +88,7 @@ func _register_modules() -> bool:
 		PlateauModule.new(),
 		ValleyModule.new(),
 		SurfaceModule.new(),
+		HydrologyModule.new(),
 	]
 
 	var ok := true

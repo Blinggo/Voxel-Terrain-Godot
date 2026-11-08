@@ -39,6 +39,7 @@ const VIEWER_GROUP := "voxel_viewers"
 ## it long before its edge.
 const SEA_PLANE_SIZE := 2048.0
 
+var _water_view: HydrologyWaterView
 var _terrain: VoxelTerrain
 ## First registered streaming viewer, cached so the sea can follow the camera
 ## without walking a scene group every frame.
@@ -170,6 +171,13 @@ func rebuild() -> void:
 		_sea_plane = _build_sea_plane(cfg.sea_level)
 		add_child(_sea_plane)
 
+	if cfg.hydrology_enabled:
+		_water_view = HydrologyWaterView.new()
+		_water_view.surface = _surface
+		_water_view.radius = cfg.view_distance_voxels
+		_water_view.vertical_radius = cfg.vertical_view_distance_voxels
+		add_child(_water_view)
+
 	_build_count += 1
 	_last_rebuild_ms = float(Time.get_ticks_usec() - started_usec) / 1000.0
 	terrain_rebuilt.emit(cfg.world_seed)
@@ -202,6 +210,8 @@ func configure_viewers(view_distance_voxels: int) -> void:
 ## a sliver of blue at the horizon. Following the viewer costs one Vector3 write per
 ## frame and keeps the water in front of the camera wherever it goes.
 func _process(_delta: float) -> void:
+	if _water_view != null:
+		_water_view.viewer_position = get_viewer_position()
 	if _sea_plane == null:
 		return
 	if _viewer == null or not is_instance_valid(_viewer):
@@ -261,10 +271,14 @@ func _build_sea_plane(sea_level: float) -> MeshInstance3D:
 
 
 func _teardown() -> void:
+	if is_instance_valid(_water_view):
+		remove_child(_water_view)
+		_water_view.queue_free()
+	_water_view = null
 	if is_instance_valid(_terrain):
-		if _terrain.get_parent() == self:
-			remove_child(_terrain)
-		_terrain.queue_free()
+		# Free while attached: the native terrain teardown may inspect transforms.
+		# Detaching then queue_free left it alive but outside the scene tree.
+		_terrain.free()
 	_terrain = null
 
 	if is_instance_valid(_sea_plane):

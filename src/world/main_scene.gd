@@ -40,6 +40,7 @@ func _ready() -> void:
 
 	world.terrain_rebuilt.connect(_on_terrain_rebuilt)
 	debug_panel.regenerate_requested.connect(_on_regenerate_requested)
+	debug_panel.water_demo_requested.connect(_show_water_demo)
 
 	debug_panel.configure_from_config(world.config)
 
@@ -125,3 +126,17 @@ func _ring_offsets(radius: int) -> Array[Vector2i]:
 		offsets.append(Vector2i(-radius, offset))
 		offsets.append(Vector2i(radius, offset))
 	return offsets
+
+
+## Explicit debug landmark, labelled with its seed; no hidden generation changes.
+func _show_water_demo() -> void:
+	var cfg := world.config.duplicate_config()
+	cfg.world_seed = 1337
+	cfg.hydrology_enabled = true
+	cfg.terrain_height = 26.0
+	world.apply_config(cfg)
+	camera.set_fly_mode(false)
+	camera.distance = 115.0
+	camera.pitch_degrees = -35.0
+	camera.yaw_degrees = 25.0
+	camera.focus_on(Vector3(256,world.get_surface_height(256,-544),-544))

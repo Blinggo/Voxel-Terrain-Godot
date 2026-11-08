@@ -136,6 +136,13 @@ extends Resource
 ## Octaves of fractal detail noise. 1 disables fractal accumulation.
 @export_range(1, 6, 1) var fractal_octaves: int = 4
 
+# --- Hydrology ---------------------------------------------------------------
+
+## Independently switchable; fields retain their M2/M3 random streams.
+@export var hydrology_enabled: bool = true
+@export_range(4.0, 80.0, 1.0) var hydrology_source_rise: float = 14.0
+@export_range(0.5, 1.25, 0.05) var hydrology_width_scale: float = 1.0
+
 # --- Streaming ---------------------------------------------------------------
 
 ## Streaming radius around the viewer, in voxels.
@@ -158,6 +165,9 @@ extends Resource
 func duplicate_config() -> WorldConfig:
 	var other := WorldConfig.new()
 	other.world_seed = world_seed
+	other.hydrology_enabled = hydrology_enabled
+	other.hydrology_source_rise = hydrology_source_rise
+	other.hydrology_width_scale = hydrology_width_scale
 	other.generation_version = generation_version
 	other.base_height = base_height
 	other.terrain_height = terrain_height
@@ -197,6 +207,9 @@ func duplicate_config() -> WorldConfig:
 func to_dictionary() -> Dictionary:
 	return {
 		"world_seed": world_seed,
+		"hydrology_enabled": hydrology_enabled,
+		"hydrology_source_rise": hydrology_source_rise,
+		"hydrology_width_scale": hydrology_width_scale,
 		"generation_version": generation_version,
 		"base_height": base_height,
 		"terrain_height": terrain_height,

@@ -16,6 +16,7 @@ extends Control
 ## flying over it.
 
 signal regenerate_requested(request: Dictionary)
+signal water_demo_requested
 
 const RANDOM_SEED_LIMIT := 100000
 
@@ -43,6 +44,13 @@ var _perf := PerformanceSampler.new()
 func _ready() -> void:
 	_regenerate_button.pressed.connect(_emit_regeneration)
 	_random_seed_button.pressed.connect(_randomise_seed)
+	var demo := Button.new()
+	demo.text = "Lake demo (seed 1337)"
+	demo.focus_mode = Control.FOCUS_NONE
+	demo.pressed.connect(func(): water_demo_requested.emit())
+	demo.position = Vector2(610,12)
+	demo.size = Vector2(220,48)
+	add_child(demo)
 	_panel.visible = true
 	set_profiling_enabled(_profiling_enabled)
 

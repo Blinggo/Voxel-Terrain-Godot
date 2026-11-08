@@ -10,6 +10,7 @@ extends Node
 ##   godot --path . res://tests/test_runner.tscn -- --suite=ui   (needs a display)
 ##   godot --headless --path . res://tests/test_runner.tscn -- --suite=perf
 ##   godot --headless --path . res://tests/test_runner.tscn -- --suite=reliability
+##   godot --headless --path . res://tests/test_runner.tscn -- --suite=m2
 ##
 ## Exits with status 0 when every check passed, 1 otherwise, so it can be used
 ## directly in CI.
@@ -21,6 +22,7 @@ const VoxelSuite = preload("res://tests/suites/voxel_suite.gd")
 const UiInputSuite = preload("res://tests/suites/ui_input_suite.gd")
 const PerfSuite = preload("res://tests/suites/perf_suite.gd")
 const ReliabilitySuite = preload("res://tests/suites/reliability_suite.gd")
+const M2Suite = preload("res://tests/suites/m2_generation_suite.gd")
 
 ## Hard stop so a broken streaming wait cannot hang a CI job.
 const MAX_RUNTIME_SECONDS := 150.0
@@ -61,6 +63,11 @@ func _ready() -> void:
 		print("")
 		print("-- terrain generation pipeline ---------------------------")
 		GenerationSuite.run(report)
+
+	if suite == "all" or suite == "m2":
+		print("")
+		print("-- M2 geographical formations ----------------------------")
+		M2Suite.run(report)
 
 	if suite == "all" or suite == "voxel":
 		print("")

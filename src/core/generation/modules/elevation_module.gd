@@ -32,12 +32,12 @@ var _continents_index := -1
 
 
 func _init() -> void:
-	super(MODULE_ID, OUTPUT_FIELD, PackedStringArray([&"continentalness"]), 1)
+	super(MODULE_ID, OUTPUT_FIELD, PackedStringArray([&"landmass"]), 1)
 
 
 func configure(context: GenerationContext) -> void:
 	var config := context.config
-	_continents_index = dependency_index(&"continentalness")
+	_continents_index = dependency_index(&"landmass")
 	_broad = context.make_noise_stream(
 			MODULE_ID, version, 1, config.elevation_frequency, 2
 	)

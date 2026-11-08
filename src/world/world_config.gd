@@ -30,7 +30,11 @@ extends Resource
 ## Version of the generation pipeline. Folded into every module's random stream,
 ## so incrementing it deliberately reshuffles the whole world. Bump it whenever a
 ## change would make previously generated terrain unreproducible anyway.
-@export var generation_version: int = 1
+##
+## 2 is M2: the land signal downstream modules read is now the composed landmass
+## field, and every field's stream changed, so M1 terrain is deliberately not
+## reproduced.
+@export var generation_version: int = 2
 
 # --- Landform amplitudes -----------------------------------------------------
 
@@ -55,13 +59,32 @@ extends Resource
 
 ## Mountain relief at full mountainness, as a multiple of
 ## [member terrain_height].
-@export_range(0.0, 4.0, 0.05) var mountain_scale: float = 1.5
+@export_range(0.0, 4.0, 0.05) var mountain_scale: float = 1.8
 
 ## Hill relief at full hilliness, as a multiple of [member terrain_height].
 @export_range(0.0, 2.0, 0.05) var hill_scale: float = 0.60
 
 ## Fine per-column roughness, as a multiple of [member terrain_height].
 @export_range(0.0, 1.0, 0.01) var detail_scale: float = 0.09
+
+## How far a plateau interior sits above the base land surface, in voxels. The
+## surface is blended towards that level, so this is the height of the step up
+## from the surrounding plain rather than an amount added to relief.
+@export_range(0.0, 64.0, 1.0) var plateau_uplift: float = 26.0
+
+## Number of shelves the plateau margin is terraced into. 1 disables terracing.
+@export_range(1, 8, 1) var plateau_steps: int = 3
+
+## Depth of a full-strength valley, as a multiple of [member terrain_height].
+@export_range(0.0, 1.0, 0.01) var valley_depth: float = 0.26
+
+## How strongly the archipelago field pushes the seafloor up into islands. Must be
+## large enough to carry the land signal across zero (roughly 0.5).
+@export_range(0.0, 1.0, 0.01) var island_strength: float = 0.55
+
+## How far coastline detail may perturb the land signal. Small: it should shape
+## the shoreline, not move the continent.
+@export_range(0.0, 0.5, 0.01) var coast_strength: float = 0.14
 
 # --- Field frequencies -------------------------------------------------------
 
@@ -84,6 +107,28 @@ extends Resource
 
 ## Frequency of the hills field.
 @export_range(0.0001, 0.1, 0.0001) var hill_frequency: float = 0.02
+
+## Cell size of the tectonic plate lattice, in voxels. One plate is roughly this
+## wide, so it sets the spacing of mountain systems and geological regions.
+@export_range(128.0, 2048.0, 16.0) var plate_cell_size: float = 520.0
+
+## Width of the band around a plate boundary in which tectonic influence acts,
+## in voxels. Larger makes broader, softer ranges.
+@export_range(16.0, 512.0, 4.0) var plate_boundary_width: float = 110.0
+
+## Frequency of the broad archipelago cluster field. Smaller values make island
+## groups larger and further apart.
+@export_range(0.0001, 0.01, 0.0001) var archipelago_frequency: float = 0.0011
+
+## Frequency of the coastline detail field.
+@export_range(0.0005, 0.05, 0.0005) var coast_frequency: float = 0.008
+
+## Frequency of the valley network field. Smaller values make longer, more widely
+## spaced valleys.
+@export_range(0.0001, 0.02, 0.0001) var valley_frequency: float = 0.0022
+
+## Frequency of the plateau field. Smaller values make larger plateaus.
+@export_range(0.0001, 0.02, 0.0001) var plateau_frequency: float = 0.0016
 
 ## Base frequency of the fine detail noise, in cycles per voxel.
 @export_range(0.0001, 0.1, 0.0001) var terrain_frequency: float = 0.022
@@ -120,6 +165,17 @@ func duplicate_config() -> WorldConfig:
 	other.mountain_scale = mountain_scale
 	other.hill_scale = hill_scale
 	other.detail_scale = detail_scale
+	other.plateau_uplift = plateau_uplift
+	other.plateau_steps = plateau_steps
+	other.valley_depth = valley_depth
+	other.island_strength = island_strength
+	other.coast_strength = coast_strength
+	other.plate_cell_size = plate_cell_size
+	other.plate_boundary_width = plate_boundary_width
+	other.archipelago_frequency = archipelago_frequency
+	other.coast_frequency = coast_frequency
+	other.valley_frequency = valley_frequency
+	other.plateau_frequency = plateau_frequency
 	other.continent_frequency = continent_frequency
 	other.continent_octaves = continent_octaves
 	other.continent_warp = continent_warp
@@ -147,6 +203,17 @@ func to_dictionary() -> Dictionary:
 		"mountain_scale": mountain_scale,
 		"hill_scale": hill_scale,
 		"detail_scale": detail_scale,
+		"plateau_uplift": plateau_uplift,
+		"plateau_steps": plateau_steps,
+		"valley_depth": valley_depth,
+		"island_strength": island_strength,
+		"coast_strength": coast_strength,
+		"plate_cell_size": plate_cell_size,
+		"plate_boundary_width": plate_boundary_width,
+		"archipelago_frequency": archipelago_frequency,
+		"coast_frequency": coast_frequency,
+		"valley_frequency": valley_frequency,
+		"plateau_frequency": plateau_frequency,
 		"continent_frequency": continent_frequency,
 		"continent_octaves": continent_octaves,
 		"continent_warp": continent_warp,

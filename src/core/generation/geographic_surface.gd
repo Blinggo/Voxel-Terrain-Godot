@@ -75,27 +75,43 @@ func get_field_at(module_id: StringName, x: int, z: int) -> float:
 
 ## Terrain type at a coordinate, as one of the [method SurfaceModule.classify]
 ## names: [code]deep_ocean[/code], [code]shallow_ocean[/code], [code]coast[/code],
-## [code]mountains[/code], [code]hills[/code], [code]plains[/code].
+## [code]mountains[/code], [code]plateau[/code], [code]valley[/code],
+## [code]hills[/code], [code]plains[/code].
 func classify_at(x: int, z: int) -> StringName:
 	return SurfaceModule.classify(
-			get_field_at(&"continentalness", x, z),
+			get_field_at(&"landmass", x, z),
 			get_field_at(&"mountainness", x, z),
-			get_field_at(&"hills", x, z)
+			get_field_at(&"hills", x, z),
+			get_field_at(&"plateaus", x, z),
+			get_field_at(&"valleys", x, z)
 	)
 
 
 ## Everything the debug overlay and the tests want to know about one place.
+##
+## [code]continentalness[/code] is the raw layout field; [code]landmass[/code] is
+## what the pipeline actually used, after islands and coastline shaping. Both are
+## reported because the difference between them is exactly what M2 added.
 func describe_at(x: int, z: int) -> Dictionary:
 	var continents := get_field_at(&"continentalness", x, z)
+	var landmass := get_field_at(&"landmass", x, z)
 	var elevation := get_field_at(&"elevation", x, z)
 	var mountains := get_field_at(&"mountainness", x, z)
 	var hills := get_field_at(&"hills", x, z)
+	var plateaus := get_field_at(&"plateaus", x, z)
+	var valleys := get_field_at(&"valleys", x, z)
 	return {
-		"terrain_type": SurfaceModule.classify(continents, mountains, hills),
+		"terrain_type": SurfaceModule.classify(
+				landmass, mountains, hills, plateaus, valleys
+		),
 		"continentalness": continents,
+		"landmass": landmass,
 		"elevation": elevation,
 		"mountainness": mountains,
 		"hills": hills,
+		"plateaus": plateaus,
+		"valleys": valleys,
+		"tectonics": get_field_at(&"tectonics", x, z),
 		"surface_height": get_surface_height(x, z),
 	}
 

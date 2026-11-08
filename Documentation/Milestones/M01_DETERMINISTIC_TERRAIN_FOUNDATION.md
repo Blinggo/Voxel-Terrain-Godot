@@ -51,7 +51,7 @@ each; nothing is stubbed.
 | `src/core/generation/modules/hills_module.gd` | Shaped hills field, damped where mountains dominate. |
 | `src/core/generation/modules/surface_module.gd` | Depth model, land base, relief ramp, coastal softening, classification. |
 | `src/core/generation/modules/detail_module.gd` | Per-column fine roughness (the only per-column cost). |
-| `tests/suites/generation_suite.gd` | 45 checks: determinism, fields, module system, integration. |
+| `tests/suites/generation_suite.gd` | 57 checks: determinism, fields, module system, integration (45 executed in the M1 run; see the correction in §11). |
 | `tests/render_map.gd` | Tool: hillshaded top-down map of the surface, for judging geography. This is what the field tuning was actually judged on (§10). |
 | `Documentation/Milestones/M01_DETERMINISTIC_TERRAIN_FOUNDATION.md` | This document. |
 | `Documentation/Decisions/ADR-0011-modular-generation-pipeline.md` | Pipeline architecture decision. |
@@ -419,6 +419,14 @@ Known visual characteristics, stated plainly:
 
 Measured on the CI-equivalent machine: 2 vCPU, software Vulkan (llvmpipe), Linux
 x86_64. **Not** measured on a phone in this milestone.
+
+> **Correction recorded during M2 (2026-11-07).** The generation suite reported 45
+> checks in this milestone, but six `check_equal` call sites passed a fourth argument
+> to a three-argument function. GDScript raises on that and continues, so 12 checks
+> were silently skipped and never executed; the honest figure was 57 all along.
+> `check_equal` now accepts an optional detail, all 57 execute and pass. Nothing else
+> in this document changes: the terrain behaviour it describes is what the 45
+> executed checks plus the captures demonstrated.
 
 ### 11.1 Project benchmark (`tests/benchmark.tscn`)
 

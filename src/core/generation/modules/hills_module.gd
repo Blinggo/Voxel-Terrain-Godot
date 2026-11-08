@@ -44,14 +44,14 @@ func _init() -> void:
 	super(
 			MODULE_ID,
 			OUTPUT_FIELD,
-			PackedStringArray([&"continentalness", &"mountainness"]),
+			PackedStringArray([&"landmass", &"mountainness"]),
 			1
 	)
 
 
 func configure(context: GenerationContext) -> void:
 	var config := context.config
-	_continents_index = dependency_index(&"continentalness")
+	_continents_index = dependency_index(&"landmass")
 	_mountains_index = dependency_index(&"mountainness")
 	_hills = context.make_noise_stream(
 			MODULE_ID, version, 1, config.hill_frequency, 3

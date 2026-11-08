@@ -1,8 +1,8 @@
 # Project Continuation
 
 Last updated: 2026-11-07
-Milestone: **M1 complete pending review** (M0.1 and M0.2 reviewed and accepted).
-M2 not started.
+Milestone: **M2 complete pending review** (M0.1, M0.2 and M1 reviewed and accepted).
+The full M2 record is `Milestones/M02_ADVANCED_GEOGRAPHICAL_FORMATIONS.md`.
 
 Read this first, then `Documentation/Architecture/OVERVIEW.md`.
 
@@ -13,16 +13,26 @@ Read this first, then `Documentation/Architecture/OVERVIEW.md`.
 The project opens, loads Voxel Tools, generates seeded procedural blocky terrain
 on worker threads, streams it around a camera, and renders it in 3D.
 
-Since M1 the terrain is a **geographic** one: continentalness, multi-scale
-elevation, mountains, hills and a surface composer run as registered modules, and
-the live Voxel Tools generator is driven by their output. A world shows oceans,
-coastlines, plains, hills and continuous mountain ranges, regenerates identically
-from the same seed, and the overlay reports the terrain type under the viewer.
+The terrain is a **geographic** one. Twelve registered modules run on a node grid
+and the live Voxel Tools generator is driven by their output. A world shows oceans,
+shelves, coastlines with bays and peninsulas, plains, hills, island groups, mountain
+systems with ridges and foothills, valley networks with passes, and stepped plateaus
+— placed by a lightweight plate model rather than by noise alone. It regenerates
+identically from the same seed, and the overlay reports the terrain type and the raw
+fields under the viewer.
 
-- 196 automated checks: 17 core + 45 generation + 24 voxel + 24 reliability + 41
-  perf (headless) + 45 UI input (needs a display), plus verified screenshot
-  captures. `./tests/run_tests.sh` runs windowed when a display exists, headless
-  otherwise.
+- **274 automated checks**: 17 core + 57 generation + **63 M2** + 27 voxel + 24
+  reliability + 41 perf (headless) + 45 UI input (needs a display), plus verified
+  screenshot captures and three generated maps. `./tests/run_tests.sh` runs windowed
+  when a display exists, headless otherwise.
+- The M1 generation suite was silently skipping 12 checks (an over-argumented
+  `check_equal` call aborts a GDScript call without failing the run). Fixed in M2:
+  `check_equal` takes an optional `detail`, all 57 checks execute, all pass, and the
+  run now asserts zero `SCRIPT ERROR` lines.
+- M2 additions: `tectonics`, `archipelago`, `coast_detail`, `landmass`, `plateaus`,
+  `valleys`; `mountainness` rebuilt (v2) as structural bands with noise relief;
+  `surface` rebuilt (v2) as a six-step composition. `generation_version` is now 2, so
+  **M1 terrain is not reproduced** — deliberate, and recorded.
 - Verified end to end on **Linux x86_64** with software Vulkan.
 - **Android: confirmed running on a physical device** from the Godot Editor —
   terrain, streaming, touch camera, regenerate, random seed, default-seed
@@ -32,9 +42,18 @@ from the same seed, and the overlay reports the terrain type under the viewer.
   installed.** Signature, ABI, packaged extension and permissions all check out;
   runtime behaviour of the release build is unknown.
 - Windows: never exported or run.
-- Generation throughput: ~44 µs per 16³ block in the project benchmark (M0.1: 36 µs),
-  ~22,800 blocks/s single-threaded, GDScript; ~126 µs/block in a worst-case
-  scattered-block probe. Streaming region at view distance 128: 0.18 s (M0.2: 0.16 s).
+- Generation throughput: **38.2 µs** per 16³ block in the project benchmark
+  (M1: 43.9 µs, M0.1: 36 µs), ~26,000 blocks/s single-threaded, GDScript. On a fresh
+  contiguous region a block costs **107 µs warm / 196 µs cold**, which is the number
+  streaming actually pays. Streaming region at view distance 128: **0.13 s**
+  (M1: 0.18 s, M0.2: 0.16 s). Per-node cost rose from an estimated ~3.3 µs to a
+  measured 16.6 µs, because six new fields now run per node.
+
+- **Known visual gaps** (M2): ranges can follow a near-straight plate boundary;
+  plateau coverage varies from 0.8 % to 6.8 % of land depending on seed. The sea
+  plane is a flat translucent placeholder — it now follows the camera, which is what
+  made the ocean appear in the M2 captures at all (the plane used to be pinned to the
+  world origin).
 
 Nothing is stubbed. There are no placeholder scripts and no disabled features
 hiding behind flags except those explicitly listed as out of scope.
@@ -58,6 +77,10 @@ hiding behind flags except those explicitly listed as out of scope.
 | 0011 | Terrain is a pipeline of registered **single-field modules** with declared dependencies; one registration point, deterministic order, independent testability. Supersedes ADR-0003's implementation, not its rule |
 | 0012 | Deterministic randomness is hand-written hashing in **32-bit lanes** (FNV-1a + MurmurHash3), because GDScript cannot write hex literals ≥ 2^63 or shift negatives |
 | 0013 | Regional fields are evaluated on a **node grid** 8 voxels apart and interpolated; detail is a bulk per-column term; nodes are cached behind a mutex |
+| 0014 | Tectonic influence is an **analytic jittered-Voronoi plate lattice**, not a simulated or persisted plate map: deterministic, independently sampleable, one bounded cache |
+| 0015 | Mountain ranges are **structural bands** along tectonic boundaries times noise relief, plus a massif term, an apron for foothills and a rift cut — not layered ridged noise |
+| 0016 | Any field that depends on a **discrete regional choice** must blend across that choice (tie-window blending) or be built so the choice is well separated; caches may never change a value |
+| 0017 | Landforms are composed in a **fixed order over one shared `landmass` signal**: plateau *blends*, valley *carves last*, carve floored at the regional base, both faded where they overlap |
 
 ---
 
@@ -78,9 +101,15 @@ src/core/generation/terrain_generation_stack.gd  the one place modules are regis
 src/core/generation/geographic_surface.gd  what the voxel layer sees (heights, fields, classify)
 src/core/generation/modules/continentalness_module.gd  domain-warped continent field
 src/core/generation/modules/elevation_module.gd        three-band broad elevation
-src/core/generation/modules/mountain_module.gd         ridged ranges x belt mask x inland gate
+src/core/generation/modules/tectonics_module.gd        M2: jittered-Voronoi plates, boundary character, tie blend
+src/core/generation/modules/archipelago_module.gd      M2: island groups and lone islands (offshore only)
+src/core/generation/modules/coast_module.gd            M2: bays, peninsulas, shoreline crinkle
+src/core/generation/modules/landmass_module.gd         M2: the composed land signal everyone reads
+src/core/generation/modules/plateau_module.gd          M2: plateau mask + terrace() shelves
+src/core/generation/modules/valley_module.gd           M2: valley network, tributaries, basins, passes
+src/core/generation/modules/mountain_module.gd         v2: structural band + massif + apron + ribs
 src/core/generation/modules/hills_module.gd            shaped hills, damped under mountains
-src/core/generation/modules/surface_module.gd          depth model, land base, relief ramp, coast
+src/core/generation/modules/surface_module.gd          v2: depth, land base, relief, plateau blend, valley carve, coast
 src/core/generation/modules/detail_module.gd           per-column fine roughness
 src/core/terrain/block_palette.gd          type ids, colours, soil depth, classify()
 
@@ -100,8 +129,9 @@ src/debug/debug_panel.gd            parameter widgets + status; emits regenerate
 tests/test_runner.gd|.tscn          suite dispatcher, exit codes, watchdog
 tests/test_support.gd               PASS/FAIL recorder
 tests/suites/core_suite.gd          17 checks, engine-light (surface contract, seams, threads)
-tests/suites/generation_suite.gd    45 checks, determinism + fields + module system + integration
-tests/suites/voxel_suite.gd         24 checks, live scene
+tests/suites/generation_suite.gd    57 checks, determinism + fields + module system + integration
+tests/suites/m2_generation_suite.gd  63 checks, M2 determinism, continuity, geography, integration, perf
+tests/suites/voxel_suite.gd         27 checks, live scene (incl. the sea-plane regression)
 tests/suites/ui_input_suite.gd      45 checks, touch/mouse numeric input (needs a display)
 tests/suites/reliability_suite.gd   24 checks, palette snapshot stability
 tests/suites/perf_suite.gd          41 checks, instrumentation arithmetic and schema
@@ -140,6 +170,13 @@ Documentation/                      this documentation set
   term, coastal softening, classification, sea plane, module/field/statistics
   reporting in the overlay, and 45 new checks. See
   `Milestones/M01_DETERMINISTIC_TERRAIN_FOUNDATION.md`.
+- M2: six new fields (tectonics, archipelago, coast_detail, landmass, plateaus,
+  valleys), `mountainness` and `surface` rebuilt as version 2, two real continuity
+  defects found and fixed (triple-point swap, coincident plate sites), plateau
+  terracing, valley carving with a base-level floor and plateau fade, island and
+  coastline shaping over an unchanged sea-level contract, eleven new configuration
+  parameters, two new overlay field lines, and 63 new checks. See
+  `Milestones/M02_ADVANCED_GEOGRAPHICAL_FORMATIONS.md`.
 - M0.2: Android release APK exported and verified (see
   `Milestones/M00_02_ANDROID_VALIDATION.md` §3); performance overlay with F4
   toggle; screenshot harness with real exit codes; palette snapshot for worker
@@ -187,6 +224,22 @@ Documentation/                      this documentation set
     number to watch on a phone.
 15. **Android/Windows for M1 are untested.** Every M1 number in this file is Linux
     x86_64 with software Vulkan. This is the milestone's biggest evidence gap.
+16. **M2 ranges can be straight.** Where a plate boundary dominates, a range follows
+    a warped Voronoi bisector; the warp bends it but does not hide it in every seed.
+17. **M2 mountain fill ratio is still 0.65–0.92** of the bounding box. Ranges read as
+    ranges inside a province, not as thin chains.
+18. **M2 plateau coverage varies from 0.8 % to 6.8 % of land** between seeds; the
+    plateau field is a thresholded noise field and some seeds have almost none.
+19. **Scattered single-cell seafloor dips** appear as dark specks in open water on
+    the hillshaded maps. Cosmetic, not a discontinuity (continuity is tested).
+20. **No water simulation.** The sea is one flat translucent plane (it now follows
+    the camera instead of sitting at the world origin) and nothing drains inland, so
+    carved land is held above sea level on purpose.
+21. **Per-node generation cost rose** from ~3.3 µs (M1, estimated) to 16.6 µs
+    (measured). The right next step if more fields are added is to reduce noise
+    *calls* per node, not to add caches.
+22. **M2 is untested on Android and Windows**, exactly as M1 was. The Android
+    editor checklist is in the M2 milestone document, §16.
 
 ---
 
@@ -200,8 +253,10 @@ external to the code: the exported release APK has never been run on a device.
 
 | Proven | Unproven |
 |---|---|
-| 196 automated checks on Linux x86_64, software Vulkan | release APK at runtime |
-| M1 geographic fields, determinism, module system | M1 behaviour on Android/Windows |
+| 274 automated checks on Linux x86_64, software Vulkan | release APK at runtime |
+| M1 geographic fields, determinism, module system | M1/M2 behaviour on Android/Windows |
+| M2 formations visible in rendered 3D terrain (screenshots) | M2 frame rate on hardware |
+| M2 determinism, continuity, geography and configurability (63 checks) | sustained-streaming memory over a long flight |
 | terrain generation, streaming, seams, rebuild determinism | release-build extension loading |
 | touch/mouse numerical input (synthetic events) | device process memory and thermals |
 | Android Editor run on hardware (owner) | any second Android device |
@@ -216,7 +271,7 @@ external to the code: the exported release APK has never been run on a device.
 
 # single suite
 godot --headless --path . res://tests/test_runner.tscn -- --suite=voxel
-# suites: core | generation | voxel | reliability | perf | ui | all
+# suites: core | generation | m2 | voxel | reliability | perf | ui | all
 
 # run the game
 godot --path .
@@ -242,23 +297,26 @@ A verified build from this environment is kept in
 `artifacts/android/procedural-world-arm64.apk` (sha256 in `SHA256SUMS.txt`). It is
 signed with a throwaway key: uninstall any differently-signed build first.
 
-### 6.3 Next steps (M1 complete, awaiting approval; M2 not started)
+### 6.3 Next steps (M2 complete, awaiting approval)
 
-**Immediate: review M1.** The full report is the fourteen-section documentary
-artifact `Milestones/M01_DETERMINISTIC_TERRAIN_FOUNDATION.md`; the most important
-things to look at are §5 (determinism), §10 (real 3D results with screenshots) and
-§11 (performance, including what is *not* measured).
+**Immediate: review M2.** The documentary artifact is
+`Milestones/M02_ADVANCED_GEOGRAPHICAL_FORMATIONS.md`; the most important things to
+look at are §10 (visual evidence and what it does and does not prove), §11 (the 63
+executed checks) and §13 (performance, including the honest per-node regression).
 
-**Then, for M2, in value order** (detail in the milestone doc §15):
+**Then, for M3, in value order** (detail in the M2 milestone doc §16):
 
-1. **Climate as modules** — `temperature` and `humidity` depending on
-   continentalness/elevation. Resolve the one-field-per-module limit first.
-2. **Biome → palette mapping** — `BlockPalette.classify()` is the seam; terrain
-   becomes visibly richer without touching Voxel Tools integration.
-3. **Hydrology, if wanted** — no licence allows copying the researched projects;
-   a flow-accumulation pass over the node grid is the cheap path.
-4. **Device performance pass** before adding cost: decide whether
-   `sampling_stride` stays 8 and whether detail keeps 4 octaves.
+1. **Water that follows the terrain** — the single biggest visual gap. Sea-level
+   awareness for carved basins and valley floors, and a water surface that is not one
+   flat plane 2048 voxels across.
+2. **Rivers from the existing valley field** — drainage direction from the composed
+   surface gradient; no full simulation. `valleys` already marks the network.
+3. **Biome / strata materials** — `BlockPalette.classify()` is the seam, and the M2
+   fields (`mountainness`, `plateaus`, `valleys`, `tectonics`) are the inputs it
+   was waiting for.
+4. **Device performance pass** before adding more per-node cost: six new fields took
+   the node from ~3.3 µs to 16.6 µs; measure on the phone before M3 adds more, and
+   prefer reducing noise calls per node over adding caches.
 
 ### 6.4 Older next steps (M0.2 era, still valid where not superseded)
 

@@ -171,7 +171,11 @@ static func _test_module_seeds_are_per_module(report) -> void:
 	report.check_equal("module seeds are stable across instances", a, b)
 
 	# ...and two different modules must not share a stream.
-	var ids := ["detail", "continentalness", "elevation", "mountainness", "hills", "surface"]
+	var ids := [
+		"detail", "continentalness", "tectonics", "archipelago", "coast_detail",
+		"landmass", "elevation", "mountainness", "hills", "plateaus", "valleys",
+		"surface",
+	]
 	var seeds := {}
 	var duplicates := 0
 	for id in ids:
@@ -445,7 +449,10 @@ static func _test_continental_variety(report) -> void:
 	var total := 0
 	for point in _grid(32, Vector2i(-128, -128)):
 		total += 1
-		if surface.get_field_at(&"continentalness", point.x, point.y) < SurfaceModule.OCEAN_EDGE:
+		# The composed land signal, not the raw continental field: since M2 the
+		# waterline is where [code]landmass[/code] crosses the threshold, and islands
+		# and coastline detail move it.
+		if surface.get_field_at(&"landmass", point.x, point.y) < SurfaceModule.OCEAN_EDGE:
 			ocean += 1
 		else:
 			land += 1
@@ -660,6 +667,9 @@ static func _test_ocean_and_land_both_exist(report) -> void:
 static func _test_execution_order(report) -> void:
 	var surface := _make_surface()
 	var order := surface.get_module_ids()
+	# The M1 modules only. The M2 suite asserts the full twelve-module order; this
+	# check exists to prove that M2 did not *remove* an M1 module, which is the M1
+	# integration requirement.
 	var expected := ["detail", "continentalness", "elevation", "mountainness", "hills", "surface"]
 
 	var missing := PackedStringArray()
@@ -667,7 +677,7 @@ static func _test_execution_order(report) -> void:
 		if not order.has(id):
 			missing.append(id)
 	report.check(
-			"all M1 modules are registered",
+			"every M1 module is still registered",
 			missing.is_empty(),
 			"registered order: %s" % String(", ".join(order))
 	)

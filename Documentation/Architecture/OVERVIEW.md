@@ -23,7 +23,7 @@ without touching Voxel Tools integration.
 
 ## Layers
 
-### `src/core/generation/` — the terrain pipeline (M1)
+### `src/core/generation/` — the terrain pipeline (M1 pipeline, M2 geography)
 
 | File | Role |
 |---|---|
@@ -34,19 +34,38 @@ without touching Voxel Tools integration.
 | `generation_engine.gd` | Runs modules on a node grid, caches nodes, interpolates, adds column terms, clamps to bounds (ADR-0013). |
 | `terrain_generation_stack.gd` | The single place modules are registered; builds context → registry → engine. |
 | `geographic_surface.gd` | What the voxel layer sees: heights, raw fields, classification, cache statistics. |
-| `modules/*.gd` | `continentalness`, `elevation`, `mountainness`, `hills`, `detail`, `surface`. |
+| `modules/*.gd` | M1: `continentalness`, `elevation`, `mountainness`, `hills`, `detail`, `surface`. M2: `tectonics`, `archipelago`, `coast_detail`, `landmass`, `plateaus`, `valleys`. |
 
 **Module pipeline.** Each module owns one scalar field. Execution order comes from
 the declared dependency graph, not from the registration list:
 
 ```
-detail          (independent; per-column full-resolution term)
-continentalness (independent)
-elevation       <- continentalness
-mountainness    <- continentalness
-hills           <- continentalness, mountainness
-surface         <- continentalness, elevation, mountainness, hills   (world units)
+detail          (independent; per-column full-resolution term)          M1
+continentalness (independent)                                           M1
+tectonics       (independent)                                           M2  plate regions + boundaries
+archipelago     <- continentalness                                      M2  island groups
+coast_detail    <- continentalness                                      M2  bays, peninsulas
+landmass        <- continentalness, archipelago, coast_detail           M2  the land signal everyone reads
+elevation       <- landmass                                             M1 (rewired)
+mountainness    <- landmass, tectonics                                  M1 -> v2
+hills           <- landmass, mountainness                               M1 (rewired)
+plateaus        <- landmass                                             M2
+valleys         <- landmass, mountainness                               M2
+surface         <- landmass, elevation, mountainness, hills,             M1 -> v2
+                   plateaus, valleys                                    (world units)
 ```
+
+**One land signal (M2).** Every landform, the elevation field, the hills field and
+the surface composer read `landmass`, never the raw `continentalness`. That is what
+keeps islands and coastline detail from being re-implemented six times, and it is
+why the sea-level contract survived unchanged (ADR-0017).
+
+**Composition order in `SurfaceModule` v2** — a documented contract, not an
+accident: seafloor → land base → relief → plateau *blend* (removes relief, so a
+plateau interior is level) → valley *carve* (last, so a valley cuts through
+everything; floored at the regional base and faded on plateau tops) → coastal
+softening → bounds. Each step has a test that would fail if the order changed
+(ADR-0017).
 
 Adding a field is one subclass plus one line in
 `TerrainGenerationStack._register_modules()`; modules that do not depend on it
@@ -61,6 +80,19 @@ seams are impossible by construction, not patched up.
 Node evaluation is cached in a mutex-guarded dictionary capped at 8192 entries.
 Stored values are pure functions of their coordinate, so a racing pair of threads
 computes the same number and the outcome equals a serial run.
+
+One further cache was added in M2, and only because it was measured to be worth it:
+`TectonicsModule` memoises the nine plate-site records for the plate cell it is in
+(256 cells, 5 floats each, mutex-guarded). Recomputing them would cost nine
+`hash_coords` calls per node - about 21 µs against 0.17 µs for a lookup - for a value
+that is identical for every node in the same 520-voxel cell. No other M2 module caches
+anything: they are arithmetic on noise and on their inputs (ADR-0014).
+
+**A continuity rule that M2 learned the hard way:** any field that depends on a
+discrete regional choice (the nearest site, a cell membership, a classification) can
+jump where that choice changes, even when the underlying quantity is continuous.
+Such a field must either blend across the choice or be constructed so the choice is
+well separated. Both defects found in M2 were of this kind (ADR-0016).
 
 **Determinism.** Every value is a pure function of
 `seed + module id + module version + generation version + (x, z)`. No global RNG,
@@ -143,4 +175,6 @@ Tools engine; `VoxelWorld` only pushes streaming settings to it.
 
 Since M1 the world also adds one purely visual object: a translucent
 `MeshInstance3D` plane at `sea_level`, so submerged terrain reads as water. It is
-not a fluid simulation and nothing queries it.
+not a fluid simulation and nothing queries it. M2 changed nothing about it, which is
+why carved inland basins are held above sea level: a basin below the sea plane would
+fill, and nothing in M2 can drain it.

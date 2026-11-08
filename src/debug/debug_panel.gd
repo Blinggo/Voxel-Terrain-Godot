@@ -87,15 +87,22 @@ func set_status(status: Dictionary) -> void:
 			int(status.get("dropped_loads", 0)),
 			int(status.get("dropped_meshes", 0)),
 		],
-		# Geography under the viewer, from the module pipeline (M1). Absent keys
-		# are tolerated so the panel keeps working with a bare status dictionary.
+		# Geography under the viewer, from the module pipeline. Absent keys are
+		# tolerated so the panel keeps working with a bare status dictionary.
 		"terrain         %s @ %.1f" % [
 			String(status.get("terrain_type", "?")),
 			float(status.get("surface_height_here", 0.0)),
 		],
-		"fields          cont %+.2f  mtn %.2f" % [
-			float(status.get("continentalness", 0.0)),
+		# Two lines rather than one: M2 added fields the owner needs to see while
+		# testing formations in the editor, and a single line would not fit.
+		"fields          land %+.2f  mtn %.2f" % [
+			float(status.get("landmass", 0.0)),
 			float(status.get("mountainness", 0.0)),
+		],
+		"                tec %+.2f  plt %.2f  val %.2f" % [
+			float(status.get("tectonics", 0.0)),
+			float(status.get("plateaus", 0.0)),
+			float(status.get("valleys", 0.0)),
 		],
 	])
 

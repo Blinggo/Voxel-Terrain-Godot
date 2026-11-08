@@ -98,6 +98,40 @@ static func hash_coords(
 	return h
 
 
+## A value in [0, 1) from an already-computed hash.
+##
+## For callers that hold a 32-bit hash and want several independent-looking
+## numbers from it. A single [method hash_coords] call mixes the whole seed,
+## module and coordinate set, so splitting one hash is the cheapest way to get
+## the two jitter components of a feature point: there is no need to pay for a
+## second mixing pass just to place a point.
+static func unit_from_hash(h: int) -> float:
+	return float(h & U32) / 4294967296.0
+
+
+## A coarse value in [0, 1) taken from one byte-aligned slice of a hash,
+## [param slice] 0..3.
+##
+## Used for the small integer choices a regional feature needs (which of three
+## boundary kinds, which of several height bands). Whole bytes, so the slices are
+## independent for the same cost as one slice.
+static func unit_slice(h: int, slice_index: int) -> float:
+	var shift := (slice_index & 3) * 8
+	return float((h >> shift) & 0xFF) / 256.0
+
+
+## Order-independent mix of two hashes.
+##
+## A boundary between two regions must be described identically from either
+## side, so this must not depend on argument order: callers pass the hashes in
+## whatever order they discovered them, and both sides get the same character
+## for the shared edge.
+static func combine_pair(a: int, b: int) -> int:
+	var low := mini(a & U32, b & U32)
+	var high := maxi(a & U32, b & U32)
+	return mix(low ^ mix(high))
+
+
 ## Convenience: a value in [0, 1) at a coordinate, for one module stream.
 static func unit_at(
 		seed: int,

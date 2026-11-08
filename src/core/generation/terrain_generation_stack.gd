@@ -44,25 +44,46 @@ func is_valid() -> bool:
 	return engine != null
 
 
-## Registers the M1 pipeline.
+## Registers the pipeline.
 ##
 ## Order here is presentational. What matters is each module's declared
 ## dependencies:
 ## [codeblock]
 ## detail          (independent, per-column)
-## continentalness (independent)
-## elevation       <- continentalness
-## mountainness    <- continentalness
-## hills           <- continentalness, mountainness
-## surface         <- continentalness, elevation, mountainness, hills
+## continentalness (independent)                     raw continental layout
+## tectonics       (independent)                     plate regions, boundaries
+## archipelago     <- continentalness                island groups
+## coast_detail    <- continentalness                bays, peninsulas
+## landmass        <- continentalness, archipelago, coast_detail
+## elevation       <- landmass
+## mountainness    <- landmass, tectonics
+## hills           <- landmass, mountainness
+## plateaus        <- landmass
+## valleys         <- landmass, mountainness
+## surface         <- landmass, elevation, mountainness, hills, plateaus, valleys
 ## [/codeblock]
+##
+## [b]The M2 additions are the five fields between continentalness and the
+## surface.[/b] Nothing in M1's detail, continentalness or surface-height contract
+## changed shape: the pipeline is still a chain of independent scalar fields with
+## one composer, evaluated on the same node grid and interpolated the same way.
+## What changed is that the land signal the rest of the pipeline reads is now the
+## composed [member LandmassModule] field rather than the raw continental field, so
+## islands and coastline shaping are visible to every landform without each of them
+## knowing about islands.
 func _register_modules() -> bool:
 	var modules: Array[GenerationModule] = [
 		DetailModule.new(),
 		ContinentalnessModule.new(),
+		TectonicsModule.new(),
+		ArchipelagoModule.new(),
+		CoastModule.new(),
+		LandmassModule.new(),
 		ElevationModule.new(),
 		MountainModule.new(),
 		HillsModule.new(),
+		PlateauModule.new(),
+		ValleyModule.new(),
 		SurfaceModule.new(),
 	]
 

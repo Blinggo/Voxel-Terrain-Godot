@@ -19,8 +19,20 @@ func check(description: String, condition: bool, detail: String = "") -> void:
 		print("  FAIL  %s%s" % [description, suffix])
 
 
-func check_equal(description: String, actual: Variant, expected: Variant) -> void:
-	check(description, actual == expected, "actual=%s expected=%s" % [actual, expected])
+## Equality check with an optional trailing note.
+##
+## [param detail] exists because six call sites in the M1 suite passed one, and a
+## GDScript call with too many arguments raises at runtime *without* failing the
+## run: the check was silently skipped and the rest of the test function with it.
+## Accepting the argument is the fix that cannot be forgotten; the guard below is
+## the safety net if a future suite grows a fifth one.
+func check_equal(
+		description: String, actual: Variant, expected: Variant, detail: String = ""
+) -> void:
+	var note := "actual=%s expected=%s" % [actual, expected]
+	if not detail.is_empty():
+		note += " " + detail
+	check(description, actual == expected, note)
 
 
 func info(message: String) -> void:

@@ -42,6 +42,9 @@ const VIEWER_GROUP := "voxel_viewers"
 const SEA_PLANE_SIZE := 2048.0
 
 var _terrain: VoxelTerrain
+## First registered streaming viewer, cached so the sea can follow the camera
+## without walking a scene group every frame.
+var _viewer: VoxelViewer
 var _surface: GeographicSurface
 var _sea_plane: MeshInstance3D
 var _generator: TerrainBlockGenerator
@@ -168,6 +171,7 @@ func configure_viewers(view_distance_voxels: int) -> void:
 	var tree := get_tree()
 	if tree == null:
 		return
+	_resolve_viewer()
 	for node in tree.get_nodes_in_group(VIEWER_GROUP):
 		var viewer := node as VoxelViewer
 		if viewer == null:
@@ -177,6 +181,42 @@ func configure_viewers(view_distance_voxels: int) -> void:
 		# No collision meshes are generated in M0.1, so do not ask for them.
 		viewer.requires_collisions = false
 		viewer.requires_visuals = true
+
+
+## Keeps the sea under the camera.
+##
+## The plane used to be centred on the world origin, which meant that a viewer more
+## than half a plane away from the origin - including every capture taken on a
+## landmark out at z = -1400 - saw the terrain floating over the background with only
+## a sliver of blue at the horizon. Following the viewer costs one Vector3 write per
+## frame and keeps the water in front of the camera wherever it goes.
+func _process(_delta: float) -> void:
+	if _sea_plane == null:
+		return
+	if _viewer == null or not is_instance_valid(_viewer):
+		if not _resolve_viewer():
+			return
+	var here := _viewer.global_position
+	var sea_y := _sea_plane.position.y
+	if config != null:
+		sea_y = config.sea_level + 0.02
+	_sea_plane.position = Vector3(here.x, sea_y, here.z)
+
+
+## Caches the first registered streaming viewer. Returns false while the scene has
+## no viewer yet, which is normal on the frame the world is built.
+func _resolve_viewer() -> bool:
+	if _viewer != null and is_instance_valid(_viewer):
+		return true
+	var tree := get_tree()
+	if tree == null:
+		return false
+	for node in tree.get_nodes_in_group(VIEWER_GROUP):
+		var viewer := node as VoxelViewer
+		if viewer != null and viewer.is_inside_tree():
+			_viewer = viewer
+			return true
+	return false
 
 
 ## A flat translucent plane at sea level, purely so submerged terrain reads as
@@ -221,6 +261,7 @@ func _teardown() -> void:
 			remove_child(_sea_plane)
 		_sea_plane.queue_free()
 	_sea_plane = null
+	_viewer = null
 
 
 ## Snapshot of generation state, consumed by the debug overlay.
@@ -247,7 +288,11 @@ func get_status() -> Dictionary:
 		status["terrain_type"] = geography["terrain_type"]
 		status["surface_height_here"] = geography["surface_height"]
 		status["continentalness"] = geography["continentalness"]
+		status["landmass"] = geography["landmass"]
+		status["tectonics"] = geography["tectonics"]
 		status["mountainness"] = geography["mountainness"]
+		status["plateaus"] = geography["plateaus"]
+		status["valleys"] = geography["valleys"]
 	else:
 		status["terrain_type"] = &"unknown"
 

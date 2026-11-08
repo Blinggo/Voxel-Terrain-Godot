@@ -75,6 +75,9 @@ static func run(report, tree: SceneTree) -> void:
 	world.set_world_seed(world.config.world_seed)
 	await _wait_frames(tree, 5)
 
+	# ------------------------------------------------- air/sea visual ownership
+	await _test_sea_plane_follows_the_camera(report, world, tree)
+
 	# -------------------------------------------------------------- inspection
 	_test_camera_input(report, tree, camera)
 
@@ -274,6 +277,33 @@ static func _test_camera_input(report, tree: SceneTree, camera: OrbitCamera) -> 
 			"camera zooms on wheel input",
 			camera.distance < distance_before,
 			"%.1f -> %.1f" % [distance_before, camera.distance]
+	)
+
+
+## The sea plane used to be pinned to the world origin, which meant a viewer more
+## than half a plane away from it saw terrain floating over the background with a
+## sliver of blue at the horizon. The plane must sit under the streaming viewer.
+## Regression test for that defect: these assertions fail on the old code as soon as
+## the camera is not at the origin, which it never is in the shipped scene.
+static func _test_sea_plane_follows_the_camera(report, world, tree: SceneTree) -> void:
+	var plane := world.get_node_or_null("SeaPlane") as MeshInstance3D
+	report.check("the world puts a sea plane in the scene", plane != null)
+	if plane == null:
+		return
+
+	await _wait_frames(tree, 2)
+	var viewer: Vector3 = world.get_viewer_position()
+	report.check(
+			"the sea plane is centred under the streaming viewer",
+			absf(plane.position.x - viewer.x) <= 1.0 and absf(plane.position.z - viewer.z) <= 1.0,
+			"plane (%.0f, %.0f) viewer (%.0f, %.0f), origin distance %.0f"
+					% [plane.position.x, plane.position.z, viewer.x, viewer.z, plane.position.length()]
+	)
+	var expected_y: float = world.config.sea_level + 0.02
+	report.check(
+			"the sea plane sits at sea level",
+			absf(plane.position.y - expected_y) <= 0.001,
+			"y=%.2f expected %.2f" % [plane.position.y, expected_y]
 	)
 
 

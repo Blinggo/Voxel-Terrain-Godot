@@ -41,6 +41,7 @@ func _ready() -> void:
 	world.terrain_rebuilt.connect(_on_terrain_rebuilt)
 	debug_panel.regenerate_requested.connect(_on_regenerate_requested)
 	debug_panel.water_demo_requested.connect(_show_water_demo)
+	debug_panel.density_mode_requested.connect(_toggle_density_mode)
 
 	debug_panel.configure_from_config(world.config)
 
@@ -133,6 +134,7 @@ func _show_water_demo() -> void:
 	var cfg := world.config.duplicate_config()
 	cfg.world_seed = 1337
 	cfg.hydrology_enabled = true
+	cfg.density_mode = 0
 	cfg.terrain_height = 26.0
 	world.apply_config(cfg)
 	camera.set_fly_mode(false)
@@ -140,3 +142,15 @@ func _show_water_demo() -> void:
 	camera.pitch_degrees = -35.0
 	camera.yaw_degrees = 25.0
 	camera.focus_on(Vector3(256,world.get_surface_height(256,-544),-544))
+
+
+func _toggle_density_mode() -> void:
+	var cfg := world.config.duplicate_config()
+	cfg.density_mode = 1-cfg.density_mode
+	var previous_target := camera.target
+	var previous_pose := camera.global_transform
+	world.apply_config(cfg)
+	if camera.fly_mode:
+		camera.global_transform = previous_pose
+	else:
+		camera.focus_on(previous_target)

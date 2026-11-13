@@ -1,0 +1,60 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: headless
+ suite: m5
+==========================================================
+  PASS  legacy zero surface
+  PASS  negative inside / positive outside
+  PASS  repeat density deterministic
+  PASS  reconstruction deterministic
+  PASS  point/block same field
+  PASS  chunk partition and seam samples agree
+  PASS  continuous across grid and negative-coordinate boundaries
+  PASS  caller config mutation cannot change live density
+  PASS  different seed changes density
+  PASS  nested profile snapshot is independent
+  PASS  ten distinct configurable profiles
+  PASS  profile weights partition unity
+  PASS  foothill-to-range blending is continuous
+  PASS  relative plains/hills/alpine relief
+  PASS  plateau interior retains constant elevation
+  PASS  basin profile is depressed and low-relief
+  PASS  coast density effects disabled
+  PASS  profile composition flattens sampled plain
+  PASS  profile composition raises sampled alpine range
+  PASS  all bands disabled exactly y-H
+  PASS  geological toggle/amplitude/bounds
+  PASS  geological frequency affects its field
+  PASS  structure toggle/amplitude/bounds
+  PASS  structure frequency affects its field
+  PASS  roughness toggle/amplitude/bounds
+  PASS  roughness frequency affects its field
+  PASS  finite band has unmodified deep solid
+  PASS  genuine non-heightmap geometry: multiple vertical solid intervals   (919 columns)
+  PASS  both adapters share the exact field instance
+  PASS  uniform-write interval conservatively contains dense samples
+  PASS  uniform encoding at y=-400
+  PASS  uniform encoding at y=400
+  PASS  smooth SDF channel preserves shared sign/value
+  PASS  blocky material channel agrees with density solidity
+  PASS  native hybrid mesh has finite normalized normals
+  PASS  four-worker density identity
+  PASS  cache eviction/reconstruction preserves field
+  PASS  hybrid hydrology still carves final base surface
+  PASS  volumetric modifiers do not open sampled water beds   (316 wet reaches)
+  PASS  density 2D cache bounded
+  PASS  res://scenes/main.tscn explicit density ownership
+  PASS  res://scenes/main.tscn mode toggle preserves seed/camera
+  PASS  res://scenes/main.tscn mode toggle preserves free-flight pose
+  PASS  res://scenes/smooth_terrain.tscn explicit density ownership
+  PASS  res://scenes/smooth_terrain.tscn mode toggle preserves seed/camera
+  PASS  res://scenes/smooth_terrain.tscn mode toggle preserves free-flight pose
+
+----------------------------------------------------------
+RESULT: PASS  (46 checks)
+----------------------------------------------------------

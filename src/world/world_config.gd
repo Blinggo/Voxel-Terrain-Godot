@@ -136,6 +136,20 @@ extends Resource
 ## Octaves of fractal detail noise. 1 disables fractal accumulation.
 @export_range(1, 6, 1) var fractal_octaves: int = 4
 
+# --- M5 shared density -------------------------------------------------------
+
+## 0 reproduces the pre-M5 height representation; shipped scene opts into 1.
+@export_enum("Legacy height-derived", "Hybrid volumetric") var density_mode: int = 0
+@export var landform_profiles: Array[LandformProfile] = []
+@export var density_geological_amplitude: float = 2.0
+@export var density_geological_frequency: float = 0.008
+@export var density_structure_amplitude: float = 14.0
+@export var density_structure_frequency: float = 0.055
+@export var density_roughness_amplitude: float = 0.8
+@export var density_roughness_frequency: float = 0.18
+## Optional built-in FNL domain warp; zero avoids its extra sampling cost.
+@export_range(0.0,8.0,0.1) var density_warp_amplitude: float = 0.0
+
 # --- Hydrology ---------------------------------------------------------------
 
 ## Independently switchable; fields retain their M2/M3 random streams.
@@ -165,6 +179,17 @@ extends Resource
 func duplicate_config() -> WorldConfig:
 	var other := WorldConfig.new()
 	other.world_seed = world_seed
+	other.density_mode = density_mode
+	other.density_geological_amplitude = density_geological_amplitude
+	other.density_geological_frequency = density_geological_frequency
+	other.density_structure_amplitude = density_structure_amplitude
+	other.density_structure_frequency = density_structure_frequency
+	other.density_roughness_amplitude = density_roughness_amplitude
+	other.density_roughness_frequency = density_roughness_frequency
+	other.density_warp_amplitude = density_warp_amplitude
+	for profile in landform_profiles:
+		if profile != null:
+			other.landform_profiles.append(profile.duplicate(true))
 	other.hydrology_enabled = hydrology_enabled
 	other.hydrology_source_rise = hydrology_source_rise
 	other.hydrology_width_scale = hydrology_width_scale
@@ -207,6 +232,16 @@ func duplicate_config() -> WorldConfig:
 func to_dictionary() -> Dictionary:
 	return {
 		"world_seed": world_seed,
+		"density_mode": density_mode,
+		"landform_profiles": landform_profiles.map(func(p: LandformProfile): return p.to_dictionary() if p != null else {}),
+		"density_geological_amplitude": density_geological_amplitude,
+		"density_geological_frequency": density_geological_frequency,
+		"density_structure_amplitude": density_structure_amplitude,
+		"density_structure_frequency": density_structure_frequency,
+		"density_roughness_amplitude": density_roughness_amplitude,
+		"density_roughness_frequency": density_roughness_frequency,
+		"density_warp_amplitude": density_warp_amplitude,
+
 		"hydrology_enabled": hydrology_enabled,
 		"hydrology_source_rise": hydrology_source_rise,
 		"hydrology_width_scale": hydrology_width_scale,

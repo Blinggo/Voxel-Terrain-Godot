@@ -104,6 +104,9 @@ const HILL_THRESHOLD := 0.42
 const PLATEAU_THRESHOLD := 0.60
 const VALLEY_THRESHOLD := 0.45
 
+var _profiles: LandformProfiles
+var _hybrid := false
+
 var _sea_level := 20.0
 var _base_height := 24.0
 var _terrain_height := 26.0
@@ -141,6 +144,8 @@ func _init() -> void:
 
 func configure(context: GenerationContext) -> void:
 	var config := context.config
+	_hybrid = config.density_mode == 1
+	_profiles = LandformProfiles.new(config.landform_profiles)
 	_landmass_index = dependency_index(&"landmass")
 	_elevation_index = dependency_index(&"elevation")
 	_mountains_index = dependency_index(&"mountainness")
@@ -223,7 +228,11 @@ func evaluate_node(_x: int, _z: int, values: PackedFloat32Array) -> void:
 	height = maxf(height - carve, minf(height, valley_floor))
 	height = lerpf(height, maxf(height, _sea_level + DRAINAGE_FLOOR), land)
 
-	# 6. Coastal softening, then bounds.
+	if _hybrid:
+		height = _profiles.shape(height,base,land_signal,mountains,hills,plateaus,valleys,elevation)
+		height = lerpf(height,maxf(height,_sea_level+DRAINAGE_FLOOR),land)
+
+	# 6. Coastal softening.
 	values[get_output_index()] = soften_coast(height)
 
 

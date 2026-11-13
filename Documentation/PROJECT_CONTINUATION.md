@@ -1,9 +1,10 @@
 # Project Continuation
 
-Active milestone: **M4 implementation checkpoint — not fully complete**.
-Current authoritative report: `Milestones/M04_HYDROLOGY_AND_NATURAL_LANDFORMS.md`.
-The older M2/M3 state sections below are retained as historical context; the M4
-handoff at the end supersedes them where changed.
+Active milestone: **M5 volumetric/landform implementation checkpoint — full acceptance remains open**.
+Current authoritative report: `Milestones/M05_VOLUMETRIC_TERRAIN_AND_LANDFORMS.md`.
+Visual comparison: `Milestones/M05_VISUAL_COMPARISON.html` (24 fixed-camera renders).
+M4 remains incomplete; its report and historical sections below are retained.
+The M5 handoff at the end supersedes earlier architecture/status where changed.
 
 Read this first, then `Documentation/Architecture/OVERVIEW.md`.
 
@@ -370,3 +371,18 @@ script are included. No APK, artifacts/ or .android/ generated.
 - Research: `Research/M04_VINTAGE_STORY_TERRAIN.md`; detailed architecture: `Architecture/HYDROLOGY.md`; decision: ADR-0018.
 - `tests/benchmark.gd` historical denominator corrected (previous count 250 vs actual 50). Do not reuse old headline microseconds as comparable baselines.
 - No APK, release package, artifacts/ or .android/ created.
+
+
+## M5 handoff — shared density and profiles
+
+Implemented shared `TerrainDensity`, ten `LandformProfile` parameter sets and one normalized evaluator; SurfaceModule applies profiles before hydrology. The world explicitly injects one field into the active TYPE/SDF adapter. New 3D bands use built-in FastNoiseLite; structural effects are slope/depth/water-masked, carve-only recesses. Baseline legacy mode remains exact y-H. Caller configuration/profile snapshots and bounded caches are preserved.
+
+The shipped main/smooth scenes opt into Hybrid; WorldConfig.new() stays Legacy for prior callers. The Terrain button preserves the comparison camera. The M4 lake button explicitly restores legacy/1337/height26/hydrology. `get_surface_height` is the carved base, not necessarily the final hybrid boundary. World identity includes mode and profile/noise configuration.
+
+Evidence: standalone M5 suite 46 PASS; 919 multi-transition columns in the fixed volume; 316 sampled wet reaches retain protected beds. All 24 final comparison images report central readiness and identical logged camera transforms per site. Final display-backed whole-project regression: **379 PASS across 10 suites, exit 0**, no script/parse/leak messages. The M5 report/log preserves the breakdown and the initial failed legacy-height seam assertion.
+
+Measured Linux surface-block costs: legacy/hybrid cold density 528.436/685.045 ms; warm 400.10/2401.81 µs; blocky adapters 84.54/3492.36 µs; smooth 787.54/2856.44 µs. Control caching reduced an initial ~6.35 ms warm hybrid field to ~2.4 ms. These are not Android results. A larger H=256 capture attempt missed readiness; final gallery uses H=192/V=160 with central-only readiness. Rendering interval labels include screenshot readback/encoding and are not clean FPS benchmarks.
+
+Research verified Primitive Voxels is CC0-1.0, not MIT; Terrain3D, FastNoiseLite, Terrainy and Voxel Tools v1.7 are MIT at inspected revisions. No third-party runtime source/assets were copied and no dependency was added.
+
+Next: finish M5 visual/material/performance acceptance. Smooth is still single-material, local cavities/detached caps remain possible, macro facets and finite streaming edges remain, and every profile/long-range composition has not been separately accepted. M4 outlet chains, terraces, fine shorelines, cold latency, Android and long-duration streaming remain unresolved. No APK/export; restore matching Android editor arm64 extension per ADR-0006 and use Godot Editor only. See Architecture/DENSITY_AND_LANDFORMS.md, Research/M05_VOLUMETRIC_TERRAIN.md and ADR-0019 before changing this pipeline.

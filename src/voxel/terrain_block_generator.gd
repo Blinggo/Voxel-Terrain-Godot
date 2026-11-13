@@ -1,100 +1,63 @@
 class_name TerrainBlockGenerator
 extends VoxelGeneratorScript
 
-## Adapter between Voxel Tools and the project's terrain model.
-##
-## Its responsibility is narrow on purpose: translate a block of voxel
-## coordinates into type ids and write them into the [VoxelBuffer] Voxel Tools
-## hands us. It performs no terrain mathematics of its own - it asks
-## [GeographicSurface] for the column heights and [BlockPalette] for the material.
-## Geography therefore stays in `src/core/` and can be replaced without editing
-## this file.
-##
-## [b]Threading.[/b] Voxel Tools may call [method _generate_block] on worker
-## threads, and may call it for several blocks at once. This class mutates no
-## state while generating: [method configure] runs once on the main thread
-## before the generator is attached, and everything written is derived from the
-## arguments. The only shared objects touched are the height field and the
-## palette, both documented as read-only once configured.
-##
-## [b]Cost.[/b] One [method GeographicSurface.sample_block_heights] call per block
-## - which shares node lookups and interpolation weights across all of the
-## block's columns - plus at most three [method VoxelBuffer.fill_area] calls per
-## column, instead of one noise call and one [method VoxelBuffer.set_voxel] per
-## voxel. Crossing between GDScript and C++ is comparatively expensive, so both
-## reductions matter on mobile.
-
-var _surface: GeographicSurface
+## Density/material data -> TYPE channel only. No geographical/density maths.
+## configure() keeps the prior surface API for callers; worlds pass one shared
+## TerrainDensity explicitly. Run-length writes avoid one native call per voxel.
+var _density: TerrainDensity
 var _palette: BlockPalette
 
+func configure(surface: GeographicSurface, palette: BlockPalette, density: TerrainDensity = null) -> void:
+	_density = density if density != null else TerrainDensity.new(surface)
+	_palette = palette.create_snapshot()
 
-## Must be called on the main thread before the generator is given to a terrain.
-func configure(surface: GeographicSurface, palette: BlockPalette) -> void:
-	if surface == null or palette == null:
-		push_error("TerrainBlockGenerator.configure(): surface and palette are required.")
-		return
-	_surface = surface
-	_palette = palette
+func get_density() -> TerrainDensity:
+	return _density
 
-
-## Tells Voxel Tools which channels we write, so it can skip allocating and
-## storing the rest.
 func _get_used_channels_mask() -> int:
 	return VoxelBuffer.CHANNEL_TYPE_BIT
 
-
-func _generate_block(out_buffer: VoxelBuffer, origin_in_voxels: Vector3i, _lod: int) -> void:
-	if _surface == null or _palette == null:
-		# configure() was never called. Leave the block empty rather than
-		# spamming errors from worker threads.
+func _generate_block(buffer: VoxelBuffer, origin: Vector3i, lod: int) -> void:
+	assert(lod == 0)
+	if _density == null:
 		return
+	var size := buffer.get_size()
+	if _density.is_height_derived():
+		_write_legacy_spans(buffer,origin,size)
+		return
+	var uniform := _density.uniform_material(origin,size,_palette)
+	if uniform >= 0:
+		buffer.fill(uniform,VoxelBuffer.CHANNEL_TYPE)
+		return
+	var materials := _density.material_block(origin,size,_palette)
+	buffer.fill(BlockPalette.AIR,VoxelBuffer.CHANNEL_TYPE)
+	for z in range(size.z):
+		for x in range(size.x):
+			var start := (z*size.x+x)*size.y
+			var run := 0
+			var material := int(materials[start])
+			for y in range(1,size.y+1):
+				var next := int(materials[start+y]) if y < size.y else -1
+				if next != material:
+					if material != BlockPalette.AIR:
+						buffer.fill_area(material,Vector3i(x,run,z),Vector3i(x+1,y,z+1),VoxelBuffer.CHANNEL_TYPE)
+					run = y
+					material = next
+	buffer.compress_uniform_channels()
 
-	var block_size := out_buffer.get_size()
-	var soil_depth := _palette.soil_depth
-	var origin := origin_in_voxels
 
-	# All column heights for this block in one call. The surface evaluates its
-	# regional fields on a coarse node grid, so asking per block instead of per
-	# column lets it reuse the same nodes for all 256 columns.
-	var heights := _surface.sample_block_heights(
-			Vector2i(origin.x, origin.z), Vector2i(block_size.x, block_size.z)
-	)
-
-	for z in range(block_size.z):
-		for x in range(block_size.x):
-			var surface := heights[z * block_size.x + x]
-
-			# Local y of the topmost solid voxel of the column (the grass one).
-			# Derived purely from the world position, never from the block, so
-			# neighbouring blocks agree on shared voxels by construction.
-			var top_local := int(floor(surface)) - origin.y
-			if top_local < 0:
-				# Whole column lies above the surface: air, nothing to write.
-				continue
-
-			# Ranges are half-open [lo, hi) in local y.
-			var stone_hi := clampi(top_local - soil_depth, 0, block_size.y)
-			var dirt_lo := stone_hi
-			var dirt_hi := clampi(top_local, 0, block_size.y)
-
-			if stone_hi > 0:
-				out_buffer.fill_area(
-						BlockPalette.STONE,
-						Vector3i(x, 0, z),
-						Vector3i(x + 1, stone_hi, z + 1),
-						VoxelBuffer.CHANNEL_TYPE
-				)
-			if dirt_hi > dirt_lo:
-				out_buffer.fill_area(
-						BlockPalette.DIRT,
-						Vector3i(x, dirt_lo, z),
-						Vector3i(x + 1, dirt_hi, z + 1),
-						VoxelBuffer.CHANNEL_TYPE
-				)
-			if top_local < block_size.y:
-				out_buffer.fill_area(
-						BlockPalette.GRASS,
-						Vector3i(x, top_local, z),
-						Vector3i(x + 1, top_local + 1, z + 1),
-						VoxelBuffer.CHANNEL_TYPE
-				)
+func _write_legacy_spans(buffer: VoxelBuffer, origin: Vector3i, size: Vector3i) -> void:
+	var spans := _density.legacy_material_spans(origin,size,_palette)
+	buffer.fill(BlockPalette.AIR,VoxelBuffer.CHANNEL_TYPE)
+	for z in range(size.z):
+		for x in range(size.x):
+			var i := (z*size.x+x)*3
+			var stone := spans[i]
+			var dirt := spans[i+1]
+			var grass := spans[i+2]
+			if stone > 0:
+				buffer.fill_area(BlockPalette.STONE,Vector3i(x,0,z),Vector3i(x+1,stone,z+1),VoxelBuffer.CHANNEL_TYPE)
+			if dirt > stone:
+				buffer.fill_area(BlockPalette.DIRT,Vector3i(x,stone,z),Vector3i(x+1,dirt,z+1),VoxelBuffer.CHANNEL_TYPE)
+			if grass >= 0:
+				buffer.set_voxel(BlockPalette.GRASS,x,grass,z,VoxelBuffer.CHANNEL_TYPE)

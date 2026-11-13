@@ -1,0 +1,37 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: headless
+ suite: core
+==========================================================
+
+-- core generation ---------------------------------------
+  PASS  surface heights are finite
+  PASS  surface heights stay within the documented bounds
+  PASS  surface height is a pure function of its coordinates   (actual=20.5355262756348 expected=20.5355262756348)
+  PASS  the surface reports a valid module pipeline
+        execution order: detail, continentalness, tectonics, archipelago, coast_detail, landmass, elevation, mountainness, hills, plateaus, valleys, surface, hydrology
+  PASS  same seed produces identical heights from independent instances   (actual=0 expected=0)
+        compared 361 columns across two independent surfaces
+  PASS  different seeds produce different terrain   (100.0% of 361 columns differ)
+  PASS  surface stays within the composed height bounds   (range 6.05..57.88)
+  PASS  the surface actually has relief   (range 6.05..57.88)
+  PASS  voxel above the surface is air   (actual=0 expected=0)
+  PASS  voxel at the surface is grass   (actual=1 expected=1)
+  PASS  voxel one below the surface is dirt   (actual=2 expected=2)
+  PASS  voxel at soil depth is dirt   (actual=2 expected=2)
+  PASS  voxel below soil depth is stone   (actual=3 expected=3)
+  PASS  block content is independent of generation order
+  PASS  column surfaces reconstructed from block data match the analytic height field   (actual=0 expected=0)
+        checked 42 columns across the x=32 block boundary
+  PASS  columns spanning a vertical block boundary are continuous   (actual=0 expected=0)
+        checked 49 columns across the y=32 block boundary
+  PASS  concurrent height sampling matches serial results on 4 threads   (actual=0 expected=0)
+
+----------------------------------------------------------
+RESULT: PASS  (17 checks)
+----------------------------------------------------------

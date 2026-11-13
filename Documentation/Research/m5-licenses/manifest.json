@@ -1,0 +1,22 @@
+[
+  {
+    "file": "FastNoiseLite-LICENSE.txt",
+    "sha256": "c08da3239b919c12f4ec616b457a8dd0fc923c8102c8a742c4006fcb5de28fb0"
+  },
+  {
+    "file": "Terrain3D-LICENSE.txt",
+    "sha256": "f7ecc09ce65c97828130728072c5a6ed3cc185d3bf0436e51a15828ad9ceca7c"
+  },
+  {
+    "file": "Terrainy-LICENSE.txt",
+    "sha256": "12ac547a64be5e92e590921fe513927b5590b1d79244100afb64e0c29f0d934b"
+  },
+  {
+    "file": "godot_voxel-LICENSE.md.txt",
+    "sha256": "3a1f742145830b5702fe9e7aa2566c5896012a88fb3f70a00d6fd64e9cc203ee"
+  },
+  {
+    "file": "primitive-voxels-godot-LICENSE.txt",
+    "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+  }
+]

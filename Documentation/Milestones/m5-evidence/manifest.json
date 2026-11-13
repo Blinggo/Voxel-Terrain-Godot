@@ -1,0 +1,597 @@
+{
+  "milestone": "M5 implementation checkpoint",
+  "validation": "379 PASS / 10 suites; full acceptance remains open",
+  "date": "2026-11-06",
+  "files": [
+    {
+      "path": "Documentation/Architecture/DENSITY_AND_LANDFORMS.md",
+      "bytes": 9178,
+      "sha256": "c2fec6c667ebaffb0e1a0c0b8cc9d19ce5b27d35c41e8be760667c854062373a"
+    },
+    {
+      "path": "Documentation/Architecture/OVERVIEW.md",
+      "bytes": 12380,
+      "sha256": "84bb6de3040608637b698303adcedb3f79dd20fd0726d9f16c214b8bb1aec0f3"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0019-shared-density-and-blended-landforms.md",
+      "bytes": 2518,
+      "sha256": "0a191b6f17ac1726476c361f441ead9d11fab1859866f2c2c77bbecd3b88d0b6"
+    },
+    {
+      "path": "Documentation/Milestones/M05_VISUAL_COMPARISON.html",
+      "bytes": 11082382,
+      "sha256": "af95b0f2b8b0e1f064d22008926dfbcf75fb723001b9a42c9cd91543176da9a5"
+    },
+    {
+      "path": "Documentation/Milestones/M05_VOLUMETRIC_TERRAIN_AND_LANDFORMS.md",
+      "bytes": 20752,
+      "sha256": "71e8c9a0459731d490579d3daf8e10093041ed7b60721ba2f0cea84da8e06f87"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/baseline-core.log",
+      "bytes": 2135,
+      "sha256": "70d604d111c8be7a8be8ae4f8880cdab244daa982963e9badf24cceb105cfed4"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/baseline-m4.log",
+      "bytes": 12371,
+      "sha256": "c00ccbbd7d1cbb7ff2b3615a7f3db5ca1d46ad6da98c52841fe2d1d775163595"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_blocky_hybrid.png",
+      "bytes": 477968,
+      "sha256": "e2b6d55afbdf5ae53d23fd705a8a98808bb6b02716d8d649ec5cbcfd35354d01"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_blocky_hybrid.png.import",
+      "bytes": 998,
+      "sha256": "6efd3881d1a90adbd5d5afbe4fee5f1be1cb3257c9806d0fc9543e542ff0ed13"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_blocky_legacy.png",
+      "bytes": 467465,
+      "sha256": "7677af6db78daf45baad095ee8f8c02fda5e5c14ee862f011f0eaac3811ce631"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_blocky_legacy.png.import",
+      "bytes": 998,
+      "sha256": "46dad49654e84b4cac168460b561696020a4f5aa3320eec0c9867d09e576a150"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_smooth_hybrid.png",
+      "bytes": 276830,
+      "sha256": "85b03de23152c8d2ff1bf15382d677a2a8274d8b55184f4defba22631934e824"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_smooth_hybrid.png.import",
+      "bytes": 998,
+      "sha256": "383347fd5fa0697fb3f8e6ca5889c1d18e529e0253eb4a0a410f2f8276244b26"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_smooth_legacy.png",
+      "bytes": 281568,
+      "sha256": "ded83dbdb58ec8e1c61ed02c22bfa4dd271aea94aa90e56d286b0a83a8678cac"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_smooth_legacy.png.import",
+      "bytes": 998,
+      "sha256": "290e3c14a8608da8288462f25811a30d91833d440760bab555bbd4945c002e00"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_blocky_hybrid.png",
+      "bytes": 398968,
+      "sha256": "476fa2b3e8108a7f31962e08ba3572c2d776e9e856a55b8af28fce083fe1dc0b"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_blocky_hybrid.png.import",
+      "bytes": 998,
+      "sha256": "c983d510803e9d4ae84ca7f607a2bdf4da55088c8e8277d6afa7275c215950de"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_blocky_legacy.png",
+      "bytes": 388008,
+      "sha256": "0b85efa330ab8329942ac0d81e4ca8d7d5bc9046c8f28946e40f0b9884fcd707"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_blocky_legacy.png.import",
+      "bytes": 997,
+      "sha256": "eba72db758a83c7c66ceca8f389866fe3fbada27a010606c3a209b143355e240"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_smooth_hybrid.png",
+      "bytes": 257738,
+      "sha256": "43d8470da8ff40b686afadba44a7a7b6616667abb8608dcbf4e93ef0dceb3036"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_smooth_hybrid.png.import",
+      "bytes": 998,
+      "sha256": "74844f9989bb4334ded91cd59038d96bad5e68c054ba2ef61bd3790b3fc6a60f"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_smooth_legacy.png",
+      "bytes": 256502,
+      "sha256": "fb8163756b288a49a9fe0ae0099965440eedaf4f12f86d986a50de017fd67ffd"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_smooth_legacy.png.import",
+      "bytes": 997,
+      "sha256": "10ae77e79036717c23bc19328de6dcf5996397aac594f0b610d2ace60504bf80"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/components-linux.txt",
+      "bytes": 933,
+      "sha256": "7b3621b9433d532b9a2ebecbcf42a74b467d5b6141d4952d610afa8d81f71cb4"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_blocky_hybrid.png",
+      "bytes": 447191,
+      "sha256": "7115c6e937784f33834104e12e100376dd97f468fd2d2f66bc65b533015ede85"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_blocky_hybrid.png.import",
+      "bytes": 998,
+      "sha256": "78e47c3d25130643e5c42b048f354bb304f445eb9e2e19288b126f86a4187d20"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_blocky_legacy.png",
+      "bytes": 433341,
+      "sha256": "28b8b8ca7e30bee1bbb13d8b9471e472b76a9503c92f92bf3d3d19d8d8aa416a"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_blocky_legacy.png.import",
+      "bytes": 998,
+      "sha256": "4224465824d3c392d383920b268538271b6b7be5a6f314379612e38e5ed25d0b"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_smooth_hybrid.png",
+      "bytes": 246358,
+      "sha256": "4698d4965ecf057d127d76870b23bf5a26d18e66a917828d6739081398eaf8de"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_smooth_hybrid.png.import",
+      "bytes": 998,
+      "sha256": "2ee32f10f298d95ba764fb7fb703155d46aba1f77b615290769e1951bc1ee9d4"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_smooth_legacy.png",
+      "bytes": 251118,
+      "sha256": "f628c7325f2ed26f88e4d89a939061db9fe1ac918f1427c4b326b6a655a503b7"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_smooth_legacy.png.import",
+      "bytes": 998,
+      "sha256": "be43ca99665214f2e3d7ab3c97b118f11817f4a85ec9e6c99fa38e348a722c7c"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-perf-after.log",
+      "bytes": 430,
+      "sha256": "d09e8928b4ef48115529802ae55184af11a7457b949bb64ec04b9765c28626a6"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-perf-before.log",
+      "bytes": 431,
+      "sha256": "cb40d97599a9ff364829a51c1c066916773046eaf4cf42324bd953c8f22a11ec"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-probe.log",
+      "bytes": 173,
+      "sha256": "58eb87033dd8d423b78c571a31278e1d5b6365d253584d5b5a77e4616c96e400"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-sites.log",
+      "bytes": 2647,
+      "sha256": "345d6675d0677f77fd0bf0e90aac81c28abad5f33a096f3b52d40c43b9c7846d"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-tests.log",
+      "bytes": 2819,
+      "sha256": "8314912585bb7011e9a834a94fa2d35c752edccba33605d91ae96a19ba3d7e89"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_blocky_hybrid.png",
+      "bytes": 408560,
+      "sha256": "e481a21997fd94d495d972a705ee7404ec70609259a92a0049641f0c81888da9"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_blocky_hybrid.png.import",
+      "bytes": 1001,
+      "sha256": "206750aeca4cbde59eec986d067cc01cd47faa845332512cdc68920538323fd9"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_blocky_legacy.png",
+      "bytes": 440204,
+      "sha256": "784f9b9b8fa6d15ec294ee63bef5f72043e13df622bbb94736bf3aafa8a0deb6"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_blocky_legacy.png.import",
+      "bytes": 1001,
+      "sha256": "be89e424a3debb709037ea23b07d7b4bb0646ecb8ae29a3126a212ea67816967"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_smooth_hybrid.png",
+      "bytes": 239977,
+      "sha256": "5d15f42751710d8b93849bc1a72a4d14950608d76442021a5cc835ed28855032"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_smooth_hybrid.png.import",
+      "bytes": 1001,
+      "sha256": "58abce854817a7c80a147bf32c68f824b1356e7528c6ec8558ff417bd3e5f1b9"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_smooth_legacy.png",
+      "bytes": 249665,
+      "sha256": "cd132775062090358f6a3f8e95a1b43a554411ecbd88bb4a90d88feb7e968fc6"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_smooth_legacy.png.import",
+      "bytes": 1000,
+      "sha256": "78f4d77d044666cc3aaa5629a903819a19155ff733ed8da78c2626918730adad"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_blocky_hybrid.png",
+      "bytes": 453194,
+      "sha256": "6da360693bfe6fb85fbbff1e24c620225922092825e3d00f8a5db2cc9b38a4af"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_blocky_hybrid.png.import",
+      "bytes": 1004,
+      "sha256": "a40d44472890e44ccf8e5bf64340e4163d3a4cafb8358211ab21f72400de3d1b"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_blocky_legacy.png",
+      "bytes": 435124,
+      "sha256": "fd3e8554e1a2560a5f886ba49d0a362eab256a9654ff77a35a72d110d9aabc76"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_blocky_legacy.png.import",
+      "bytes": 1004,
+      "sha256": "25b2fcb56b39b18bcca515f720121865f969aaafdc1a2dadccd826c3ddcf5ae3"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_smooth_hybrid.png",
+      "bytes": 238947,
+      "sha256": "d6a2a9ac29390e177a18807c53a6a6fd6d7853d8ac99a855c77dbe8e7c8ea1e2"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_smooth_hybrid.png.import",
+      "bytes": 1004,
+      "sha256": "dc05a36ace53988f910a1c7fe5adf0835c6dc2750260a37891f0e99b76bee87b"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_smooth_legacy.png",
+      "bytes": 244686,
+      "sha256": "8d91fc97a0844ecac7ad41f35b7066e51527766edd1283f2b7c2836b6e304d2a"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_smooth_legacy.png.import",
+      "bytes": 1004,
+      "sha256": "c3939b16d48d230efd80e9c5195396509a4907c1530fa9ac1fc32e1bd71e3928"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_blocky_hybrid.png",
+      "bytes": 390534,
+      "sha256": "182e2a789fb795865b6b1e5f2a98bb9333d156a7201e915e39f8ebf77015499a"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_blocky_hybrid.png.import",
+      "bytes": 998,
+      "sha256": "95a7e24c84bf64404d5bc810fdf0c26c162c5f8bb0ece573d28b2ca051a737a9"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_blocky_legacy.png",
+      "bytes": 431124,
+      "sha256": "1effa98810134d1ec0752c56a08dff3bff7842e70716a436b92f036fe91719af"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_blocky_legacy.png.import",
+      "bytes": 997,
+      "sha256": "6462824d7f6e251f5ca7536ed45c6733c47ef3d1b1251fd1e6aa94c5f6a628b7"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_smooth_hybrid.png",
+      "bytes": 265624,
+      "sha256": "aa17beb05e67d838f9f95c41782627cb3e050f7de8caee071b07a191f0fc64b5"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_smooth_hybrid.png.import",
+      "bytes": 998,
+      "sha256": "552f79036f82188465249a2dd506482b113a546c583a6371ce229c47ec24f9bf"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_smooth_legacy.png",
+      "bytes": 326691,
+      "sha256": "781aebbb5ceeddac17a6bd077dea40ad70015fc642100331f896bf537847b151"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_smooth_legacy.png.import",
+      "bytes": 998,
+      "sha256": "e99b972d116fe502725b8730d928c15231af805d82b76af0b54b68dea4c365a9"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/rejected-unrestricted-smooth.png",
+      "bytes": 522668,
+      "sha256": "ebe3c0f795c177fbe0fadb8db20c088262162e55a4fa7052e7be1834410d5324"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/sampling-linux.txt",
+      "bytes": 430,
+      "sha256": "9c99b4b2f4da29200da43e07b057e924f0003ca049c255c20bbb2ea8117fdfc1"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/showcase-first-attempt.txt",
+      "bytes": 943,
+      "sha256": "bac8bc307870ac2e7d21bdb1b1cbe594f03ce611987842add95bb61da1734d5e"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/showcase-linux.txt",
+      "bytes": 6853,
+      "sha256": "c31ded821e55a625b624a8e9a2dc7db808cc0b206fda64548d26d819d917dfc0"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/tests-377-before-flight-fix.txt",
+      "bytes": 55794,
+      "sha256": "958d45054c43c585580e5f2e4781147e20a4aeea30e83dd6ac8dac8d779156f2"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/tests-first-attempt.txt",
+      "bytes": 59354,
+      "sha256": "31cb2b0806e529f7310229c3792a02f25ea2e0085078cf1800668106ef6a36fe"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/tests-linux.txt",
+      "bytes": 55945,
+      "sha256": "45f22e63b0eb3ce3163c985d32aa6ccb5c8055221c80aa032730d3ecd02a3908"
+    },
+    {
+      "path": "Documentation/PROJECT_CONTINUATION.md",
+      "bytes": 27629,
+      "sha256": "7db2971e1f4db04df88c8e07a1c1f546c5aeff42eea9750aa291b8061aafc19d"
+    },
+    {
+      "path": "Documentation/Research/M05_VOLUMETRIC_TERRAIN.md",
+      "bytes": 8543,
+      "sha256": "a55f90aecb01b0ef49db6f31851be39b55c5a7deb8a25fab8ce4a3f5e8cc4703"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/FastNoiseLite-LICENSE.txt",
+      "bytes": 1120,
+      "sha256": "c08da3239b919c12f4ec616b457a8dd0fc923c8102c8a742c4006fcb5de28fb0"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/Terrain3D-LICENSE.txt",
+      "bytes": 1112,
+      "sha256": "f7ecc09ce65c97828130728072c5a6ed3cc185d3bf0436e51a15828ad9ceca7c"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/Terrainy-LICENSE.txt",
+      "bytes": 1068,
+      "sha256": "12ac547a64be5e92e590921fe513927b5590b1d79244100afb64e0c29f0d934b"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/godot_voxel-LICENSE.md.txt",
+      "bytes": 1075,
+      "sha256": "3a1f742145830b5702fe9e7aa2566c5896012a88fb3f70a00d6fd64e9cc203ee"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/manifest.json",
+      "bytes": 659,
+      "sha256": "23331c8649b48589d1f34093c4a6b8d6e2529e801c34e03e9f975e9cbd3e0872"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/primitive-voxels-godot-LICENSE.txt",
+      "bytes": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "path": "scenes/main.tscn",
+      "bytes": 6862,
+      "sha256": "5d6923839712eca3c033cd7a733137f9fd09ea289cce6e09592feb179b82128b"
+    },
+    {
+      "path": "src/core/density/terrain_density.gd",
+      "bytes": 11340,
+      "sha256": "2ac5705fdd45e8c728d752710f74daf7f9ebaac5157447a321806caa1977c968"
+    },
+    {
+      "path": "src/core/density/terrain_density.gd.uid",
+      "bytes": 20,
+      "sha256": "04f3d8a926aef01150d78c9d8b573271c056cd3e265cb1b711af7a6f85329064"
+    },
+    {
+      "path": "src/core/generation/modules/surface_module.gd",
+      "bytes": 11797,
+      "sha256": "ae2087e063137b2c4e5378c005fc856dccac0aeecaeaf6167940d319e93b8bb6"
+    },
+    {
+      "path": "src/core/generation/modules/surface_module.gd.uid",
+      "bytes": 19,
+      "sha256": "6c1e3ada1bfa505d8984e15d58cc772c8bef868294e81c454bcd18121be5e620"
+    },
+    {
+      "path": "src/core/hydrology/drainage_network.gd",
+      "bytes": 12704,
+      "sha256": "4fc52fb8723635cb724d5f4e902e2094481a4161f113729c887fd348d696d463"
+    },
+    {
+      "path": "src/core/hydrology/drainage_network.gd.uid",
+      "bytes": 20,
+      "sha256": "e16424ae0317f96f96da1dd1c3a8601ab14eb3cfbb4644240f4c54b9218489fc"
+    },
+    {
+      "path": "src/core/landforms/landform_profile.gd",
+      "bytes": 1465,
+      "sha256": "6f1f7e4142084401354df73173f024c88629f6897d46cd41666b326ea62afd90"
+    },
+    {
+      "path": "src/core/landforms/landform_profile.gd.uid",
+      "bytes": 20,
+      "sha256": "1f2960f4dba7ede6db7d3fcc30ed1c3c8538e0fa41c6b26d6339788ac5299201"
+    },
+    {
+      "path": "src/core/landforms/landform_profiles.gd",
+      "bytes": 3381,
+      "sha256": "eb91e69f86c706a0d704c3326402be95820fe0333a7e5410c15bb12b67da2528"
+    },
+    {
+      "path": "src/core/landforms/landform_profiles.gd.uid",
+      "bytes": 20,
+      "sha256": "635d2afae9280bcb03294a19342654b18329a5a956ade82c148ae256f22e23a2"
+    },
+    {
+      "path": "src/debug/debug_panel.gd",
+      "bytes": 9724,
+      "sha256": "1ce27e5648b99ca747a2c4dc14a28296de579cbf59084134cc3a3f0148a74fd0"
+    },
+    {
+      "path": "src/debug/debug_panel.gd.uid",
+      "bytes": 20,
+      "sha256": "fead3baaf6a2081ec94ef0afe0750800451d12477c3ca52543fddb02096b45eb"
+    },
+    {
+      "path": "src/voxel/terrain_block_generator.gd",
+      "bytes": 2393,
+      "sha256": "d18fffd7c1b86d75cb6703e70cb60c1e502df5a8154505d4fcd823399588e23a"
+    },
+    {
+      "path": "src/voxel/terrain_block_generator.gd.uid",
+      "bytes": 19,
+      "sha256": "b011897244dc71688e01d35555092a0ed8ed89cf3c0a8d4f180d34aa7fb919b5"
+    },
+    {
+      "path": "src/voxel/terrain_smooth_generator.gd",
+      "bytes": 1084,
+      "sha256": "d6dcae7551fad5e883b00f9e487ce29748d7418a5ab6d2541f5b93375d883be1"
+    },
+    {
+      "path": "src/voxel/terrain_smooth_generator.gd.uid",
+      "bytes": 20,
+      "sha256": "2b4050a8db7ca19f167d36b9a404542f875cac0a016bd7a0c570fa219daa503f"
+    },
+    {
+      "path": "src/world/main_scene.gd",
+      "bytes": 5563,
+      "sha256": "3dea8d7eeec6305d5eef7dda4f8cc9496330f556408e79392ff766f4bf435fef"
+    },
+    {
+      "path": "src/world/main_scene.gd.uid",
+      "bytes": 20,
+      "sha256": "0977792ad989da6061a823aaca8e02387973de02ffd1c2dc37a4f7b07778f1da"
+    },
+    {
+      "path": "src/world/voxel_world.gd",
+      "bytes": 13488,
+      "sha256": "d5fc5cf5aa85e4d58f7d09e4a8d11b493abc5b37a47055be2c9e8766f06aa3bd"
+    },
+    {
+      "path": "src/world/voxel_world.gd.uid",
+      "bytes": 20,
+      "sha256": "05e533f9e73be3345b13bcb4768a44e805018cadc14f522cb1d305701cb06b55"
+    },
+    {
+      "path": "src/world/world_config.gd",
+      "bytes": 12611,
+      "sha256": "357e4bf7994fa07c07b57b3e504ec8d49d9b6166134055a66bbed80dcb3dbd2d"
+    },
+    {
+      "path": "src/world/world_config.gd.uid",
+      "bytes": 20,
+      "sha256": "ee0a9eee578479cc12cd831876c49e2a2a58c976895383cb286e0754a641540d"
+    },
+    {
+      "path": "tests/capture_screenshot.gd",
+      "bytes": 7623,
+      "sha256": "a21d6244af4dc2687bb44f1a323e1d25035382eb4469f92aed0e920bde3858e4"
+    },
+    {
+      "path": "tests/capture_screenshot.gd.uid",
+      "bytes": 20,
+      "sha256": "95dd9f620904f6b7a76e6434ca6e9c99b20476c3c8ddfc4868ba8d0cdf3fab7a"
+    },
+    {
+      "path": "tests/m5_component_measurements.gd",
+      "bytes": 2360,
+      "sha256": "5805493a82cf4a45fc2868a11899d63ca357ac59cd3569a3d7a29499b6aa8572"
+    },
+    {
+      "path": "tests/m5_component_measurements.gd.uid",
+      "bytes": 20,
+      "sha256": "ab48e79c54bea3a408ef7e66d87ad973f5e47b673f9fc947cdcb48e1bb7e8820"
+    },
+    {
+      "path": "tests/m5_density_probe.gd",
+      "bytes": 917,
+      "sha256": "f7e00b294666dc8c1cd5c8689b85cc523a233a03e8f768ec8316488bda947304"
+    },
+    {
+      "path": "tests/m5_density_probe.gd.uid",
+      "bytes": 20,
+      "sha256": "788e5137ceb79ddc5b71258fb4fef3485d7c431e98c4b412d0d7fe64f5ab02cc"
+    },
+    {
+      "path": "tests/m5_measurements.gd",
+      "bytes": 1292,
+      "sha256": "03e8a13fa929697e951745c3a4d92ed9a3365e50709bf7fb05b8011611423ea9"
+    },
+    {
+      "path": "tests/m5_measurements.gd.uid",
+      "bytes": 20,
+      "sha256": "775447b00f65bf3eafcfd4ba1a589627d0acb138e698558624e42e02e933762d"
+    },
+    {
+      "path": "tests/m5_showcase.gd",
+      "bytes": 2626,
+      "sha256": "313ebdee4c4c500325aeadb10f7809590a1e16742759257b65a792895908b12e"
+    },
+    {
+      "path": "tests/m5_showcase.gd.uid",
+      "bytes": 19,
+      "sha256": "feba3afaa1c4d238f155d545ddc83ab890fab7e79127242c5a5a77ddbcce96d6"
+    },
+    {
+      "path": "tests/m5_site_survey.gd",
+      "bytes": 941,
+      "sha256": "c67fc85f44dab12f4d78d397ca74ff3d4356219a889363589429bfa63b0c7bcd"
+    },
+    {
+      "path": "tests/m5_site_survey.gd.uid",
+      "bytes": 18,
+      "sha256": "d723af3f5137ec11f8fc6b9f0f3c2673ac4f179efa943dcf5a02371dda96f35d"
+    },
+    {
+      "path": "tests/run_tests.sh",
+      "bytes": 3859,
+      "sha256": "5555fab930b9f793108eeb30c615f4c59fd54c305bd7133bfc7c9fb1bdfb5880"
+    },
+    {
+      "path": "tests/suites/m5_density_suite.gd",
+      "bytes": 12093,
+      "sha256": "bae33a0db80da21a07a5011589f50780dd742ab30979a827e6009e5b6617659f"
+    },
+    {
+      "path": "tests/suites/m5_density_suite.gd.uid",
+      "bytes": 20,
+      "sha256": "0e2c5147b8ce502be4c1e3c6f21ee91ca2df97f7509c444bfceb9587ae210fd6"
+    },
+    {
+      "path": "tests/suites/voxel_suite.gd",
+      "bytes": 12700,
+      "sha256": "d7aac57f4ce984f37c815f28798b52e8fab3b0f136b7d7d14a68a29c2f88bbe8"
+    },
+    {
+      "path": "tests/suites/voxel_suite.gd.uid",
+      "bytes": 19,
+      "sha256": "9974d5a38a56f2f1a7f584d3e57f8ee1c433fa6047d744c718fea648364419e6"
+    },
+    {
+      "path": "tests/test_runner.gd",
+      "bytes": 4573,
+      "sha256": "db3f70090330910bedcf1792efef6fbda2f3264fb92ab30e3ebd305530303530"
+    },
+    {
+      "path": "tests/test_runner.gd.uid",
+      "bytes": 20,
+      "sha256": "eaca18e628bd98e98785fec4da88df26cc6d384a9a9b0235c8a23bf9a582a079"
+    }
+  ]
+}

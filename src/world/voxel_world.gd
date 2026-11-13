@@ -45,6 +45,7 @@ var _terrain: VoxelTerrain
 ## without walking a scene group every frame.
 var _viewer: VoxelViewer
 var _surface: GeographicSurface
+var _density: TerrainDensity
 var _sea_plane: MeshInstance3D
 var _generator: VoxelGeneratorScript
 var _library: VoxelBlockyLibrary
@@ -141,11 +142,12 @@ func rebuild() -> void:
 		push_error("VoxelWorld.rebuild(): generation pipeline failed to build.")
 		return
 
+	_density = TerrainDensity.new(_surface)
 	var mesher: VoxelMesher
 	var material: StandardMaterial3D
 	if smooth_terrain:
 		var adapter := TerrainSmoothGenerator.new()
-		adapter.configure(_surface)
+		adapter.configure(_surface, _density)
 		_generator = adapter
 		var smooth := VoxelMesherTransvoxel.new()
 		smooth.transitions_enabled = false
@@ -156,7 +158,7 @@ func rebuild() -> void:
 		material.roughness = 0.95
 	else:
 		var adapter := TerrainBlockGenerator.new()
-		adapter.configure(_surface, palette_snapshot)
+		adapter.configure(_surface, palette_snapshot, _density)
 		_generator = adapter
 		_library = BlockyLibraryBuilder.build_library(palette_snapshot)
 		mesher = BlockyLibraryBuilder.build_mesher(_library)
@@ -361,3 +363,7 @@ func get_viewer_position() -> Vector3:
 		if viewer != null and viewer.is_inside_tree():
 			return viewer.global_position
 	return Vector3.ZERO
+
+
+func get_density() -> TerrainDensity:
+	return _density

@@ -70,6 +70,15 @@ func _ready() -> void:
 		if arg == "--smooth":
 			scene_path = "res://scenes/smooth_terrain.tscn"
 	_scene = load(scene_path).instantiate()
+	for arg in OS.get_cmdline_user_args():
+		if arg == "--hybrid":
+			_scene.get_node("World").config.density_mode = 1
+		elif arg == "--legacy":
+			_scene.get_node("World").config.density_mode = 0
+		elif arg.begins_with("--view="):
+			_scene.get_node("World").config.view_distance_voxels = int(arg.get_slice("=",1))
+		elif arg.begins_with("--vertical="):
+			_scene.get_node("World").config.vertical_view_distance_voxels = int(arg.get_slice("=",1))
 	add_child.call_deferred(_scene)
 	await get_tree().process_frame
 	_apply_overrides()
@@ -103,7 +112,14 @@ func _apply_overrides() -> void:
 	# reach a mountain range or a coastline without hand-driving the camera.
 	var focus_x := int(_center.x) if _center_set else 0
 	var focus_z := int(_center.y) if _center_set else 0
-	camera.focus_on(Vector3(float(focus_x), world.get_surface_height(focus_x, focus_z), float(focus_z)))
+	var focus_height := world.get_surface_height(focus_x,focus_z)
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--focus-height="):
+			focus_height = float(arg.get_slice("=",1))
+		elif arg == "--hide-ui":
+			_scene.get_node("DebugLayer").visible = false
+	camera.focus_on(Vector3(float(focus_x),focus_height,float(focus_z)))
+	print("CAPTURE_POSE mode=",world.config.density_mode," target=",camera.target," distance=",camera.distance," pitch=",camera.pitch_degrees," yaw=",camera.yaw_degrees)
 
 
 func _process(delta: float) -> void:

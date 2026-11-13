@@ -10,6 +10,7 @@
 
 [sub_resource type="Resource" id="Resource_config"]
 script = ExtResource("5_config")
+density_mode = 1
 
 [sub_resource type="Resource" id="Resource_palette"]
 script = ExtResource("6_palette")
@@ -98,7 +99,7 @@ theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
 theme_override_font_sizes/font_size = 16
-text = "Procedural World — M4"
+text = "Procedural World — M5"
 
 [node name="Grid" type="GridContainer" parent="DebugLayer/DebugPanel/PanelContainer/Margin/VBox"]
 theme_override_constants/h_separation = 10

@@ -196,10 +196,16 @@ static func _test_no_seams_in_live_terrain(report, world: VoxelWorld, terrain: V
 	# -33..33 crosses the x = -32, x = 0 and x = 32 block planes.
 	for x in range(-33, 34):
 		for z in [-17, 0, 17]:
-			var expected := int(floor(world.get_surface_height(x, z)))
-			var actual := _scan_top_solid(tool, x, z, expected)
-			if actual != expected:
-				mismatches += 1
+			var reference := int(floor(world.get_surface_height(x,z)))
+			# M5: H is the carved base, not necessarily the final solid boundary.
+			# Check every voxel in the former scan window, including undercuts,
+			# rather than weakening the check to a top-height tolerance.
+			for y in range(reference+4,reference-6,-1):
+				var p := Vector3i(x,y,z)
+				var expected_solid := world.get_density().sample_density(Vector3(p)) <= 0.0
+				var actual_solid := tool.get_voxel(p) != BlockPalette.AIR
+				if actual_solid != expected_solid:
+					mismatches += 1
 			checked += 1
 
 	report.check_equal(

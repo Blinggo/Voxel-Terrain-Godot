@@ -16,6 +16,7 @@ extends Control
 ## flying over it.
 
 signal regenerate_requested(request: Dictionary)
+signal density_mode_requested
 signal water_demo_requested
 
 const RANDOM_SEED_LIMIT := 100000
@@ -38,6 +39,7 @@ const PROFILING_TOGGLE_KEY := KEY_F4
 ## Profiling is on by default; turning it off stops sampling entirely and
 ## hides the readout, so a device run can be done with the overlay quiet.
 var _profiling_enabled := true
+var _density_button: Button
 var _perf := PerformanceSampler.new()
 
 
@@ -45,12 +47,18 @@ func _ready() -> void:
 	_regenerate_button.pressed.connect(_emit_regeneration)
 	_random_seed_button.pressed.connect(_randomise_seed)
 	var demo := Button.new()
-	demo.text = "Lake demo (seed 1337)"
+	demo.text = "M4 lake (legacy / 1337)"
 	demo.focus_mode = Control.FOCUS_NONE
 	demo.pressed.connect(func(): water_demo_requested.emit())
 	demo.position = Vector2(610,12)
 	demo.size = Vector2(220,48)
 	add_child(demo)
+	_density_button = Button.new()
+	_density_button.focus_mode = Control.FOCUS_NONE
+	_density_button.position = Vector2(840,12)
+	_density_button.size = Vector2(200,48)
+	_density_button.pressed.connect(func(): density_mode_requested.emit())
+	add_child(_density_button)
 	_panel.visible = true
 	set_profiling_enabled(_profiling_enabled)
 
@@ -59,6 +67,7 @@ func _ready() -> void:
 func configure_from_config(config: WorldConfig) -> void:
 	if config == null:
 		return
+	_density_button.text = "Terrain: Hybrid" if config.density_mode == 1 else "Terrain: Legacy"
 	_seed_field.set_value_silent(config.world_seed)
 	_height_field.set_value_silent(config.terrain_height)
 	_frequency_field.set_value_silent(config.terrain_frequency)

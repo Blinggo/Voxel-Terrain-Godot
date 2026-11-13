@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+M5_PERF mode=0 cold_density_ms=531.057
+M5_PERF mode=0 warm_density_us=413.06
+M5_ADAPTER mode=0 smooth=false us_per_block=88.68
+M5_ADAPTER mode=0 smooth=true us_per_block=829.42
+M5_PERF mode=1 cold_density_ms=758.721
+M5_PERF mode=1 warm_density_us=6352.55
+M5_ADAPTER mode=1 smooth=false us_per_block=7672.06
+M5_ADAPTER mode=1 smooth=true us_per_block=6440.02

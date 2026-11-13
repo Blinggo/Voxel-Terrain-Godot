@@ -1,5 +1,14 @@
 # Architecture Overview
 
+> **M5 update:** authoritative current solid pipeline is geographical fields →
+> blended landform profiles / base composition → surface detail → M4 carving →
+> shared TerrainDensity → TYPE or SDF adapter. Read
+> [DENSITY_AND_LANDFORMS.md](DENSITY_AND_LANDFORMS.md) and ADR-0019.
+> The carved height is not the final hybrid solid boundary. Legacy mode remains
+> available; both shipped scenes opt into hybrid. M4/M5 acceptance gaps remain
+> explicit in their reports. Older sections below describe their milestone state.
+
+
 > Current addition: [M4 hydrology architecture](HYDROLOGY.md). The historical
 > camera/mesher overview below is supplemented by M3 and M4 sections.
 

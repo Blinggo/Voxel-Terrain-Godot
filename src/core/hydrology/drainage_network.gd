@@ -11,7 +11,7 @@ const TILE := 128
 const MAX_STEPS := 16
 const LAKE_STEP := 8
 const LAKE_RADIUS := 128
-const HALO := MAX_STEPS * STEP + LAKE_RADIUS + 48
+const HALO := MAX_STEPS * STEP + LAKE_RADIUS + 64
 const TILE_CAPACITY := 32
 const ROUTE_CAPACITY := 1024
 const NODE_CAPACITY := 8192
@@ -163,7 +163,7 @@ func tile_at(point: Vector2i) -> Dictionary:
 	return tile
 
 func _build_tile(key: Vector2i) -> Dictionary:
-	var rect := Rect2(Vector2(key * TILE), Vector2(TILE,TILE)).grow(48.0)
+	var rect := Rect2(Vector2(key * TILE), Vector2(TILE,TILE)).grow(64.0)
 	var lo := Vector2i(floori((rect.position.x - HALO) / SOURCE_STEP), floori((rect.position.y - HALO) / SOURCE_STEP))
 	var hi := Vector2i(floori((rect.end.x + HALO) / SOURCE_STEP), floori((rect.end.y + HALO) / SOURCE_STEP))
 	var edges: Dictionary = {}

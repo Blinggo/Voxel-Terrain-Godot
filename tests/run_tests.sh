@@ -66,6 +66,7 @@ run_suite m2
 run_suite m3
 run_suite m4
 run_suite m5
+run_suite m51
 run_suite voxel
 run_suite reliability
 run_suite perf

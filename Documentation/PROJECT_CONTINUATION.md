@@ -1,10 +1,10 @@
 # Project Continuation
 
-Active milestone: **M5 volumetric/landform implementation checkpoint — full acceptance remains open**.
-Current authoritative report: `Milestones/M05_VOLUMETRIC_TERRAIN_AND_LANDFORMS.md`.
-Visual comparison: `Milestones/M05_VISUAL_COMPARISON.html` (24 fixed-camera renders).
-M4 remains incomplete; its report and historical sections below are retained.
-The M5 handoff at the end supersedes earlier architecture/status where changed.
+Active milestone: **M5.1 advanced mountain morphology**.
+Current report: `Milestones/M051_ADVANCED_MOUNTAIN_MORPHOLOGY.md`.
+The owner confirmed M5 works in Android Editor; no M5.1 device measurement exists yet.
+M4/M5 deferred water/material/topology/distant-streaming issues remain open.
+The M5.1 handoff at the end supersedes earlier implementation details where changed.
 
 Read this first, then `Documentation/Architecture/OVERVIEW.md`.
 
@@ -386,3 +386,18 @@ Measured Linux surface-block costs: legacy/hybrid cold density 528.436/685.045 m
 Research verified Primitive Voxels is CC0-1.0, not MIT; Terrain3D, FastNoiseLite, Terrainy and Voxel Tools v1.7 are MIT at inspected revisions. No third-party runtime source/assets were copied and no dependency was added.
 
 Next: finish M5 visual/material/performance acceptance. Smooth is still single-material, local cavities/detached caps remain possible, macro facets and finite streaming edges remain, and every profile/long-range composition has not been separately accepted. M4 outlet chains, terraces, fine shorelines, cold latency, Android and long-duration streaming remain unresolved. No APK/export; restore matching Android editor arm64 extension per ADR-0006 and use Godot Editor only. See Architecture/DENSITY_AND_LANDFORMS.md, Research/M05_VOLUMETRIC_TERRAIN.md and ADR-0019 before changing this pipeline.
+
+
+## M5.1 handoff — mountain morphology
+
+Diagnosis: narrow multi-octave ridges and eight-unit interpolation were compounded by M5's post-carve profile gains and plateau masks. A width-only trial still rendered isolated peaks; the final path establishes broad mass before valley/plateau shaping and avoids re-amplifying its summit afterward. See Research/M51_MOUNTAIN_DIAGNOSIS.md for the actual source and transect evidence.
+
+New `MountainMorphology` evaluates six LandformProfile resources (`resources/mountains/`) with independent summit/shoulder/foothill/ridge controls and monotone vertical Y-key curves. It is called by existing MountainModule, not a new registry architecture. Default modes retain tectonic/province/rift foundation and existing noise streams; primary noise has fewer octaves, with no added 3D sampling. SurfaceModule retains the original ten-landform path for M5 and lowland blending. TerrainDensity, DrainageNetwork and both voxel adapters were not modified.
+
+`mountain_morphology_enabled=false` restores M5 mountains. Refinement is active only in Hybrid density. The shipped scene enables it; WorldConfig.new() keeps it off for old fixtures/callers. New Mountains M5/M5.1 button preserves orbit and free-flight pose. Mountain tour cycles ten fixed cases, applies the relevant resource/seed, enables Hybrid and retains the owner's H/V budget; its camera distance is capped at .75×H. Legacy/M4 lake controls remain distinct.
+
+Final whole-project regression: **423 PASS / 11 suites / exit 0**, no script/parse/leak messages. Standalone M5.1: 44 checks. Forty matched captures plus two Mobile renderer smoke captures completed; offline M051_VISUAL_COMPARISON.html is available. Cold carved surface increased 0.846→1.177 seconds in a Linux probe. Visual acceptance remains incomplete: broader massif achieved, but rounded tower-like silhouettes, facets and detached pieces require further refinement. Default-blend seed-1337 survey: peak 137.019→130.279, p95 76.864→111.140, samples above elevation80 166→922, local upper-cap samples 10→120 (relative threshold). No assertion that every seed/profile is artistically finished.
+
+Use Architecture/MOUNTAIN_MORPHOLOGY.md for the exact resource/key convention and adding a seventh profile without unrelated module changes. ADR-0020 and Research/M51_MOUNTAIN_RESEARCH.md record choices/licences. Archive research sources are ignored by Godot's importer. No third-party runtime implementation, APK/export, erosion/climate/vegetation/gameplay systems were added.
+
+Next owner action: run M5.1 in the existing Android Editor installation, compare Mountains M5/M5.1 at the same tour pose, then measure cold stalls and frame-time behaviour. Start at H/V128/128, not the desktop distant-view settings. M4 outlet/chains/terraces/shoreline and M5 smooth material, local topology, coarse facets, cold latency and long-streaming work remain outstanding.

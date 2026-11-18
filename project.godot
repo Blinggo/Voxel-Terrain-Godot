@@ -1,8 +1,10 @@
 ; Engine configuration file.
-; Procedural World Generator - milestone M1 (deterministic terrain foundation)
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
 ;
-; Target platforms: Android ARM64 (primary), Windows x86_64 (secondary),
-; Linux x86_64 (development).
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
 
@@ -16,33 +18,17 @@ config/icon="res://icon.svg"
 
 [display]
 
-; Landscape orientation, and a viewport size that is a reasonable windowed
-; default on desktop while scaling cleanly to handheld screens.
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-; DisplayServer.SCREEN_LANDSCAPE (0). This was 1, which is SCREEN_PORTRAIT, so
-; the value contradicted the landscape comment above and the exported APK was
-; portrait-locked. Found during the M0.2 Android export validation.
-window/handheld/orientation=0
 
 [input_devices]
 
-; The camera reads touch events directly. If Godot also emulated a mouse from
-; touch, a single finger drag would be handled twice and the view would spin at
-; double speed on Android.
 pointing/emulate_mouse_from_touch=false
 
 [rendering]
 
-; Required by the Android exporter: without ETC2/ASTC import variants the
-; export is refused. It only adds compressed texture variants at import time;
-; it changes nothing about terrain generation or desktop rendering.
-textures/vram_compression/import_etc2_astc=true
-
-; The Mobile renderer is the mobile baseline and also runs on desktop, so the
-; project is developed against what it will ship with.
 renderer/rendering_method="mobile"
-renderer/rendering_method.mobile="mobile"
+textures/vram_compression/import_etc2_astc=true
 lights_and_shadows/directional_shadow/soft_shadow_filter_quality=1

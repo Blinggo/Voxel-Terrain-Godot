@@ -140,6 +140,9 @@ extends Resource
 
 ## 0 reproduces the pre-M5 height representation; shipped scene opts into 1.
 @export_enum("Legacy height-derived", "Hybrid volumetric") var density_mode: int = 0
+## Off reproduces M5; independent from legacy/hybrid density selection.
+@export var mountain_morphology_enabled: bool = false
+@export var mountain_profiles: Array[LandformProfile] = []
 @export var landform_profiles: Array[LandformProfile] = []
 @export var density_geological_amplitude: float = 2.0
 @export var density_geological_frequency: float = 0.008
@@ -180,6 +183,10 @@ func duplicate_config() -> WorldConfig:
 	var other := WorldConfig.new()
 	other.world_seed = world_seed
 	other.density_mode = density_mode
+	other.mountain_morphology_enabled = mountain_morphology_enabled
+	for profile in mountain_profiles:
+		if profile != null:
+			other.mountain_profiles.append(profile.duplicate(true))
 	other.density_geological_amplitude = density_geological_amplitude
 	other.density_geological_frequency = density_geological_frequency
 	other.density_structure_amplitude = density_structure_amplitude
@@ -233,6 +240,8 @@ func to_dictionary() -> Dictionary:
 	return {
 		"world_seed": world_seed,
 		"density_mode": density_mode,
+		"mountain_morphology_enabled": mountain_morphology_enabled,
+		"mountain_profiles": mountain_profiles.map(func(p: LandformProfile): return p.to_dictionary() if p != null else {}),
 		"landform_profiles": landform_profiles.map(func(p: LandformProfile): return p.to_dictionary() if p != null else {}),
 		"density_geological_amplitude": density_geological_amplitude,
 		"density_geological_frequency": density_geological_frequency,

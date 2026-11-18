@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="LandformProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/landforms/landform_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"rugged"
+morphology_position = 0.6
+overall_elevation = 1.2
+mountain_width = 1.0
+summit_width = 0.4
+summit_sharpness = 1.05
+ridge_width = 0.3
+mountain_ridge_influence = 0.7
+shoulder_width = 0.7
+foothill_width = 1.2
+mountain_valley_influence = 0.35
+surface_roughness = 0.065
+geological_detail = 0.2
+terrain_y_positions = PackedFloat32Array(0, 0.2, 0.55, 0.84, 1)
+terrain_y_thresholds = PackedFloat32Array(0, 0.16, 0.48, 0.8, 1)

@@ -73,6 +73,13 @@ func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg == "--hybrid":
 			_scene.get_node("World").config.density_mode = 1
+		elif arg == "--m5-mountains":
+			_scene.get_node("World").config.mountain_morphology_enabled = false
+		elif arg == "--m51-mountains":
+			_scene.get_node("World").config.mountain_morphology_enabled = true
+		elif arg.begins_with("--mountain-profile="):
+			_scene.get_node("World").config.mountain_profiles.clear()
+			_scene.get_node("World").config.mountain_profiles.append(load("res://resources/mountains/"+arg.get_slice("=",1)+".tres"))
 		elif arg == "--legacy":
 			_scene.get_node("World").config.density_mode = 0
 		elif arg.begins_with("--view="):

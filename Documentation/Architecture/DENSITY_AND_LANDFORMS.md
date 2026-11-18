@@ -1,5 +1,12 @@
 # Shared density and blended landforms — M5
 
+> **M5.1 extension:** read [MOUNTAIN_MORPHOLOGY.md](MOUNTAIN_MORPHOLOGY.md).
+> The shipped scenes also enable `mountain_morphology_enabled`; disabling it
+> restores the M5 composition documented below. Density, its caches/noise and
+> the two adapters remain unchanged. New morphology resources extend the same
+> LandformProfile class without replacing the original ten-landform evaluator.
+
+
 ## Pipeline and ownership
 
 `WorldConfig snapshot → existing geographic fields → blended landform parameters / SurfaceModule composition → engine surface detail → M4 hydrology carving → TerrainDensity → TYPE or SDF adapter → native mesher`

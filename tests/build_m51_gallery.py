@@ -1,0 +1,35 @@
+"""Build an offline comparison from real captures; validate complete pose pairs."""
+from pathlib import Path
+import re, json, base64, io
+from PIL import Image
+root=Path(__file__).resolve().parents[1]
+evidence=root/'Documentation/Milestones/m51-evidence'
+log=(evidence/'showcase-linux.txt').read_text()
+assert 'SCRIPT ERROR' not in log
+records={}
+for line in log.splitlines():
+    match=re.match(r'M51_CAPTURE (.+)_(blocky|smooth)_(m51|m5)\.png ',line)
+    if not match: continue
+    assert 'ready=true save=0' in line, line
+    site,renderer,mode=match.groups()
+    records[(site,renderer,mode)]=line.split(' pose=')[1].split(' seed=')[0]
+assert len(records)==40, len(records)
+source=(root/'src/debug/mountain_showcase.gd').read_text()
+pattern=r'\{"id":"([^"]+)","profile":"([^"]*)","seed":(\d+),"target":Vector3\(([^)]+)\),"distance":([\d.]+),"pitch":(-?[\d.]+),"yaw":(-?[\d.]+)\}'
+data={}
+for site,profile,seed,target,distance,pitch,yaw in re.findall(pattern,source):
+    poses={records[(site,r,m)] for r in ['blocky','smooth'] for m in ['m5','m51']}
+    assert len(poses)==1,(site,poses)
+    data[site]={'profile':profile or 'regional blend','seed':int(seed),'target':target,'distance':distance,'pitch':pitch,'yaw':yaw,'images':{}}
+    for renderer in ['blocky','smooth']:
+        for mode in ['m5','m51']:
+            path=evidence/f'{site}_{renderer}_{mode}.png'
+            im=Image.open(path).convert('RGB')
+            assert im.size==(960,540)
+            jpeg=io.BytesIO(); im.save(jpeg,'JPEG',quality=88)
+            data[site]['images'][renderer+'_'+mode]='data:image/jpeg;base64,'+base64.b64encode(jpeg.getvalue()).decode()
+assert len(data)==10
+html='''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>M5.1 · Mountain morphology</title><style>*{box-sizing:border-box}body{margin:0;background:#131b22;color:#edf4f3;font:15px system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:28px}h1{font-size:34px;margin:12px 0}p{line-height:1.7;color:#b4c6cc;max-width:1100px}.eyebrow{letter-spacing:2px;font-size:12px;color:#87d2b8}header{border-bottom:1px solid #34434d;padding-bottom:15px}.stats{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.stat{background:#20303a;border:1px solid #34434d;border-radius:8px;padding:15px 20px;min-width:190px}.stat strong{display:block;font-size:25px;color:#b4e5cf}.stat span{font-size:12px;color:#b4c6cc}.controls{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:24px 0}select,button{background:#243944;border:1px solid #5c7b86;color:#fff;padding:10px;font:inherit;border-radius:6px}button:hover{background:#365561}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0;background:#20303a;border:1px solid #34434d;border-radius:8px;overflow:hidden}figcaption{padding:12px 16px;font-weight:600}.tag{float:right;font:11px system-ui;color:#acc2ca}img{width:100%;display:block}.meta{border-left:3px solid #87d2b8;background:#20303a;padding:16px;margin:20px 0;line-height:1.8}.small{font-size:12px}footer{border-top:1px solid #34434d;margin-top:25px;padding-top:16px}@media(max-width:850px){main{padding:15px}.grid{grid-template-columns:1fr}h1{font-size:27px}.stats{gap:8px}.stat{min-width:140px;flex:1}}</style><main><header><div class="eyebrow">PROCEDURAL WORLD / M5.1</div><h1>More mountain mass. More summit shapes.</h1><p>Actual Godot captures, not illustrative mockups. Ten fixed cases, both renderers, identical logged camera transforms for each M5/M5.1 comparison. The refinement changes mountain cross-sections and composition—not just mountain height.</p></header><div class="stats"><div class="stat"><strong>95%</strong><span>of M5 peak height retained</span></div><div class="stat"><strong>10 → 120</strong><span>sampled upper-cap points</span></div><div class="stat"><strong>6 resources</strong><span>one shared morphology evaluator</span></div><div class="stat"><strong>40 captures</strong><span>blocky + smooth / before + after</span></div></div><p class="small">Metrics above describe the default regional blend in the documented seed-1337 survey, not every forced-style image below. Upper-cap counts use 90% of each mode's own peak within a local four-unit sample grid; they are not common-altitude polygon areas.</p><div class="controls"><label>Case <select id="site"><option value="massif">Broad massif</option><option value="alpine">Alpine</option><option value="rounded">Rounded range</option><option value="rugged">Rugged range</option><option value="eroded">Eroded-style gullies</option><option value="highland">Highland</option><option value="foothills">Foothills</option><option value="basin">Mountain basin</option><option value="lake_range">Range with lake</option><option value="distant">Distant silhouette</option></select></label><label>Representation <select id="renderer"><option value="blocky">Blocky</option><option value="smooth">Smooth</option></select></label><button id="swap">Switch representation</button></div><div class="grid"><figure><figcaption>M5 <span class="tag">HYBRID / ORIGINAL MOUNTAINS</span></figcaption><img id="before" alt="M5 terrain baseline"></figure><figure><figcaption>M5.1 <span class="tag">HYBRID / REFINED MORPHOLOGY</span></figcaption><img id="after" alt="M5.1 terrain from the same camera"></figure></div><div id="meta" class="meta"></div><p class="small">960×540 · Compatibility/OpenGL · Linux llvmpipe · H/V160/160 (distant case: 256/160). Central 32³ meshing plus nine water tiles were ready. This does not certify every distant chunk. Embedded JPEGs are compressed previews; the original PNGs and exact logs remain in m51-evidence/.</p><footer><strong>Geometry is exposed, not concealed.</strong><p class="small">No foliage, decorative cover or obscuring fog. Finite streaming boundaries, coarse diagnostic water, eight-voxel macro facets and the smooth renderer's inherited single material remain visible. The first six cases force a resource; the other four use the regional blend. M4/M5 deferred issues remain open. Android M5 works according to the owner; M5.1 still needs owner Editor testing. No APK/export was generated.</p></footer></main><script>const data=__DATA__;const site=document.getElementById('site'),renderer=document.getElementById('renderer');function update(){const d=data[site.value];document.getElementById('before').src=d.images[renderer.value+'_m5'];document.getElementById('after').src=d.images[renderer.value+'_m51'];document.getElementById('meta').textContent='Seed '+d.seed+' · profile '+d.profile+' · target ('+d.target+') · distance '+d.distance+' · pitch '+d.pitch+'° · yaw '+d.yaw+'°. Both images use the same camera and the same shared-density architecture.';}site.onchange=renderer.onchange=update;document.getElementById('swap').onclick=()=>{renderer.value=renderer.value==='blocky'?'smooth':'blocky';update()};update();</script></html>'''
+out=root/'Documentation/Milestones/M051_VISUAL_COMPARISON.html'
+out.write_text(html.replace('__DATA__',json.dumps(data)))
+print('Validated 40 ready captures, 10 identical pose groups; gallery bytes',out.stat().st_size)

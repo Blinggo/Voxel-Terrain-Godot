@@ -1,0 +1,74 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+libxkbcommon.so.0: cannot open shared object file: No such file or directory
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: m51
+==========================================================
+  PASS  morphology mountain_width has expected geometric effect   (delta=0.46368132454152)
+  PASS  morphology summit_width has expected geometric effect   (delta=0.19022708682439)
+  PASS  morphology summit_sharpness has expected geometric effect   (delta=-0.02690271207457)
+  PASS  morphology ridge_width has expected geometric effect   (delta=0.02686928283816)
+  PASS  morphology shoulder_width has expected geometric effect   (delta=0.1416262571106)
+  PASS  morphology foothill_width has expected geometric effect   (delta=0.10850429081764)
+  PASS  morphology mountain_valley_influence has expected geometric effect   (delta=-0.03413585948506)
+  PASS  morphology overall_elevation has expected geometric effect   (delta=0.48706113201828)
+  PASS  morphology surface_roughness has expected geometric effect   (delta=0.00915996190767)
+  PASS  morphology geological_detail has expected geometric effect   (delta=0.01255563775346)
+  PASS  morphology mountain_ridge_influence has expected geometric effect   (delta=-0.04254761414433)
+  PASS  summit width expands upper-ten-percent cross-section   ((34, 89))
+  PASS  new resource identity works without module edits
+  PASS  width/shape changes preserve theoretical summit elevation
+  PASS  vertical profile strictly increasing without shelves
+  PASS  vertical key derivatives continuous
+  PASS  Y-key edits move middle mountain elevation
+  PASS  normalized profile blend has no hard switches   (max step=0.00069097327168)
+  PASS  transition width changes blended geometry
+  PASS  profile caller mutation cannot affect snapshot
+  PASS  six resource styles produce measurably distinct cross-sections
+  PASS  actual mountain maximum retained within ten percent   ((137.0191, 130.2786))
+  PASS  actual high mountain mass increases   ((166, 922))
+  PASS  negative-coordinate reconstruction deterministic
+  PASS  refined profile world changes with seed
+  PASS  four-worker morphology/density identity
+  PASS  density chunk partition is identical
+  PASS  both adapters still share the same density
+  PASS  mountain/foothill/valley transect continuous   (max column step=1.88800811767578)
+  PASS  hybrid hydrology still carves final base surface
+  PASS  volumetric modifiers do not open sampled water beds   (424 wet reaches)
+  PASS  refined mountains retain surveyed basin lake   ({ "kind": "lake", "water_height": 43.792236328125, "ground_height": 38.3362617492676, "river_width": 0.0, "body_id": "lake:1:-46" })
+  PASS  refined terrain preserves river network and tributaries
+  PASS  refined terrain preserves descending water levels and widths
+  PASS  refined terrain retains waterfall candidates   (140)
+  PASS  refined terrain retains multiple basin lakes   (5)
+  PASS  res://scenes/main.tscn M5.1 shares world density
+  PASS  res://scenes/main.tscn M5 comparison preserves orbit pose
+  PASS  res://scenes/main.tscn morphology toggle preserves flight pose
+  PASS  res://scenes/main.tscn tour applies resource without raising streaming budget
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+  PASS  res://scenes/smooth_terrain.tscn M5.1 shares world density
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+     GDScript backtrace (most recent call first):
+         [0] _teardown (res://src/world/voxel_world.gd:283)
+         [1] rebuild (res://src/world/voxel_world.gd:118)
+         [2] apply_config (res://src/world/voxel_world.gd:90)
+         [3] _toggle_mountain_mode (res://src/world/main_scene.gd:167)
+         [4] run_scene_checks (res://tests/suites/m51_morphology_suite.gd:187)
+  PASS  res://scenes/smooth_terrain.tscn M5 comparison preserves orbit pose
+  PASS  res://scenes/smooth_terrain.tscn morphology toggle preserves flight pose
+  PASS  res://scenes/smooth_terrain.tscn tour applies resource without raising streaming budget
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+
+----------------------------------------------------------
+RESULT: PASS  (44 checks)
+----------------------------------------------------------

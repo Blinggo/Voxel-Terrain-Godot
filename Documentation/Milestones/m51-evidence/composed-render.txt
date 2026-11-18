@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+libxkbcommon.so.0: cannot open shared object file: No such file or directory
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+CAPTURE_POSE mode=1 target=(-16.0, 100.0, -1360.0) distance=110.0 pitch=-25.0 yaw=25.0
+STATUS: seed=1337 streaming_ready=true
+SCREENSHOT_OK path=/home/user/procedural-world/Documentation/Milestones/m51-evidence/composed-massif.png bytes=154348 size=960x540
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)

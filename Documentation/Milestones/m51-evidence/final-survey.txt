@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+M51_SURVEY enabled=false max=137.019088745117 best=(-16, -1360) p95=76.8638687133789 summit90_cells16sq=10 ms=257.713
+M51_SURVEY enabled=true max=130.278594970703 best=(0, -1352) p95=111.140357971191 summit90_cells16sq=120 ms=343.979

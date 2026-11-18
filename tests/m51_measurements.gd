@@ -1,0 +1,47 @@
+extends SceneTree
+func _initialize() -> void:
+	var catalog := MountainMorphology.new()
+	var start := Time.get_ticks_usec()
+	var checksum := 0.0
+	for i in range(10000): checksum += catalog.evaluate((i%100)/100.0,0.6,0.1,0.5)
+	print("M51_COMPONENT blended_profile_us=",(Time.get_ticks_usec()-start)/10000.0," checksum=",checksum)
+	for profile in catalog.profiles:
+		var one := MountainMorphology.new([profile])
+		start = Time.get_ticks_usec()
+		for i in range(10000): checksum += one.evaluate((i%100)/100.0,0.6,0.1,0.5)
+		print("M51_COMPONENT profile=",profile.id," evaluation_us=",(Time.get_ticks_usec()-start)/10000.0)
+	for enabled in [false,true]:
+		var cfg := WorldConfig.new()
+		cfg.density_mode = 1
+		cfg.mountain_morphology_enabled = enabled
+		var surface := GeographicSurface.new(cfg)
+		var density := TerrainDensity.new(surface)
+		var column := Vector2i(-96,-1472)
+		start = Time.get_ticks_usec()
+		surface.sample_unmodified_heights(column,Vector2i(16,16))
+		print("M51_PERF enabled=",enabled," first_base_16sq_us=",Time.get_ticks_usec()-start)
+		start = Time.get_ticks_usec()
+		var heights := surface.sample_block_heights(column,Vector2i(16,16))
+		print("M51_PERF enabled=",enabled," first_carved_16sq_us=",Time.get_ticks_usec()-start)
+		start = Time.get_ticks_usec()
+		for i in range(100): surface.sample_unmodified_heights(column,Vector2i(16,16))
+		print("M51_PERF enabled=",enabled," warm_base_16sq_us=",(Time.get_ticks_usec()-start)/100.0)
+		var origin := Vector3i(column.x,floori(heights[0])-8,column.y)
+		var size := Vector3i(16,16,16)
+		density.sample_block(origin,size)
+		start = Time.get_ticks_usec()
+		for i in range(100): density.sample_block(origin,size)
+		print("M51_PERF enabled=",enabled," density_us_per_block=",(Time.get_ticks_usec()-start)/100.0," origin=",origin)
+		var blocky := TerrainBlockGenerator.new()
+		blocky.configure(surface,BlockPalette.new(),density)
+		var smooth := TerrainSmoothGenerator.new()
+		smooth.configure(surface,density)
+		var buffer := VoxelBuffer.new()
+		buffer.create(16,16,16)
+		buffer.set_channel_depth(VoxelBuffer.CHANNEL_TYPE,VoxelBuffer.DEPTH_16_BIT)
+		buffer.set_channel_depth(VoxelBuffer.CHANNEL_SDF,VoxelBuffer.DEPTH_32_BIT)
+		for adapter in [blocky,smooth]:
+			start = Time.get_ticks_usec()
+			for i in range(50): adapter._generate_block(buffer,origin,0)
+			print("M51_ADAPTER enabled=",enabled," smooth=",adapter is TerrainSmoothGenerator," us_per_block=",(Time.get_ticks_usec()-start)/50.0)
+	quit()

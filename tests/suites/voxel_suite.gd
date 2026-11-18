@@ -49,7 +49,7 @@ static func run(report, tree: SceneTree) -> void:
 	report.check("terrain block generation completes", ready_ok, _describe_stats(terrain))
 
 	_test_geometry_exists(report, terrain)
-	_test_voxels_match_the_height_field(report, world, terrain)
+	_test_voxels_match_density(report, world, terrain)
 	_test_no_seams_in_live_terrain(report, world, terrain)
 
 	# ------------------------------------------------------------- determinism
@@ -148,10 +148,10 @@ static func _test_geometry_exists(report, terrain: VoxelTerrain) -> void:
 	)
 
 
-## Every sampled column must be solid below the analytic surface and air above
-## it. This is the check that proves the generated voxels are the terrain we
-## asked for rather than arbitrary data.
-static func _test_voxels_match_the_height_field(report, world: VoxelWorld, terrain: VoxelTerrain) -> void:
+## Read native voxels back against the shared material field. H is the carved
+## base, not the final volumetric boundary. Keep the original above/below/base
+## sample locations, but do not assume that floor(H) must be grass in Hybrid.
+static func _test_voxels_match_density(report, world: VoxelWorld, terrain: VoxelTerrain) -> void:
 	var tool: VoxelTool = terrain.get_voxel_tool()
 	tool.set_channel(VoxelBuffer.CHANNEL_TYPE)
 
@@ -166,22 +166,25 @@ static func _test_voxels_match_the_height_field(report, world: VoxelWorld, terra
 			var top := int(floor(surface))
 
 			var above := tool.get_voxel(Vector3i(x, top + 2, z))
-			if above != BlockPalette.AIR:
+			var expected_above := world.get_density().material_block(Vector3i(x,top+2,z),Vector3i.ONE,world.palette)[0]
+			if above != expected_above:
 				above_violations += 1
 
 			var below := tool.get_voxel(Vector3i(x, top - 8, z))
-			if below == BlockPalette.AIR:
+			var expected_below := world.get_density().material_block(Vector3i(x,top-8,z),Vector3i.ONE,world.palette)[0]
+			if below != expected_below:
 				below_violations += 1
 
 			var at_top := tool.get_voxel(Vector3i(x, top, z))
-			if at_top != BlockPalette.GRASS:
+			var expected_top := world.get_density().material_block(Vector3i(x,top,z),Vector3i.ONE,world.palette)[0]
+			if at_top != expected_top:
 				type_violations += 1
 
 			checked += 1
 
-	report.check_equal("voxels above the surface are air", above_violations, 0)
-	report.check_equal("voxels below the surface are solid", below_violations, 0)
-	report.check_equal("the top voxel of every column is the grass type", type_violations, 0)
+	report.check_equal("live samples above carved base match shared materials", above_violations, 0)
+	report.check_equal("live samples below carved base match shared materials", below_violations, 0)
+	report.check_equal("base-height samples match final density materials", type_violations, 0)
 	report.info("checked %d columns through the live terrain" % checked)
 
 

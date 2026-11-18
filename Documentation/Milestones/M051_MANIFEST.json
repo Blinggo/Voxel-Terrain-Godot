@@ -1,0 +1,1420 @@
+{
+  "description": "Project source and documentation snapshot after M5.1 validation; excludes engine, extension binaries and import caches.",
+  "files": [
+    {
+      "path": "src/camera/flight_controls.gd",
+      "bytes": 2890,
+      "sha256": "e623037e725a553fbe683653647b67cad8a259c2260b518f79b7ca9cd213f45f"
+    },
+    {
+      "path": "src/camera/orbit_camera.gd",
+      "bytes": 8106,
+      "sha256": "af227385ceb2b7ab10adf96bc59e53c1cc11b492d4afd38434c11afb1d5917bb"
+    },
+    {
+      "path": "src/core/density/terrain_density.gd",
+      "bytes": 11340,
+      "sha256": "2ac5705fdd45e8c728d752710f74daf7f9ebaac5157447a321806caa1977c968"
+    },
+    {
+      "path": "src/core/generation/generation_context.gd",
+      "bytes": 4195,
+      "sha256": "d08d629449d10e31af6b67e4d83071e8c90bf19d3e4e495ef4d8e9897775608f"
+    },
+    {
+      "path": "src/core/generation/generation_engine.gd",
+      "bytes": 10347,
+      "sha256": "8cf49671dfc74ce2ef865a93df6e745e562f830f14b5c6f814538d8871ff5ad8"
+    },
+    {
+      "path": "src/core/generation/generation_module.gd",
+      "bytes": 5979,
+      "sha256": "5f44da510abc1302a5ac2342b33952f783aa6aaa4ff66da8bc95cd0e849ddfad"
+    },
+    {
+      "path": "src/core/generation/generation_registry.gd",
+      "bytes": 4853,
+      "sha256": "953f46c1bc3322d686259dfac8d08dbf2adf6936f14331ecfb1f0ad26143337d"
+    },
+    {
+      "path": "src/core/generation/geographic_surface.gd",
+      "bytes": 8444,
+      "sha256": "1bce9812baee1a660e042941054f0ed51772033d6c202e0d25785818c5200977"
+    },
+    {
+      "path": "src/core/generation/modules/archipelago_module.gd",
+      "bytes": 3317,
+      "sha256": "69a4d2f13a30f1eee2dee155ae6685fe27efb632da4550c6f3eee67d6db04229"
+    },
+    {
+      "path": "src/core/generation/modules/coast_module.gd",
+      "bytes": 3072,
+      "sha256": "47beffa084608cfd1d2206426f3a96dd23f6a8f5a7b7dc806e8a98033414cf76"
+    },
+    {
+      "path": "src/core/generation/modules/continentalness_module.gd",
+      "bytes": 2562,
+      "sha256": "03b7edb3a491d6931a6b534224e3ec20acf693acbabe0e8187eb291359726c37"
+    },
+    {
+      "path": "src/core/generation/modules/detail_module.gd",
+      "bytes": 2332,
+      "sha256": "8541e76953eb3e5581fee9c9e8e5d49312405cbe9350011a7826945696eb4475"
+    },
+    {
+      "path": "src/core/generation/modules/elevation_module.gd",
+      "bytes": 2352,
+      "sha256": "33239b8eaea765c68ecb1167c33cdb3f974c25601c8b5eb9db511e0eafc02590"
+    },
+    {
+      "path": "src/core/generation/modules/hills_module.gd",
+      "bytes": 2556,
+      "sha256": "e643036f86824ede626dffd478bb4d63457b0cd7f7d2e2500dd05c8d6f3b84ba"
+    },
+    {
+      "path": "src/core/generation/modules/hydrology_module.gd",
+      "bytes": 1625,
+      "sha256": "74c166017e612f92a30ccd5590f821b40ff349d13e29dfb6038509491930f17f"
+    },
+    {
+      "path": "src/core/generation/modules/landmass_module.gd",
+      "bytes": 2628,
+      "sha256": "79217756f5ef56fe3fdf917a944b8d4c03de5e96069b006f4600eb11cb48a196"
+    },
+    {
+      "path": "src/core/generation/modules/mountain_module.gd",
+      "bytes": 10066,
+      "sha256": "67f0ce8a8a90681458a5ffe93ea5f26b4bf4ae4f70a82a55e0af333f7a81dafe"
+    },
+    {
+      "path": "src/core/generation/modules/plateau_module.gd",
+      "bytes": 4467,
+      "sha256": "4a8960c66fa78f10b59c3954d79d66415365559bb59be3f3890c03fe63efdd9b"
+    },
+    {
+      "path": "src/core/generation/modules/surface_module.gd",
+      "bytes": 12689,
+      "sha256": "3149035cb4e96054336a7a685ce011d33d77d2c9132c64c6ebccdbf096911de8"
+    },
+    {
+      "path": "src/core/generation/modules/tectonics_module.gd",
+      "bytes": 12770,
+      "sha256": "8eb02d209ba05868fe9251b0a14492d2292e79b99f94175819e0f3f97d3bbfb5"
+    },
+    {
+      "path": "src/core/generation/modules/valley_module.gd",
+      "bytes": 5078,
+      "sha256": "5a05bb14e79101fa7caf8ecea467dd9de9c681231b4cb72a677d845ce029a19a"
+    },
+    {
+      "path": "src/core/generation/terrain_generation_stack.gd",
+      "bytes": 3695,
+      "sha256": "98458621065598db4c936c0a03c8c3774325f98cd9fe9a6625a8d77efc7d338e"
+    },
+    {
+      "path": "src/core/generation/terrain_hash.gd",
+      "bytes": 5842,
+      "sha256": "ed89b10e72f2c57d2fa94a2e2af4570d3046dd378a865cdf159c1bdf85ce80fa"
+    },
+    {
+      "path": "src/core/hydrology/drainage_network.gd",
+      "bytes": 12704,
+      "sha256": "4fc52fb8723635cb724d5f4e902e2094481a4161f113729c887fd348d696d463"
+    },
+    {
+      "path": "src/core/landforms/landform_profile.gd",
+      "bytes": 2993,
+      "sha256": "010a6df4d6f260de565aa48b96002de1bcf199dc4536ca31bbe9f92120154fae"
+    },
+    {
+      "path": "src/core/landforms/landform_profiles.gd",
+      "bytes": 3381,
+      "sha256": "eb91e69f86c706a0d704c3326402be95820fe0333a7e5410c15bb12b67da2528"
+    },
+    {
+      "path": "src/core/landforms/mountain_morphology.gd",
+      "bytes": 4498,
+      "sha256": "39fcc75ab70f9006a4c5824b011ad86a0b88a432c8ca40c1c952c6137264171a"
+    },
+    {
+      "path": "src/core/terrain/block_palette.gd",
+      "bytes": 2871,
+      "sha256": "84c8f44dee9ff44866a51c4c14dfcdd8484df315910a05a58429c9974c3884bd"
+    },
+    {
+      "path": "src/debug/debug_panel.gd",
+      "bytes": 10648,
+      "sha256": "2462e09fd456c31a031fc6db1fb850cc9a2c169a8d57005a11882b1bb60a1ca0"
+    },
+    {
+      "path": "src/debug/mountain_showcase.gd",
+      "bytes": 1666,
+      "sha256": "eb7710029e0fc75bbcb7813068073e24e702d675eb9c3fc7d501995e3d003c4f"
+    },
+    {
+      "path": "src/debug/numeric_field.gd",
+      "bytes": 7957,
+      "sha256": "8be9a8af9fd56b3eb4d4005baaa75ed9792edd259c01de113a757be47d1a6ec6"
+    },
+    {
+      "path": "src/debug/performance_sampler.gd",
+      "bytes": 5488,
+      "sha256": "370b53d1c901a7b42d11bac1033c1e18e14a1c27bb58b1cf66eaa356dbaad6cd"
+    },
+    {
+      "path": "src/voxel/blocky_library_builder.gd",
+      "bytes": 2678,
+      "sha256": "3cbb72bacb047ec32d187efa9f4d1f8a445c65f0053c928d77cb3cd934090145"
+    },
+    {
+      "path": "src/voxel/terrain_block_generator.gd",
+      "bytes": 2393,
+      "sha256": "d18fffd7c1b86d75cb6703e70cb60c1e502df5a8154505d4fcd823399588e23a"
+    },
+    {
+      "path": "src/voxel/terrain_smooth_generator.gd",
+      "bytes": 1084,
+      "sha256": "d6dcae7551fad5e883b00f9e487ce29748d7418a5ab6d2541f5b93375d883be1"
+    },
+    {
+      "path": "src/voxel/voxel_terrain_builder.gd",
+      "bytes": 1971,
+      "sha256": "4536b72af781a51cf68d08ee5f55b2a08ecddb154d9b322b4f3c67843fe2b4e8"
+    },
+    {
+      "path": "src/world/hydrology_water_view.gd",
+      "bytes": 4088,
+      "sha256": "3619def11e14b7692721aebcc5890c4f91bc97e6372cb91a625c3887d21113a2"
+    },
+    {
+      "path": "src/world/main_scene.gd",
+      "bytes": 6710,
+      "sha256": "835d1c68f7b2398ea9b65cfc7486223d6ef5eb7b7b1f448a879a3aaa50555b20"
+    },
+    {
+      "path": "src/world/voxel_world.gd",
+      "bytes": 13488,
+      "sha256": "d5fc5cf5aa85e4d58f7d09e4a8d11b493abc5b37a47055be2c9e8766f06aa3bd"
+    },
+    {
+      "path": "src/world/world_config.gd",
+      "bytes": 13158,
+      "sha256": "60aacb9180f43d59fabc2775fe1e16a1ef7da457b4367b54bb488425ec4287e4"
+    },
+    {
+      "path": "resources/mountains/alpine.tres",
+      "bytes": 642,
+      "sha256": "04c0b06e00898e976a9d173851049719ee24c6cb58efccbef580b1c4f73f1318"
+    },
+    {
+      "path": "resources/mountains/eroded.tres",
+      "bytes": 645,
+      "sha256": "416388b2f57939bca7f39ca6a1dddc8dd65ae573aede3250f191079bd732fd68"
+    },
+    {
+      "path": "resources/mountains/highland.tres",
+      "bytes": 648,
+      "sha256": "ca601d7a74b513eb3358bee066ff7cf202b4e05288d6a8f65a813a3841b7213f"
+    },
+    {
+      "path": "resources/mountains/massif.tres",
+      "bytes": 647,
+      "sha256": "c9f87e3400fe2f037652892a82c79e23281e70ed26042eec74e979125a15d1a4"
+    },
+    {
+      "path": "resources/mountains/rounded.tres",
+      "bytes": 650,
+      "sha256": "f631c3467c460fbd3fd9ffa8c6a8355de4ffbf030fc8d2760a7e29d6745435b1"
+    },
+    {
+      "path": "resources/mountains/rugged.tres",
+      "bytes": 642,
+      "sha256": "e51ed38e578c69da91f4a25d4f9c44f394dfd9a3bd544e44ce74884244c97bc1"
+    },
+    {
+      "path": "scenes/main.tscn",
+      "bytes": 6899,
+      "sha256": "6d11c8f9ca17bcee64a23dc76ea644086c014cb3a3cefa09c61f512005a84037"
+    },
+    {
+      "path": "scenes/smooth_terrain.tscn",
+      "bytes": 224,
+      "sha256": "30189a076b2d5c7be4a76e9effcc81acb3b7391efcb150f4df25c3d3fdc3cb09"
+    },
+    {
+      "path": "tests/benchmark.gd",
+      "bytes": 3678,
+      "sha256": "3ff74d01e97ff3a0611db21127e0ca6cd88cb425d0e81d3d51b623bf45537890"
+    },
+    {
+      "path": "tests/benchmark.tscn",
+      "bytes": 177,
+      "sha256": "335bc48630ccf684a9ed38f7221de29c6ea165118f545ccaf4f69a3e4bd7d78b"
+    },
+    {
+      "path": "tests/build_m51_gallery.py",
+      "bytes": 7141,
+      "sha256": "ed52f8da7c864d4312eaec70d5bfd129f6c9800c6a104d8dcd3ebf5368e9bb21"
+    },
+    {
+      "path": "tests/capture_screenshot.gd",
+      "bytes": 8062,
+      "sha256": "f44513641165e41b6d7bb49886e75fb0df504f945ae90bc6af907f153189720d"
+    },
+    {
+      "path": "tests/capture_screenshot.tscn",
+      "bytes": 180,
+      "sha256": "e91108d330517a892d08d5819a9e5c0bd5bf86999bde3c32ef008ab60c4fe66b"
+    },
+    {
+      "path": "tests/m3_measurements.gd",
+      "bytes": 2015,
+      "sha256": "f5b23c14666da02d065d3b6d83bf097402ca6d3847c4a6b296f9497c3ac9d23a"
+    },
+    {
+      "path": "tests/m4_landmark_survey.gd",
+      "bytes": 732,
+      "sha256": "d58510f028ea8861283b4b52772821ac3129b6f220705d13bec7603db716ccf3"
+    },
+    {
+      "path": "tests/m4_measurements.gd",
+      "bytes": 2071,
+      "sha256": "01fc6ecd715049f4deb0221df4584e49302408ee35fab77c93573ba5124f88b9"
+    },
+    {
+      "path": "tests/m4_scene_measurements.gd",
+      "bytes": 1471,
+      "sha256": "462549db370540e8c53890476ffed80952957af8dd63bddb55ecaa9b5a70f16a"
+    },
+    {
+      "path": "tests/m4_survey.gd",
+      "bytes": 676,
+      "sha256": "11baa6d8b25f18d9c6a44b1d7b8bebdd314df5e99c210963f4f37cf95043764f"
+    },
+    {
+      "path": "tests/m51_lakes.gd",
+      "bytes": 883,
+      "sha256": "50f9f874b6b48acdc375c064bc18a1e02c273a5ee3fcd2d15b76ff88cdf07fbb"
+    },
+    {
+      "path": "tests/m51_measurements.gd",
+      "bytes": 2463,
+      "sha256": "3d70ce93bec9f42e174a0acfde00571c6960029320421b720fb9b8d6835990b4"
+    },
+    {
+      "path": "tests/m51_probe.gd",
+      "bytes": 939,
+      "sha256": "7d45a024b5994d1ca09c16e398584baa695ba3518c2bd6601c5ff255465ef172"
+    },
+    {
+      "path": "tests/m51_showcase.gd",
+      "bytes": 2796,
+      "sha256": "afee718dbe0814f5ca0745e087d7f69031cc1c32e0a5571796517dc57b0cfb96"
+    },
+    {
+      "path": "tests/m51_transect.gd",
+      "bytes": 491,
+      "sha256": "f295f3528f72683790fc792bf80ba4aac57bbe2d224cc5c04352a392657a305e"
+    },
+    {
+      "path": "tests/m5_component_measurements.gd",
+      "bytes": 2360,
+      "sha256": "5805493a82cf4a45fc2868a11899d63ca357ac59cd3569a3d7a29499b6aa8572"
+    },
+    {
+      "path": "tests/m5_density_probe.gd",
+      "bytes": 917,
+      "sha256": "f7e00b294666dc8c1cd5c8689b85cc523a233a03e8f768ec8316488bda947304"
+    },
+    {
+      "path": "tests/m5_measurements.gd",
+      "bytes": 1292,
+      "sha256": "03e8a13fa929697e951745c3a4d92ed9a3365e50709bf7fb05b8011611423ea9"
+    },
+    {
+      "path": "tests/m5_showcase.gd",
+      "bytes": 2626,
+      "sha256": "313ebdee4c4c500325aeadb10f7809590a1e16742759257b65a792895908b12e"
+    },
+    {
+      "path": "tests/m5_site_survey.gd",
+      "bytes": 941,
+      "sha256": "c67fc85f44dab12f4d78d397ca74ff3d4356219a889363589429bfa63b0c7bcd"
+    },
+    {
+      "path": "tests/render_map.gd",
+      "bytes": 2963,
+      "sha256": "1209e7ad0baff2fd37f1eccb6145bd59cf0163ad4a760bf75dc0cf6bf86441d6"
+    },
+    {
+      "path": "tests/run_tests.sh",
+      "bytes": 3873,
+      "sha256": "c1cfa18a5e2744f252038d2b742fd2876277e5ed59f4d4e87df26cd84f39860d"
+    },
+    {
+      "path": "tests/suites/core_suite.gd",
+      "bytes": 11978,
+      "sha256": "056942f053137c2f6ecd8a4bfc450a4c7b4212b9e230cff0a3a409b109c13332"
+    },
+    {
+      "path": "tests/suites/generation_suite.gd",
+      "bytes": 33403,
+      "sha256": "ecbf6d0aea589eff7e428cb3ae4db85259a1a57de2d306cb2b774d14400be3e4"
+    },
+    {
+      "path": "tests/suites/m2_generation_suite.gd",
+      "bytes": 47771,
+      "sha256": "68990dd5faf3c5e9cb43b1280ab9d39418718c2076eca8932eea086bb1d1e7ee"
+    },
+    {
+      "path": "tests/suites/m3_suite.gd",
+      "bytes": 5057,
+      "sha256": "c8a5d0a6a064e407139b6156cdec6bcea1043f9100ee09b942b9b38b532aa7a1"
+    },
+    {
+      "path": "tests/suites/m4_hydrology_suite.gd",
+      "bytes": 9869,
+      "sha256": "dd6bde593359d348af3dc74731b1368f5d9ffaa2d9c954d1a0273db196b29695"
+    },
+    {
+      "path": "tests/suites/m51_morphology_suite.gd",
+      "bytes": 10500,
+      "sha256": "bf96b04e1e82f82fb91d8a4bb7810e6b1806da7ea3caf1f3b93895d801702c9f"
+    },
+    {
+      "path": "tests/suites/m5_density_suite.gd",
+      "bytes": 12293,
+      "sha256": "437edf4c3c0209a7dcee43a09f51f44111bb7a7ef6b8a6eea79833cb91a6daa4"
+    },
+    {
+      "path": "tests/suites/perf_suite.gd",
+      "bytes": 9050,
+      "sha256": "6a98c4b5993616804375c0e1393837ed87579404db87507d7e5939ef1e491b96"
+    },
+    {
+      "path": "tests/suites/reliability_suite.gd",
+      "bytes": 8562,
+      "sha256": "60c59c19e2698c9319bc46b0681af1015bc9004f4dc75a0f3a4925b49a417d6b"
+    },
+    {
+      "path": "tests/suites/ui_input_suite.gd",
+      "bytes": 13339,
+      "sha256": "be95d145c9a5324a3ca3307a788124c9c7c11f8e10effff52eccb26faa04d289"
+    },
+    {
+      "path": "tests/suites/voxel_suite.gd",
+      "bytes": 13081,
+      "sha256": "3dbfe5f275e1c9ab11ab7d29fe5c709592108c007c38b32af1418580532c2673"
+    },
+    {
+      "path": "tests/test_runner.gd",
+      "bytes": 4759,
+      "sha256": "08993e711cc169c5a381721ae36a0fda204a4fae440cf6c86a677e5481d2d3d8"
+    },
+    {
+      "path": "tests/test_runner.tscn",
+      "bytes": 182,
+      "sha256": "3b820aad2f162a5f3067ad699bc97811f3ab30f3c60a449748fb18dfbcf0d8fa"
+    },
+    {
+      "path": "tests/test_support.gd",
+      "bytes": 1786,
+      "sha256": "fd97a55a07e00b645a00f8c905634a9e411c61485b886f294b231a6648d6e986"
+    },
+    {
+      "path": "Documentation/Architecture/DENSITY_AND_LANDFORMS.md",
+      "bytes": 9569,
+      "sha256": "7f14a5a1e8faaf436bc2f018e812f3584cedcee2639b3e6e54c9c6edc3209259"
+    },
+    {
+      "path": "Documentation/Architecture/HYDROLOGY.md",
+      "bytes": 9313,
+      "sha256": "5d72f79847fdd094901658a65c2539f38e50e7c57244ac4422b908f47d6b6032"
+    },
+    {
+      "path": "Documentation/Architecture/M3_CAMERA_STREAMING_ADAPTERS.md",
+      "bytes": 5969,
+      "sha256": "e067a6dd1707f8c93637ca6637b7c1ec33ae418b5e28c5c94f9b147a8b53637f"
+    },
+    {
+      "path": "Documentation/Architecture/MOUNTAIN_MORPHOLOGY.md",
+      "bytes": 9432,
+      "sha256": "8b3bb5f2a7327e1e6920174f7ce58a8c3cd3c8a2dd71c555f4bee7c21998f3b0"
+    },
+    {
+      "path": "Documentation/Architecture/OVERVIEW.md",
+      "bytes": 12694,
+      "sha256": "91998f3d7cc1c54f6e05c023f8f4e2fe5b595a4db15e9ac2e73de3f2b34bf49e"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0001-engine-and-extension-versions.md",
+      "bytes": 1294,
+      "sha256": "cbe9a91baaa1812b2b088c1280c280a2916a7208ae37f1e5e2e69ee2ed30cc99"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0002-blocky-type-voxels.md",
+      "bytes": 1966,
+      "sha256": "7bddb1385d9ff0d0d959e1b3395233168b7b1ed4d76bdf9392f8e2914bf859ad"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0003-coordinate-deterministic-height-field.md",
+      "bytes": 2037,
+      "sha256": "6c8bb4b3bbe5ca0102f1dfd379da138f75e7a26b048823649a517286880ef7d6"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0004-rebuild-terrain-on-seed-change.md",
+      "bytes": 1502,
+      "sha256": "29e4dd9fcaf2466f57dca476c469726b593e9e3ddc90246826347a712e6d824c"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0005-mobile-first-streaming-defaults.md",
+      "bytes": 1668,
+      "sha256": "cbc55af9bf0248023fa3f8126ee67f650cd30118d822844f3359d399e1566f89"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0006-trimmed-extension-binaries.md",
+      "bytes": 2687,
+      "sha256": "b99ad22477489d2833e8ee8d2ddec1e7f67b79dbc6697446df33afbb97cbc3ab"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0007-no-singletons-explicit-wiring.md",
+      "bytes": 1270,
+      "sha256": "698a060a4e6605cc41b561b35c4a288a99ebe0062daa8396ba06ab110b291293"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0008-numeric-input-for-touch.md",
+      "bytes": 3592,
+      "sha256": "a01aeea2c45a8bc5c017dbe6b4aa53fc4437a4c908351535546f23957e0d55be"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0009-performance-instrumentation.md",
+      "bytes": 2849,
+      "sha256": "56fae0ecee5c3dbb5e71c5334b0bc64027db24301d74cf02100c28cf5d6c1c1f"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0010-palette-generation-snapshot.md",
+      "bytes": 2087,
+      "sha256": "7b81fc46f6127dc41a95b4c4b0d33345649941e0f2413675ea7ef35e2dce7016"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0011-modular-generation-pipeline.md",
+      "bytes": 3057,
+      "sha256": "ce0d4afffaac736b4e558470c161b8045302d45e6c16f453be78e6f07c61c777"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0012-deterministic-coordinate-hashing.md",
+      "bytes": 2726,
+      "sha256": "07d94c1f9a4585d09062fc78c8d7a327738ad5863631705f5ed4770bacd36d31"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0013-two-resolution-sampling-and-node-cache.md",
+      "bytes": 2888,
+      "sha256": "aed7d0c766caf317cb2389a5b626e0b01ff98ed938eda172fdd1f11dc1123772"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0014-lightweight-tectonic-influence.md",
+      "bytes": 5720,
+      "sha256": "c17fdb4027c0bce7536f3431f0a1501ed64c4e817e333664a6ccb3fd33674585"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0015-mountain-range-structure.md",
+      "bytes": 5045,
+      "sha256": "26743bb8a520cf88d6b2c2296d31ef8db3c9b4e1c2c0af797134da57032b94dd"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0016-seam-free-regional-fields.md",
+      "bytes": 3612,
+      "sha256": "9de5638e89ba835e0ac41574a9f6c0eee85bc1ca63bde2bee1f07d5e72f06ec3"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0017-landform-composition-order.md",
+      "bytes": 4329,
+      "sha256": "c91dc8abe381e37d15b61fd01361878797197fc8ce831ced0293f27c94c5dce7"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0018-bounded-drainage-and-shared-water.md",
+      "bytes": 1734,
+      "sha256": "99a50b1b1e6e9cef32217fb3ed9ed756482f9ea99060d22c77b78c77c293c7a3"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0019-shared-density-and-blended-landforms.md",
+      "bytes": 2518,
+      "sha256": "0a191b6f17ac1726476c361f441ead9d11fab1859866f2c2c77bbecd3b88d0b6"
+    },
+    {
+      "path": "Documentation/Decisions/ADR-0020-mountain-cross-sections-and-vertical-profiles.md",
+      "bytes": 2160,
+      "sha256": "342e507b51926b0bee51cd57c92e088acc521ddf8c6835a5af2ab9bf6a81b49c"
+    },
+    {
+      "path": "Documentation/Milestones/M00_01_PROJECT_FOUNDATION.md",
+      "bytes": 11086,
+      "sha256": "a3529255c9ce0b7a1b143d2970bfcc48629037e586adc608a49fd64051e8152a"
+    },
+    {
+      "path": "Documentation/Milestones/M00_01_TEST_REPORT.md",
+      "bytes": 10090,
+      "sha256": "64b09b08e067bfa99b8c926b715edf14f35f5c220a1e40037ad532d171c81051"
+    },
+    {
+      "path": "Documentation/Milestones/M00_02_ANDROID_INPUT_FIX.md",
+      "bytes": 12993,
+      "sha256": "f5ee7156e2ef01a893b29f6cbb55fb6642e192473bb7e80d7bb9862b78557b9c"
+    },
+    {
+      "path": "Documentation/Milestones/M00_02_ANDROID_TESTING_CHECKLIST.md",
+      "bytes": 5413,
+      "sha256": "1a857f3e6c6153a9cb189c415fe5e8f8126d60cbf052802c5fe21d401b5899e4"
+    },
+    {
+      "path": "Documentation/Milestones/M00_02_ANDROID_VALIDATION.md",
+      "bytes": 21094,
+      "sha256": "0df65ef749a74a24d0876317a0daa9a62daa92e0e13ede33630d9a23ab165c9f"
+    },
+    {
+      "path": "Documentation/Milestones/M01_DETERMINISTIC_TERRAIN_FOUNDATION.md",
+      "bytes": 33755,
+      "sha256": "b734356953c6617196182e1ce9046c004730e564d2bebfba4ac7aa99cf9f88ac"
+    },
+    {
+      "path": "Documentation/Milestones/M02_ADVANCED_GEOGRAPHICAL_FORMATIONS.md",
+      "bytes": 37904,
+      "sha256": "8d6805fbcee73cd0ebe24fcf333446784bcb9aad2dc576768da032f72376cbac"
+    },
+    {
+      "path": "Documentation/Milestones/M03_VERTICAL_WORLD_FLYCAM_DUAL_MESHING.md",
+      "bytes": 8019,
+      "sha256": "0c681a27a81fe068b45cf36aa18b4a9eb45a93bcd80fcce77584d51c33430a05"
+    },
+    {
+      "path": "Documentation/Milestones/M04_HYDROLOGY_AND_NATURAL_LANDFORMS.md",
+      "bytes": 18219,
+      "sha256": "0d25a23846462971407b125d7c8b3d55ac4f17c13cfdc12de84a5ebf5f8c8b94"
+    },
+    {
+      "path": "Documentation/Milestones/M051_ADVANCED_MOUNTAIN_MORPHOLOGY.md",
+      "bytes": 20258,
+      "sha256": "7bd26133ba1c7a5c0165d102d354c5da42cff3b8fe00c5dc015ced30ce4c4c7f"
+    },
+    {
+      "path": "Documentation/Milestones/M051_VISUAL_COMPARISON.html",
+      "bytes": 3870354,
+      "sha256": "d51b1c34230767b80e33ac2cfce63fc6ab5969e42a9468fe9d9230ccd1f043e8"
+    },
+    {
+      "path": "Documentation/Milestones/M05_VISUAL_COMPARISON.html",
+      "bytes": 11082382,
+      "sha256": "af95b0f2b8b0e1f064d22008926dfbcf75fb723001b9a42c9cd91543176da9a5"
+    },
+    {
+      "path": "Documentation/Milestones/M05_VOLUMETRIC_TERRAIN_AND_LANDFORMS.md",
+      "bytes": 20980,
+      "sha256": "b6c4567886ffb526951064c591c2ccad6c44a97cab419ef850a698d859e6e5c5"
+    },
+    {
+      "path": "Documentation/Milestones/m3-evidence/measurements-linux.txt",
+      "bytes": 3432,
+      "sha256": "ad44cebfa4ec2a28a2dc2160f2565e4a2bdab2ffcaf4771908369f1d9dbf36a8"
+    },
+    {
+      "path": "Documentation/Milestones/m3-evidence/smooth_mountains.png",
+      "bytes": 536895,
+      "sha256": "d9caa202fad7dd94757cf6e1c962b62711967c4148218debf11f3d3edf238d65"
+    },
+    {
+      "path": "Documentation/Milestones/m3-evidence/tall_streaming.png",
+      "bytes": 454296,
+      "sha256": "64444ee07f6398e5ae5544f24789076ea872a3db89e8ccd146597c7aade3cd0b"
+    },
+    {
+      "path": "Documentation/Milestones/m3-evidence/tests-linux.txt",
+      "bytes": 187468,
+      "sha256": "a8807f90493579ef3325aaa6c4a52b546dc7787cabbdae93ed03b5b3aa9b3959"
+    },
+    {
+      "path": "Documentation/Milestones/m4-evidence/blocky_basin_1337.png",
+      "bytes": 692766,
+      "sha256": "8fba165e4268e46afa89220b44737bfdffdf58b8a057d7839fe92e673447b167"
+    },
+    {
+      "path": "Documentation/Milestones/m4-evidence/landmark-survey.txt",
+      "bytes": 925,
+      "sha256": "24952c32c5246bdf321ef9b401a0ff5152ae4ed26db14549062cd50016e6c0ca"
+    },
+    {
+      "path": "Documentation/Milestones/m4-evidence/rendering-linux.txt",
+      "bytes": 619,
+      "sha256": "dac423a48647e7fecb66bc225919e90430cc0632cedd3104bc70d5918dd79b63"
+    },
+    {
+      "path": "Documentation/Milestones/m4-evidence/sampling-linux.txt",
+      "bytes": 1143,
+      "sha256": "a9363b7c2043cd13ae81d91ffda19b0300d8a865c50d5261569fa766e772b889"
+    },
+    {
+      "path": "Documentation/Milestones/m4-evidence/smooth_basin_1337.png",
+      "bytes": 408469,
+      "sha256": "9ea9a7fa2ebf7788da841435e4f8de174c87c83f6a5ec876f6f87014dc96d2ee"
+    },
+    {
+      "path": "Documentation/Milestones/m4-evidence/tests-linux.txt",
+      "bytes": 57580,
+      "sha256": "504b745d9fa5af12c3b5d9d36c1dc0ed203adb39429b774d5cbc3960b5c07484"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/baseline-core.log",
+      "bytes": 2135,
+      "sha256": "70d604d111c8be7a8be8ae4f8880cdab244daa982963e9badf24cceb105cfed4"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/baseline-m4.log",
+      "bytes": 12371,
+      "sha256": "c00ccbbd7d1cbb7ff2b3615a7f3db5ca1d46ad6da98c52841fe2d1d775163595"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_blocky_hybrid.png",
+      "bytes": 477968,
+      "sha256": "e2b6d55afbdf5ae53d23fd705a8a98808bb6b02716d8d649ec5cbcfd35354d01"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_blocky_legacy.png",
+      "bytes": 467465,
+      "sha256": "7677af6db78daf45baad095ee8f8c02fda5e5c14ee862f011f0eaac3811ce631"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_smooth_hybrid.png",
+      "bytes": 276830,
+      "sha256": "85b03de23152c8d2ff1bf15382d677a2a8274d8b55184f4defba22631934e824"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/basin_smooth_legacy.png",
+      "bytes": 281568,
+      "sha256": "ded83dbdb58ec8e1c61ed02c22bfa4dd271aea94aa90e56d286b0a83a8678cac"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_blocky_hybrid.png",
+      "bytes": 398968,
+      "sha256": "476fa2b3e8108a7f31962e08ba3572c2d776e9e856a55b8af28fce083fe1dc0b"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_blocky_legacy.png",
+      "bytes": 388008,
+      "sha256": "0b85efa330ab8329942ac0d81e4ca8d7d5bc9046c8f28946e40f0b9884fcd707"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_smooth_hybrid.png",
+      "bytes": 257738,
+      "sha256": "43d8470da8ff40b686afadba44a7a7b6616667abb8608dcbf4e93ef0dceb3036"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/coast_smooth_legacy.png",
+      "bytes": 256502,
+      "sha256": "fb8163756b288a49a9fe0ae0099965440eedaf4f12f86d986a50de017fd67ffd"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/components-linux.txt",
+      "bytes": 933,
+      "sha256": "7b3621b9433d532b9a2ebecbcf42a74b467d5b6141d4952d610afa8d81f71cb4"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_blocky_hybrid.png",
+      "bytes": 447191,
+      "sha256": "7115c6e937784f33834104e12e100376dd97f468fd2d2f66bc65b533015ede85"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_blocky_legacy.png",
+      "bytes": 433341,
+      "sha256": "28b8b8ca7e30bee1bbb13d8b9471e472b76a9503c92f92bf3d3d19d8d8aa416a"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_smooth_hybrid.png",
+      "bytes": 246358,
+      "sha256": "4698d4965ecf057d127d76870b23bf5a26d18e66a917828d6739081398eaf8de"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/hills_smooth_legacy.png",
+      "bytes": 251118,
+      "sha256": "f628c7325f2ed26f88e4d89a939061db9fe1ac918f1427c4b326b6a655a503b7"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-perf-after.log",
+      "bytes": 430,
+      "sha256": "d09e8928b4ef48115529802ae55184af11a7457b949bb64ec04b9765c28626a6"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-perf-before.log",
+      "bytes": 431,
+      "sha256": "cb40d97599a9ff364829a51c1c066916773046eaf4cf42324bd953c8f22a11ec"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-probe.log",
+      "bytes": 173,
+      "sha256": "58eb87033dd8d423b78c571a31278e1d5b6365d253584d5b5a77e4616c96e400"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-sites.log",
+      "bytes": 2647,
+      "sha256": "345d6675d0677f77fd0bf0e90aac81c28abad5f33a096f3b52d40c43b9c7846d"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/m5-tests.log",
+      "bytes": 2819,
+      "sha256": "8314912585bb7011e9a834a94fa2d35c752edccba33605d91ae96a19ba3d7e89"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_blocky_hybrid.png",
+      "bytes": 408560,
+      "sha256": "e481a21997fd94d495d972a705ee7404ec70609259a92a0049641f0c81888da9"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_blocky_legacy.png",
+      "bytes": 440204,
+      "sha256": "784f9b9b8fa6d15ec294ee63bef5f72043e13df622bbb94736bf3aafa8a0deb6"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_smooth_hybrid.png",
+      "bytes": 239977,
+      "sha256": "5d15f42751710d8b93849bc1a72a4d14950608d76442021a5cc835ed28855032"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plains_smooth_legacy.png",
+      "bytes": 249665,
+      "sha256": "cd132775062090358f6a3f8e95a1b43a554411ecbd88bb4a90d88feb7e968fc6"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_blocky_hybrid.png",
+      "bytes": 453194,
+      "sha256": "6da360693bfe6fb85fbbff1e24c620225922092825e3d00f8a5db2cc9b38a4af"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_blocky_legacy.png",
+      "bytes": 435124,
+      "sha256": "fd3e8554e1a2560a5f886ba49d0a362eab256a9654ff77a35a72d110d9aabc76"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_smooth_hybrid.png",
+      "bytes": 238947,
+      "sha256": "d6a2a9ac29390e177a18807c53a6a6fd6d7853d8ac99a855c77dbe8e7c8ea1e2"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/plateau_smooth_legacy.png",
+      "bytes": 244686,
+      "sha256": "8d91fc97a0844ecac7ad41f35b7066e51527766edd1283f2b7c2836b6e304d2a"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_blocky_hybrid.png",
+      "bytes": 390534,
+      "sha256": "182e2a789fb795865b6b1e5f2a98bb9333d156a7201e915e39f8ebf77015499a"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_blocky_legacy.png",
+      "bytes": 431124,
+      "sha256": "1effa98810134d1ec0752c56a08dff3bff7842e70716a436b92f036fe91719af"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_smooth_hybrid.png",
+      "bytes": 265624,
+      "sha256": "aa17beb05e67d838f9f95c41782627cb3e050f7de8caee071b07a191f0fc64b5"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/range_smooth_legacy.png",
+      "bytes": 326691,
+      "sha256": "781aebbb5ceeddac17a6bd077dea40ad70015fc642100331f896bf537847b151"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/rejected-unrestricted-smooth.png",
+      "bytes": 522668,
+      "sha256": "ebe3c0f795c177fbe0fadb8db20c088262162e55a4fa7052e7be1834410d5324"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/sampling-linux.txt",
+      "bytes": 430,
+      "sha256": "9c99b4b2f4da29200da43e07b057e924f0003ca049c255c20bbb2ea8117fdfc1"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/showcase-first-attempt.txt",
+      "bytes": 943,
+      "sha256": "bac8bc307870ac2e7d21bdb1b1cbe594f03ce611987842add95bb61da1734d5e"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/showcase-linux.txt",
+      "bytes": 6853,
+      "sha256": "c31ded821e55a625b624a8e9a2dc7db808cc0b206fda64548d26d819d917dfc0"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/tests-377-before-flight-fix.txt",
+      "bytes": 55794,
+      "sha256": "958d45054c43c585580e5f2e4781147e20a4aeea30e83dd6ac8dac8d779156f2"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/tests-first-attempt.txt",
+      "bytes": 59354,
+      "sha256": "31cb2b0806e529f7310229c3792a02f25ea2e0085078cf1800668106ef6a36fe"
+    },
+    {
+      "path": "Documentation/Milestones/m5-evidence/tests-linux.txt",
+      "bytes": 55945,
+      "sha256": "45f22e63b0eb3ce3163c985d32aa6ccb5c8055221c80aa032730d3ecd02a3908"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/alpine_blocky_m5.png",
+      "bytes": 342605,
+      "sha256": "12e9ce39807b8bb4c03970e3e39bf3b506eea40f73a827d2878d5dca232a81de"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/alpine_blocky_m51.png",
+      "bytes": 400785,
+      "sha256": "287b9e50f069b14dd472c7192b8f9211bd5f839b9007b3ee6e3fb2e02f07ebd2"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/alpine_smooth_m5.png",
+      "bytes": 220876,
+      "sha256": "f84a4b6888253b7c8771dde703f472b8cfaed49ca39e2012e8045f236f28adab"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/alpine_smooth_m51.png",
+      "bytes": 218559,
+      "sha256": "e5d01ac148c7c134325ebd6752f1bc10d074a1f8b14648cec088dbe831db159a"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/basin_blocky_m5.png",
+      "bytes": 396683,
+      "sha256": "aa7947e220f6be68aeaf8632adccaa4aa787d10710d893c95f82c8eb2a9d5b70"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/basin_blocky_m51.png",
+      "bytes": 465732,
+      "sha256": "5cc390722eb315e7b68a1ba5e5f7b54c6d0f7237fbdee45606773529674ea8c7"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/basin_smooth_m5.png",
+      "bytes": 207777,
+      "sha256": "6f9bda47c360eeecba8364f24f3abfa3f49095616f89444d5da708478430624d"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/basin_smooth_m51.png",
+      "bytes": 222843,
+      "sha256": "c38db43ec258c2d51d33829a4d1f618cf4a16f035b01d274a8aec01d3af9b31a"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/composed-massif.png",
+      "bytes": 154348,
+      "sha256": "7334a517cdb7ae65d2eaab88aec52078d9696e5a71d7f54ef7c35637e4cf48bc"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/composed-render.txt",
+      "bytes": 838,
+      "sha256": "e9acf2c34fb55ade280d98fad440f9490d70df0744ab2bb1f9c992fa6ec043ff"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/distant_blocky_m5.png",
+      "bytes": 434101,
+      "sha256": "64cc59a4da3ed8a503a44f0b84324ea6b4ac26edea4b10ba8fada7db7b907ebe"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/distant_blocky_m51.png",
+      "bytes": 515058,
+      "sha256": "5152d393a8bd057a77c074c208469edc5a4106b745dc5337b0d1083b1a5aaa01"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/distant_smooth_m5.png",
+      "bytes": 258375,
+      "sha256": "299cb95e5387397c406d6c00ce030c5bfd475818356b2db8a9d2830f708f0af0"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/distant_smooth_m51.png",
+      "bytes": 269711,
+      "sha256": "a8a7d02cb4d4867f0bafe9febdae4d5d811f86308d765a69e801733e728828a8"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/eroded_blocky_m5.png",
+      "bytes": 342143,
+      "sha256": "67fb9a761fd631e1a4665e0ea6017e58b62af563a8cc2b6e57125e7960f61c86"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/eroded_blocky_m51.png",
+      "bytes": 505187,
+      "sha256": "c36291ee9e9058817308458250e2fcd471fa4477091abb5e1f066348b35b838d"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/eroded_smooth_m5.png",
+      "bytes": 234592,
+      "sha256": "999413a77fc8383ffab28f845cd89b5454bd05d523bc565032e1d4930daebbc2"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/eroded_smooth_m51.png",
+      "bytes": 236305,
+      "sha256": "481697987a243f3e05b2d66299997495b838f14d289e5c42daf7b30a2dbb858a"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/final-survey.txt",
+      "bytes": 307,
+      "sha256": "b39ec1227cb6d56392da05c8ccc48fc95c225d8bb248947df7146e3b562212eb"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/foothills_blocky_m5.png",
+      "bytes": 409208,
+      "sha256": "175ab2032a42820e202f05277b3b696a20d3fbafdb7327a7ec93226bff35d740"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/foothills_blocky_m51.png",
+      "bytes": 546207,
+      "sha256": "a5dce1d4cc0064cc95f874fd12b634b930a634cf56f347adceaf0d3789b59589"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/foothills_smooth_m5.png",
+      "bytes": 141664,
+      "sha256": "4f3dd9613d51c5795e3f01d587d82342e670ec7ddf8e1ebd593750b42337235e"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/foothills_smooth_m51.png",
+      "bytes": 330335,
+      "sha256": "62ea2d84abe2234b3b96a2628239f94dd9d874f5fee12d5ff866096f58fd3462"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/highland_blocky_m5.png",
+      "bytes": 362254,
+      "sha256": "e36254f1f9d6559ba682c9b335a73994d91f76e172b7d134de333d9d97c14faf"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/highland_blocky_m51.png",
+      "bytes": 392430,
+      "sha256": "65ce2d5a47e60f3f6f78c3bcf7fd59b3c61409a13c679ddd6dce5b2851ed44e0"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/highland_smooth_m5.png",
+      "bytes": 226256,
+      "sha256": "6a6c9bd1293816debf1658adddc2955e35498e4f70b8229db7b341acf00bbae7"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/highland_smooth_m51.png",
+      "bytes": 235880,
+      "sha256": "b14b04eb4a3dfc0d0fdbdf63e78de08b622d7ba28e8c283b43f530b9e5e5d7c4"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/alpine_blocky_m5.png",
+      "bytes": 475460,
+      "sha256": "a645ffb9c42f1cb6d23185097abd50bdacb0b6469bb9c2e544e300776ef9d624"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/alpine_blocky_m51.png",
+      "bytes": 543783,
+      "sha256": "dd5189a9cd018063b3c0e5a5a1c102a6db34804380ca79d795b77c3685aef19a"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/alpine_smooth_m5.png",
+      "bytes": 249410,
+      "sha256": "f9c75ba49cbb20608ec558b36ab7f5bbcf84571ed922d0dea216806786f3f2f2"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/alpine_smooth_m51.png",
+      "bytes": 245018,
+      "sha256": "00941de5c5b3bbffe264c0ccff7295ea6f46e4f4f718eea88e64345f0bed59ce"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/massif_blocky_m5.png",
+      "bytes": 472713,
+      "sha256": "5c39051da53d3aafee26e04e497c5203b1d9e5f9f28ffebd4a054d146ac59982"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/massif_blocky_m51.png",
+      "bytes": 559550,
+      "sha256": "40ed2f4796e89d9889ee73eebe33bcb0ea3857bebbf5bdc6d41eab24aba2c6bf"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/massif_smooth_m5.png",
+      "bytes": 245122,
+      "sha256": "ab900f0efc477638f742dc2dfdc404ded6df1ad768170910f8bf480263fdfb16"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/massif_smooth_m51.png",
+      "bytes": 294734,
+      "sha256": "fc80bced349b884d46663609238dede9aed8a38ffb0e050fcd4044a17ab45ea5"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/rounded_blocky_m5.png",
+      "bytes": 440272,
+      "sha256": "19c554d98beebda7cd30e174a4ffa2dc33d95bc61a57992177670b231a954d36"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/rounded_blocky_m51.png",
+      "bytes": 529063,
+      "sha256": "d7878b9e30ef695665c7e1e8860cc4907a66e16e22df3ea1250266f07b8e1502"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/rounded_smooth_m5.png",
+      "bytes": 247819,
+      "sha256": "4d69457c51fde4a4cf45d3e08a8c7187c95112b8bc869ac33d84249be478c32f"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/rounded_smooth_m51.png",
+      "bytes": 265574,
+      "sha256": "198b6f74125aa98c5bd74b1e12db6050c76d70d2662ac8404bfbf9d59098fa7f"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/rugged_blocky_m5.png",
+      "bytes": 393711,
+      "sha256": "e0147c5840ffb9c4e40f49d0e900528e8498c706a4e922bfba0b7f0ea5440050"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-composition/showcase-linux.txt",
+      "bytes": 9493,
+      "sha256": "9d5d4c90dd95df76407129e3497dd00297da8943980aca33b0a2fa828ee59714"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-render.txt",
+      "bytes": 332,
+      "sha256": "d4bf91540e999abe39875330c03ab8a3392d2c43cd788c019448c248316ab841"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-survey.txt",
+      "bytes": 306,
+      "sha256": "e2bc3bc25b76740a86b54dd67968c50f1c314c5756e70d6e30e2301269b5141a"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/initial-tests.txt",
+      "bytes": 2769,
+      "sha256": "3171ee7dde644a2922f4e3b659ba656987f56e102b998f3b5ae878ad82e670fa"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/lake-survey.txt",
+      "bytes": 1268,
+      "sha256": "e4383141ef3342bab42a1980d1850c19f662d397840acafdfbff3fa7a161b452"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/lake_range_blocky_m5.png",
+      "bytes": 647430,
+      "sha256": "942aa92cd9b117324520d69846c7d08a94b0f842638eec77d7b6fe6bc06f8d9c"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/lake_range_blocky_m51.png",
+      "bytes": 773429,
+      "sha256": "8ab8cf00f6e2e7f95a9c1d15925fe7ab56f5e721bd8956b6d5b315cc5d19134b"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/lake_range_smooth_m5.png",
+      "bytes": 270538,
+      "sha256": "e0edaaeb6ca766461daa18401dc0ed4cf98c3276167fa32ed09506b018489ba6"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/lake_range_smooth_m51.png",
+      "bytes": 233910,
+      "sha256": "848dfa597f3f29b4b13b71559682567fdb4f65e1cfaa77cab8093e9b3d5892da"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/m51-tests.txt",
+      "bytes": 4058,
+      "sha256": "c52ba9e968ec159d739edfc3c9c201f3e9d1c38513830637e969691fc00eb6cb"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/massif_blocky_m5.png",
+      "bytes": 370839,
+      "sha256": "77ce15d0bfcd97f058b854697930df90c61a7b5be54fae4ec95baecddda38dfc"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/massif_blocky_m51.png",
+      "bytes": 460436,
+      "sha256": "8473eaa0ac420d39ea568ab25af49bfdc4a619999f164ab597f111bdbbcd652d"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/massif_smooth_m5.png",
+      "bytes": 219996,
+      "sha256": "06782ac644dd920d22a0846716c60a0981b76ed87fc8b79fb17566637ca626b2"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/massif_smooth_m51.png",
+      "bytes": 221686,
+      "sha256": "36e730b51b943049750687e90aae53a99d6569d3da4de5d0f67a6a68992a8466"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/mobile/massif_blocky_m51.png",
+      "bytes": 510900,
+      "sha256": "7a251dce5c0a4b343650d03a6a40f2bcd874347e044393c740f8bce2e14a66c1"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/mobile/massif_smooth_m51.png",
+      "bytes": 232099,
+      "sha256": "9f2edfe27214a7b72a26fc9befe37b1e9811e641fa800421129e55d85ce9ca73"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/mobile-linux.txt",
+      "bytes": 778,
+      "sha256": "71c778d54361ccd4fca7f691fcbcb99ca64a8d1bacbbab4b18509e29e3f592e6"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/recheck-m5.txt",
+      "bytes": 4344,
+      "sha256": "10390521ba3b0650cd724d6b423f30786150963b87bb6d6612dcc5dee78069d5"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/recheck-m51.txt",
+      "bytes": 4941,
+      "sha256": "6328c65d5445e752569f9dbfa0a8e078f00cc6a6ae9eedaecfbce8d27a655ec3"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/recheck-voxel.txt",
+      "bytes": 3094,
+      "sha256": "64c656c50479dba19fe9fdcd9fe475c3e13a39e283909ddd46b61e7cecc65d16"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/refined-render.txt",
+      "bytes": 702,
+      "sha256": "02723055a23934f4af42e188df081962895e603d14e940b0199bf43a5bc9662c"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/refined-smooth.png",
+      "bytes": 272599,
+      "sha256": "f5c6f581d2ef6772557c56fd968d4c0d528269133717d1691c7621cc17da974e"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/refined-survey.txt",
+      "bytes": 306,
+      "sha256": "3110545f3e534a6e3198828c3c723839a181b3fbe526e4d2e994db042578e67b"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/rounded_blocky_m5.png",
+      "bytes": 364309,
+      "sha256": "6a2d40a8f98b06c1e624604d7485b636264d45ea6cc1396d719e2f052ee7d603"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/rounded_blocky_m51.png",
+      "bytes": 433399,
+      "sha256": "b97a5c18ae8bd9bd00f16117a84eab9626eccfcc7dfb11e6ae410ae51db010a6"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/rounded_smooth_m5.png",
+      "bytes": 226000,
+      "sha256": "f06fcab0eadb2b973d35c309a6ce40e632b5de4f74b8b5d78c9063f25479556b"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/rounded_smooth_m51.png",
+      "bytes": 235330,
+      "sha256": "cacfa6a39d0e22f6c0734ffdb9577fb0c9fdbb482f9e37a0368efe69b543f9ef"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/rugged_blocky_m5.png",
+      "bytes": 333234,
+      "sha256": "275f017faf41f1b02cb535df31203c411d0e8cdbe6d19558205043e3d6a9574d"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/rugged_blocky_m51.png",
+      "bytes": 414228,
+      "sha256": "3daec9cfed9b8c92ac83d862bcf2061695a126b607bb9b6852f8348f41d93e58"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/rugged_smooth_m5.png",
+      "bytes": 249513,
+      "sha256": "d8eb562220957125f10b26ac63d837e3d884b27b8b342f503015261246ef7f3e"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/rugged_smooth_m51.png",
+      "bytes": 307913,
+      "sha256": "0280b0ca86434e570c915d5d54e79dfeaeadcabdfbb31b8bcbd2a47ea962c4d0"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/sampling-contended-trial.txt",
+      "bytes": 1117,
+      "sha256": "3eebaed8f750ec3322aee2c9c00d19d839eb5f70d4f8b58191269ae86bf15fd4"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/sampling-linux.txt",
+      "bytes": 1117,
+      "sha256": "bfd22fff0731a58914700a07af6453a38dccd5a79b68548a768f74d175ed1d29"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/showcase-linux.txt",
+      "bytes": 13215,
+      "sha256": "5656edab668220a4a001370ac18c52d737fd957f8bd6ba9325835768980e1b9f"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/tests-first-full-attempt.txt",
+      "bytes": 60395,
+      "sha256": "a44b86faec83d4678c80f28425b5b01943e338da2c9c1c976d3fb98274336475"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/tests-linux.txt",
+      "bytes": 59136,
+      "sha256": "214529101ff5ae6174e99999fadc6258b319aae080cc90dcb8a37dafd8f9e06e"
+    },
+    {
+      "path": "Documentation/Milestones/m51-evidence/transect.txt",
+      "bytes": 2266,
+      "sha256": "89d6eeddc5df6767bf327321721acd16791e9ae8d9cba8dabef577d1b1db5c6e"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m00_02_debug_panel.png",
+      "bytes": 678668,
+      "sha256": "e6d1e78e59e4eb11af2b7267ee4f92fab5879dbe92b3b2fc0a17489c89294493"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m00_02_profile_overlay.png",
+      "bytes": 685175,
+      "sha256": "215cb405bf5ec2b1f498ac74626967fff3228b4b3e7b3d6b8fbf36b8dc03bcb5"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m01_map_seed_1337.png",
+      "bytes": 755811,
+      "sha256": "ad65356fe8ce500e7126ebe737512d19899a7e31c9c28dd703bb2e19bece5d55"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m01_range_seed_1337.png",
+      "bytes": 781210,
+      "sha256": "88c03badf01dba17bd499f5c91ba2eb056bfd869294da092f01315fe11945a8b"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m01_terrain_seed_1337.png",
+      "bytes": 628934,
+      "sha256": "ce1debdf21c49549876f095d8a5c873507599868f35216ebdbeb8b8a5d419ee8"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m01_terrain_seed_90210.png",
+      "bytes": 492900,
+      "sha256": "680fa5972b0368e469cd46b53528e0595650940c8b97bc92475b2db79b9502c4"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m02_highland_coast_seed_1337.png",
+      "bytes": 615790,
+      "sha256": "6ce75e3632458da6fba7429954cfdc07f29d3e42ee25d38c643bb9da48adbf68"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m02_island_seed_1337.png",
+      "bytes": 579883,
+      "sha256": "3e22c5b081a7e5c19e86cd75a4aaa653aae4167867cef6de7c798b5b3f3a6df1"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m02_map_seed_1337.png",
+      "bytes": 1203996,
+      "sha256": "2a0fca65680bb7adb770cba9794edc34eee788b6eb4a9e5c7c63646d3ca9ff96"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m02_map_seed_4242.png",
+      "bytes": 1235572,
+      "sha256": "82be4967c895a7dbc1c66825e52bdfac1d8c50a66a53fdb6b01b78dee8793027"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m02_map_seed_90210.png",
+      "bytes": 1216082,
+      "sha256": "7e7de65e3e5081762751a37771ef5425aa36845f7acb01fef46d81e09a8801b4"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m02_mountains_seed_1337.png",
+      "bytes": 675981,
+      "sha256": "109c9835458bcda23408c9c6c2ff637d1b0e563e256c6cd227a8dc9c26a51244"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m02_plateau_seed_1337.png",
+      "bytes": 606423,
+      "sha256": "da854ee4b6ebd6ad995364c05e2bc5a2b02cea67290d8d91d9b5c55fa64ed414"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/m02_shelf_and_offshore_island_seed_1337.png",
+      "bytes": 510926,
+      "sha256": "fb049db30f65c28810f45496c2041a0fafb45c5f112258e0816d2e3343ef0f58"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/terrain_closeup.png",
+      "bytes": 409537,
+      "sha256": "6a5df23ac9daaf1200636ca91dc8b935f6809175182a1d2265fe36f42aa1e71b"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/terrain_seed_1337.png",
+      "bytes": 674851,
+      "sha256": "0cef404c7d9b2160797a779dccf49392c1b0f9d8c8624fcdff7819bd744f6045"
+    },
+    {
+      "path": "Documentation/Milestones/screenshots/terrain_seed_90210.png",
+      "bytes": 784239,
+      "sha256": "87bd10526c012d075e72579da3b731bc79f734030b9669e69e3efb685ddfb3d3"
+    },
+    {
+      "path": "Documentation/PROJECT_CONTINUATION.md",
+      "bytes": 30489,
+      "sha256": "12d3e7ad224e389385c1926606427bc95d02b8f2f04b656997eead511b5f1dcf"
+    },
+    {
+      "path": "Documentation/Research/M04_VINTAGE_STORY_TERRAIN.md",
+      "bytes": 7742,
+      "sha256": "d274774789b52318eaab16cf445fe5d7f014c55b42e6af8b96c8856f79f5c3af"
+    },
+    {
+      "path": "Documentation/Research/M05_VOLUMETRIC_TERRAIN.md",
+      "bytes": 8543,
+      "sha256": "a55f90aecb01b0ef49db6f31851be39b55c5a7deb8a25fab8ce4a3f5e8cc4703"
+    },
+    {
+      "path": "Documentation/Research/M51_MOUNTAIN_DIAGNOSIS.md",
+      "bytes": 4267,
+      "sha256": "cf7673726fa71bb6c96e5e63750510da6bec170b1e4273c2ff537217e584535d"
+    },
+    {
+      "path": "Documentation/Research/M51_MOUNTAIN_RESEARCH.md",
+      "bytes": 4889,
+      "sha256": "7d8ff15a84b3e7526771267de20fa96cbd46c68d515b4ad3d2d859ce960942cf"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/FastNoiseLite-LICENSE.txt",
+      "bytes": 1120,
+      "sha256": "c08da3239b919c12f4ec616b457a8dd0fc923c8102c8a742c4006fcb5de28fb0"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/Terrain3D-LICENSE.txt",
+      "bytes": 1112,
+      "sha256": "f7ecc09ce65c97828130728072c5a6ed3cc185d3bf0436e51a15828ad9ceca7c"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/Terrainy-LICENSE.txt",
+      "bytes": 1068,
+      "sha256": "12ac547a64be5e92e590921fe513927b5590b1d79244100afb64e0c29f0d934b"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/godot_voxel-LICENSE.md.txt",
+      "bytes": 1075,
+      "sha256": "3a1f742145830b5702fe9e7aa2566c5896012a88fb3f70a00d6fd64e9cc203ee"
+    },
+    {
+      "path": "Documentation/Research/m5-licenses/primitive-voxels-godot-LICENSE.txt",
+      "bytes": 7048,
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    },
+    {
+      "path": "Documentation/Research/m51-source-evidence/.gdignore",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Documentation/Research/m51-source-evidence/FastNoiseLite-Cpp_FastNoiseLite.h",
+      "bytes": 107699,
+      "sha256": "47a29750dfe13d15651febd235f3c26b1cc57af7c6e26583b838fd7ab5215dc2"
+    },
+    {
+      "path": "Documentation/Research/m51-source-evidence/FastNoiseLite-LICENSE",
+      "bytes": 1120,
+      "sha256": "c08da3239b919c12f4ec616b457a8dd0fc923c8102c8a742c4006fcb5de28fb0"
+    },
+    {
+      "path": "Documentation/Research/m51-source-evidence/FastNoiseLite-revision.txt",
+      "bytes": 41,
+      "sha256": "16a1d76e35bc2f257a0f78c8160e35fb28476aacb70126b2c22b56130cf47c25"
+    },
+    {
+      "path": "Documentation/Research/m51-source-evidence/Terrainy-LICENSE",
+      "bytes": 1068,
+      "sha256": "12ac547a64be5e92e590921fe513927b5590b1d79244100afb64e0c29f0d934b"
+    },
+    {
+      "path": "Documentation/Research/m51-source-evidence/Terrainy-addons_terrainy_nodes_landscapes_landscape_evaluation_context.gd.txt",
+      "bytes": 4879,
+      "sha256": "b705f9ed99881752204e617ceebfbf79e1b7489d72c327656a8763a3c231a0f6"
+    },
+    {
+      "path": "Documentation/Research/m51-source-evidence/Terrainy-addons_terrainy_nodes_landscapes_mountain_range_node.gd.txt",
+      "bytes": 9139,
+      "sha256": "48e540c0baa216436639456907a89d9783347b5cb626a6454960ebea13e071ef"
+    },
+    {
+      "path": "Documentation/Research/m51-source-evidence/Terrainy-revision.txt",
+      "bytes": 41,
+      "sha256": "72ca8360a8f4dda0d9d560d0f5aea6b45252a8be794457f857b0133109c814d0"
+    }
+  ]
+}

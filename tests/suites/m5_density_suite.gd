@@ -200,6 +200,10 @@ static func run_scene_checks(report,tree: SceneTree) -> void:
 	for path in ["res://scenes/main.tscn","res://scenes/smooth_terrain.tscn"]:
 		var scene = load(path).instantiate()
 		tree.root.add_child(scene)
+		# Exercise a rendered scene, not destruction before its first draw.
+		# GLES sky initialization is deferred; pre-draw teardown leaked textures.
+		await tree.process_frame
+		await tree.process_frame
 		var world: VoxelWorld = scene.world
 		report.check(path+" explicit density ownership",world.get_density() == world.get_generator().get_density() and world.config.density_mode == 1)
 		scene.camera.focus_on(Vector3(120,60,120))

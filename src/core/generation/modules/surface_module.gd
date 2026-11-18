@@ -106,6 +106,7 @@ const VALLEY_THRESHOLD := 0.45
 
 var _profiles: LandformProfiles
 var _hybrid := false
+var _mountain_morphology := false
 
 var _sea_level := 20.0
 var _base_height := 24.0
@@ -145,6 +146,7 @@ func _init() -> void:
 func configure(context: GenerationContext) -> void:
 	var config := context.config
 	_hybrid = config.density_mode == 1
+	_mountain_morphology = _hybrid and config.mountain_morphology_enabled
 	_profiles = LandformProfiles.new(config.landform_profiles)
 	_landmass_index = dependency_index(&"landmass")
 	_elevation_index = dependency_index(&"elevation")
@@ -230,6 +232,16 @@ func evaluate_node(_x: int, _z: int, values: PackedFloat32Array) -> void:
 
 	if _hybrid:
 		height = _profiles.shape(height,base,land_signal,mountains,hills,plateaus,valleys,elevation)
+		if _mountain_morphology:
+			# M5 applied peak-dependent gains AFTER plateau/valley carving,
+			# amplifying isolated high nodes while removing their shoulders.
+			# Calibrate tall relief BEFORE carving; do not re-amplify summits.
+			var mountain_height := base+(hills*_hill_scale+mountains*_mountain_scale*2.35)*_terrain_height*inland_relief
+			var mountain_plateau := clampf(plateaus,0,1)*(1-smoothstep(0.15,0.5,mountains))
+			mountain_height = lerpf(mountain_height,plateau_level,mountain_plateau)
+			var mountain_carve := valleys*_valley_depth*_terrain_height*(1+mountains)*(1-PLATEAU_VALLEY_FADE*mountain_plateau)
+			mountain_height = maxf(mountain_height-mountain_carve,minf(mountain_height,valley_floor))
+			height = lerpf(height,mountain_height,smoothstep(0.08,0.45,mountains))
 		height = lerpf(height,maxf(height,_sea_level+DRAINAGE_FLOOR),land)
 
 	# 6. Coastal softening.

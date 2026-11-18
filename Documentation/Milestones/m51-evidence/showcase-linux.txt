@@ -1,0 +1,78 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+libxkbcommon.so.0: cannot open shared object file: No such file or directory
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+M51_CAPTURE alpine_blocky_m5.png ready=true save=0 ready_ms=17389 frame_ms=307.7203125 static_MB=63.9375629425049 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE alpine_blocky_m51.png ready=true save=0 ready_ms=26447 frame_ms=368.1675 static_MB=67.6865673065186 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE alpine_smooth_m5.png ready=true save=0 ready_ms=15605 frame_ms=204.9011875 static_MB=82.4883642196655 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE alpine_smooth_m51.png ready=true save=0 ready_ms=30292 frame_ms=264.883125 static_MB=90.855185508728 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE massif_blocky_m5.png ready=true save=0 ready_ms=12851 frame_ms=198.806375 static_MB=72.8618106842041 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+M51_CAPTURE massif_blocky_m51.png ready=true save=0 ready_ms=13003 frame_ms=299.8186875 static_MB=78.1438426971436 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+M51_CAPTURE massif_smooth_m5.png ready=true save=0 ready_ms=8630 frame_ms=168.925875 static_MB=87.1646642684937 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE massif_smooth_m51.png ready=true save=0 ready_ms=14933 frame_ms=284.045625 static_MB=101.196158409119 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE rounded_blocky_m5.png ready=true save=0 ready_ms=7010 frame_ms=231.4785625 static_MB=79.6403121948242 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.214866, 0.927184, -0.30686), Z: (0.531811, 0.374607, 0.759505), O: (-325.5008, 151.2067, -44.4545)] seed=90210
+M51_CAPTURE rounded_blocky_m51.png ready=true save=0 ready_ms=10190 frame_ms=253.246375 static_MB=83.4725341796875 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.214866, 0.927184, -0.30686), Z: (0.531811, 0.374607, 0.759505), O: (-325.5008, 151.2067, -44.4545)] seed=90210
+M51_CAPTURE rounded_smooth_m5.png ready=true save=0 ready_ms=8873 frame_ms=201.4041875 static_MB=94.6688051223755 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.214866, 0.927184, -0.30686), Z: (0.531811, 0.374607, 0.759505), O: (-325.5008, 151.2067, -44.4545)] seed=90210
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE rounded_smooth_m51.png ready=true save=0 ready_ms=11396 frame_ms=213.2569375 static_MB=101.137917518616 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.214866, 0.927184, -0.30686), Z: (0.531811, 0.374607, 0.759505), O: (-325.5008, 151.2067, -44.4545)] seed=90210
+M51_CAPTURE rugged_blocky_m5.png ready=true save=0 ready_ms=5990 frame_ms=216.6501875 static_MB=79.4485683441162 pose=[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.951057, 0.309017), Z: (-0.0, 0.309017, -0.951057), O: (-64.0, 140.9017, -1567.106)] seed=1337
+M51_CAPTURE rugged_blocky_m51.png ready=true save=0 ready_ms=9125 frame_ms=316.1775 static_MB=84.9855480194092 pose=[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.951057, 0.309017), Z: (-0.0, 0.309017, -0.951057), O: (-64.0, 140.9017, -1567.106)] seed=1337
+M51_CAPTURE rugged_smooth_m5.png ready=true save=0 ready_ms=7503 frame_ms=196.1873125 static_MB=92.4686040878296 pose=[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.951057, 0.309017), Z: (-0.0, 0.309017, -0.951057), O: (-64.0, 140.9017, -1567.106)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE rugged_smooth_m51.png ready=true save=0 ready_ms=11192 frame_ms=279.9739375 static_MB=103.260455131531 pose=[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.951057, 0.309017), Z: (-0.0, 0.309017, -0.951057), O: (-64.0, 140.9017, -1567.106)] seed=1337
+M51_CAPTURE eroded_blocky_m5.png ready=true save=0 ready_ms=5738 frame_ms=186.504375 static_MB=78.4717578887939 pose=[X: (0.866025, 0.0, 0.5), Y: (0.286789, 0.819152, -0.496732), Z: (-0.409576, 0.573577, 0.709406), O: (-61.05336, 188.0934, -1281.965)] seed=1337
+M51_CAPTURE eroded_blocky_m51.png ready=true save=0 ready_ms=8218 frame_ms=290.583875 static_MB=83.7412738800049 pose=[X: (0.866025, 0.0, 0.5), Y: (0.286789, 0.819152, -0.496732), Z: (-0.409576, 0.573577, 0.709406), O: (-61.05336, 188.0934, -1281.965)] seed=1337
+M51_CAPTURE eroded_smooth_m5.png ready=true save=0 ready_ms=7602 frame_ms=185.4421875 static_MB=91.51038646698 pose=[X: (0.866025, 0.0, 0.5), Y: (0.286789, 0.819152, -0.496732), Z: (-0.409576, 0.573577, 0.709406), O: (-61.05336, 188.0934, -1281.965)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE eroded_smooth_m51.png ready=true save=0 ready_ms=9971 frame_ms=259.6351875 static_MB=98.9151525497437 pose=[X: (0.866025, 0.0, 0.5), Y: (0.286789, 0.819152, -0.496732), Z: (-0.409576, 0.573577, 0.709406), O: (-61.05336, 188.0934, -1281.965)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE highland_blocky_m5.png ready=true save=0 ready_ms=6832 frame_ms=186.825875 static_MB=81.1882343292236 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+M51_CAPTURE highland_blocky_m51.png ready=true save=0 ready_ms=11593 frame_ms=252.5929375 static_MB=84.9674701690674 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+M51_CAPTURE highland_smooth_m5.png ready=true save=0 ready_ms=10595 frame_ms=192.4970625 static_MB=96.5157041549683 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE highland_smooth_m51.png ready=true save=0 ready_ms=14037 frame_ms=244.232375 static_MB=99.7790479660034 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.178606, 0.906308, -0.383022), Z: (0.383022, 0.422618, 0.821394), O: (26.13244, 171.488, -1269.647)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE foothills_blocky_m5.png ready=true save=0 ready_ms=11011 frame_ms=419.2035 static_MB=89.9192295074463 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.214866, 0.927184, -0.30686), Z: (0.531811, 0.374607, 0.759504), O: (-10.81892, 85.46066, -180.0495)] seed=1337
+M51_CAPTURE foothills_blocky_m51.png ready=true save=0 ready_ms=10552 frame_ms=432.667875 static_MB=88.8865489959717 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.214866, 0.927184, -0.30686), Z: (0.531811, 0.374607, 0.759504), O: (-10.81892, 85.46066, -180.0495)] seed=1337
+M51_CAPTURE foothills_smooth_m5.png ready=true save=0 ready_ms=13154 frame_ms=371.787125 static_MB=113.609469413757 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.214866, 0.927184, -0.30686), Z: (0.531811, 0.374607, 0.759504), O: (-10.81892, 85.46066, -180.0495)] seed=1337
+M51_CAPTURE foothills_smooth_m51.png ready=true save=0 ready_ms=13662 frame_ms=384.349375 static_MB=113.023032188416 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.214866, 0.927184, -0.30686), Z: (0.531811, 0.374607, 0.759504), O: (-10.81892, 85.46066, -180.0495)] seed=1337
+M51_CAPTURE basin_blocky_m5.png ready=true save=0 ready_ms=9223 frame_ms=382.496625 static_MB=87.6884632110596 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.314067, 0.669131, -0.673518), Z: (0.282787, 0.743145, 0.606438), O: (353.9344, 119.1774, -567.2274)] seed=1337
+M51_CAPTURE basin_blocky_m51.png ready=true save=0 ready_ms=12493 frame_ms=391.4838125 static_MB=88.3580265045166 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.314067, 0.669131, -0.673518), Z: (0.282787, 0.743145, 0.606438), O: (353.9344, 119.1774, -567.2274)] seed=1337
+M51_CAPTURE basin_smooth_m5.png ready=true save=0 ready_ms=12748 frame_ms=345.7125625 static_MB=115.519244194031 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.314067, 0.669131, -0.673518), Z: (0.282787, 0.743145, 0.606438), O: (353.9344, 119.1774, -567.2274)] seed=1337
+M51_CAPTURE basin_smooth_m51.png ready=true save=0 ready_ms=15312 frame_ms=375.8031875 static_MB=118.186079978943 pose=[X: (0.906308, 0.0, -0.422618), Y: (-0.314067, 0.669131, -0.673518), Z: (0.282787, 0.743145, 0.606438), O: (353.9344, 119.1774, -567.2274)] seed=1337
+M51_CAPTURE lake_range_blocky_m5.png ready=true save=0 ready_ms=14706 frame_ms=407.758625 static_MB=90.3638668060303 pose=[X: (0.819152, 0.0, -0.573577), Y: (-0.286788, 0.866025, -0.409576), Z: (0.496732, 0.5, 0.709406), O: (86.6405, 125.0, -1393.965)] seed=1337
+M51_CAPTURE lake_range_blocky_m51.png ready=true save=0 ready_ms=17757 frame_ms=407.35775 static_MB=92.8387584686279 pose=[X: (0.819152, 0.0, -0.573577), Y: (-0.286788, 0.866025, -0.409576), Z: (0.496732, 0.5, 0.709406), O: (86.6405, 125.0, -1393.965)] seed=1337
+M51_CAPTURE lake_range_smooth_m5.png ready=true save=0 ready_ms=17858 frame_ms=402.02775 static_MB=128.357501029968 pose=[X: (0.819152, 0.0, -0.573577), Y: (-0.286788, 0.866025, -0.409576), Z: (0.496732, 0.5, 0.709406), O: (86.6405, 125.0, -1393.965)] seed=1337
+M51_CAPTURE lake_range_smooth_m51.png ready=true save=0 ready_ms=23305 frame_ms=403.257 static_MB=131.531950950623 pose=[X: (0.819152, 0.0, -0.573577), Y: (-0.286788, 0.866025, -0.409576), Z: (0.496732, 0.5, 0.709406), O: (86.6405, 125.0, -1393.965)] seed=1337
+M51_CAPTURE distant_blocky_m5.png ready=true save=0 ready_ms=18549 frame_ms=284.14375 static_MB=104.497182846069 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.079826, 0.990268, -0.114004), Z: (0.567994, 0.139173, 0.81118), O: (86.239, 150.0512, -1213.988)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE distant_blocky_m51.png ready=true save=0 ready_ms=24118 frame_ms=349.4635 static_MB=105.811239242554 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.079826, 0.990268, -0.114004), Z: (0.567994, 0.139173, 0.81118), O: (86.239, 150.0512, -1213.988)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE distant_smooth_m5.png ready=true save=0 ready_ms=25886 frame_ms=226.3635 static_MB=138.121466636658 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.079826, 0.990268, -0.114004), Z: (0.567994, 0.139173, 0.81118), O: (86.239, 150.0512, -1213.988)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)
+M51_CAPTURE distant_smooth_m51.png ready=true save=0 ready_ms=33133 frame_ms=306.8279375 static_MB=145.526652336121 pose=[X: (0.819152, 0.0, -0.573576), Y: (-0.079826, 0.990268, -0.114004), Z: (0.567994, 0.139173, 0.81118), O: (86.239, 150.0512, -1213.988)] seed=1337
+WARNING: Waiting for all tasks to be picked is taking a long time
+     at: wait_for_all_tasks (util/tasks/threaded_task_runner.cpp:436)

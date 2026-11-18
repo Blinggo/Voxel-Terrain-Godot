@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+M51_LAKE enabled=false lake:-11:-58 center=(-352.0, -1856.0) level=35.860474395752 cells=17
+M51_LAKE enabled=false lake:1:-46 center=(32.0, -1472.0) level=38.1115131378174 cells=45
+LAKE_QUERY (24, -1480) { "kind": "lake", "water_height": 38.1115112304688, "ground_height": 30.0610046386719, "river_width": 0.0, "body_id": "lake:1:-46" }
+M51_LAKE enabled=false lake:1:-42 center=(32.0, -1344.0) level=57.0968673706055 cells=66
+M51_LAKE enabled=false lake:-4:-38 center=(-128.0, -1216.0) level=27.9365356445313 cells=30
+M51_LAKE enabled=false lake:8:-17 center=(256.0, -544.0) level=30.0830219268799 cells=105
+M51_LAKE enabled=false lake:10:-16 center=(320.0, -512.0) level=30.0830219268799 cells=105
+LAKE_INVENTORY enabled=false count=6
+M51_LAKE enabled=true lake:-11:-58 center=(-352.0, -1856.0) level=43.3113639831543 cells=24
+M51_LAKE enabled=true lake:1:-46 center=(32.0, -1472.0) level=43.7922382354736 cells=17
+LAKE_QUERY (32, -1480) { "kind": "lake", "water_height": 43.792236328125, "ground_height": 38.3362617492676, "river_width": 0.0, "body_id": "lake:1:-46" }
+M51_LAKE enabled=true lake:8:-17 center=(256.0, -544.0) level=31.7494361877441 cells=86
+LAKE_INVENTORY enabled=true count=4

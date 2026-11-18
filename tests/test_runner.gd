@@ -22,6 +22,7 @@ const VoxelSuite = preload("res://tests/suites/voxel_suite.gd")
 const UiInputSuite = preload("res://tests/suites/ui_input_suite.gd")
 const PerfSuite = preload("res://tests/suites/perf_suite.gd")
 const ReliabilitySuite = preload("res://tests/suites/reliability_suite.gd")
+const M51Suite = preload("res://tests/suites/m51_morphology_suite.gd")
 const M5Suite = preload("res://tests/suites/m5_density_suite.gd")
 const M4Suite = preload("res://tests/suites/m4_hydrology_suite.gd")
 const M3Suite = preload("res://tests/suites/m3_suite.gd")
@@ -86,6 +87,10 @@ func _ready() -> void:
 	if suite == "all" or suite == "m5":
 		M5Suite.run(report)
 		await M5Suite.run_scene_checks(report,get_tree())
+
+	if suite == "all" or suite == "m51":
+		M51Suite.run(report)
+		await M51Suite.run_scene_checks(report,get_tree())
 
 	var ui_was_skipped := false
 	if suite == "all" or suite == "reliability":

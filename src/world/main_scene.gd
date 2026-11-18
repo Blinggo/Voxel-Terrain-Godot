@@ -26,6 +26,7 @@ const LAND_MARGIN := 4.0
 @export var camera: OrbitCamera
 @export var debug_panel: DebugPanel
 
+var _mountain_demo_index := 0
 var _status_timer := 0.0
 
 
@@ -42,6 +43,8 @@ func _ready() -> void:
 	debug_panel.regenerate_requested.connect(_on_regenerate_requested)
 	debug_panel.water_demo_requested.connect(_show_water_demo)
 	debug_panel.density_mode_requested.connect(_toggle_density_mode)
+	debug_panel.mountain_mode_requested.connect(_toggle_mountain_mode)
+	debug_panel.mountain_tour_requested.connect(_show_mountain_demo)
 
 	debug_panel.configure_from_config(world.config)
 
@@ -154,3 +157,29 @@ func _toggle_density_mode() -> void:
 		camera.global_transform = previous_pose
 	else:
 		camera.focus_on(previous_target)
+
+
+func _toggle_mountain_mode() -> void:
+	var cfg := world.config.duplicate_config()
+	cfg.mountain_morphology_enabled = not cfg.mountain_morphology_enabled
+	var previous_target := camera.target
+	var previous_pose := camera.global_transform
+	world.apply_config(cfg)
+	if camera.fly_mode:
+		camera.global_transform = previous_pose
+	else:
+		camera.focus_on(previous_target)
+
+func _show_mountain_demo() -> void:
+	var site: Dictionary = MountainShowcase.SITES[_mountain_demo_index]
+	_mountain_demo_index = (_mountain_demo_index+1)%MountainShowcase.SITES.size()
+	var cfg := world.config.duplicate_config()
+	MountainShowcase.apply_profile(cfg,site)
+	# Keep the owner's streaming budget. Desktop captures explicitly use 192/160.
+	world.apply_config(cfg)
+	camera.set_fly_mode(false)
+	camera.distance = minf(site.distance,cfg.view_distance_voxels*0.75)
+	camera.pitch_degrees = site.pitch
+	camera.yaw_degrees = site.yaw
+	camera.focus_on(site.target)
+	debug_panel.set_mountain_demo_label(site.id)

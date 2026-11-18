@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="LandformProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/landforms/landform_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"massif"
+morphology_position = 0.2
+overall_elevation = 1.25
+mountain_width = 1.25
+summit_width = 0.55
+summit_sharpness = 0.7
+ridge_width = 0.55
+mountain_ridge_influence = 0.3
+shoulder_width = 0.85
+foothill_width = 1.4
+mountain_valley_influence = 0.15
+surface_roughness = 0.025
+geological_detail = 0.1
+terrain_y_positions = PackedFloat32Array(0, 0.26, 0.64, 0.89, 1)
+terrain_y_thresholds = PackedFloat32Array(0, 0.16, 0.48, 0.8, 1)

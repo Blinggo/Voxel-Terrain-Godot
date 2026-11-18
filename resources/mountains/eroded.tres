@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="LandformProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/core/landforms/landform_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = &"eroded"
+morphology_position = 0.8
+overall_elevation = 1.15
+mountain_width = 1.1
+summit_width = 0.45
+summit_sharpness = 0.8
+ridge_width = 0.35
+mountain_ridge_influence = 0.5
+shoulder_width = 0.8
+foothill_width = 1.4
+mountain_valley_influence = 0.75
+surface_roughness = 0.04
+geological_detail = 0.18
+terrain_y_positions = PackedFloat32Array(0, 0.16, 0.52, 0.85, 1)
+terrain_y_thresholds = PackedFloat32Array(0, 0.16, 0.48, 0.8, 1)

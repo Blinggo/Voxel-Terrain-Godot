@@ -16,6 +16,8 @@ extends Control
 ## flying over it.
 
 signal regenerate_requested(request: Dictionary)
+signal mountain_mode_requested
+signal mountain_tour_requested
 signal density_mode_requested
 signal water_demo_requested
 
@@ -39,6 +41,8 @@ const PROFILING_TOGGLE_KEY := KEY_F4
 ## Profiling is on by default; turning it off stops sampling entirely and
 ## hides the readout, so a device run can be done with the overlay quiet.
 var _profiling_enabled := true
+var _mountain_button: Button
+var _tour_button: Button
 var _density_button: Button
 var _perf := PerformanceSampler.new()
 
@@ -59,6 +63,19 @@ func _ready() -> void:
 	_density_button.size = Vector2(200,48)
 	_density_button.pressed.connect(func(): density_mode_requested.emit())
 	add_child(_density_button)
+	_mountain_button = Button.new()
+	_mountain_button.focus_mode = Control.FOCUS_NONE
+	_mountain_button.position = Vector2(1050,12)
+	_mountain_button.size = Vector2(215,48)
+	_mountain_button.pressed.connect(func(): mountain_mode_requested.emit())
+	add_child(_mountain_button)
+	_tour_button = Button.new()
+	_tour_button.text = "Mountain tour →"
+	_tour_button.focus_mode = Control.FOCUS_NONE
+	_tour_button.position = Vector2(1050,70)
+	_tour_button.size = Vector2(215,48)
+	_tour_button.pressed.connect(func(): mountain_tour_requested.emit())
+	add_child(_tour_button)
 	_panel.visible = true
 	set_profiling_enabled(_profiling_enabled)
 
@@ -67,6 +84,8 @@ func _ready() -> void:
 func configure_from_config(config: WorldConfig) -> void:
 	if config == null:
 		return
+	_mountain_button.text = "Mountains: M5.1" if config.mountain_morphology_enabled else "Mountains: M5"
+	_mountain_button.disabled = config.density_mode == 0
 	_density_button.text = "Terrain: Hybrid" if config.density_mode == 1 else "Terrain: Legacy"
 	_seed_field.set_value_silent(config.world_seed)
 	_height_field.set_value_silent(config.terrain_height)
@@ -252,3 +271,7 @@ func _emit_regeneration() -> void:
 		"view_distance_voxels": int(_view_distance_field.get_value()),
 		"vertical_view_distance_voxels": int(_vertical_field.get_value()),
 	})
+
+
+func set_mountain_demo_label(label: String) -> void:
+	_tour_button.text = label+" →"

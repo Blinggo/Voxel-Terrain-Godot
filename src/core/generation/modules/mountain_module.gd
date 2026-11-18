@@ -4,7 +4,8 @@ extends GenerationModule
 ## Where mountains are, and how high - as connected range systems rather than as a
 ## layer of ridged noise.
 ##
-## Output: [code]0.0 .. 1.0[/code]. 0 is flatland, 1 is the crest of a high range.
+## M5 output is 0..1. M5.1 morphology adds configurable relative elevation,
+## so its dimensionless relief may exceed 1; composition masks saturate separately.
 ##
 ## [b]What M1 did and what was wrong with it.[/b] M1 multiplied one ridged fractal
 ## by a belt mask and an inland gate. That produced mountain-shaped [i]texture[/i]
@@ -54,7 +55,9 @@ extends GenerationModule
 ## scales the whole result, so one range is a line of low hills and the next is a
 ## high massif within the same world.
 ##
-## [b]Cost.[/b] Six noise lookups per node and no allocations. This module inherits
+## [b]Cost.[/b] Six noise lookups per node. M5.1 additionally evaluates a
+## snapshotted profile catalogue (including a small normalized weight array).
+## No new 3D samples or retained caches are added. This module inherits
 ## the engine's node grid, so it is evaluated once per eight voxels, not per voxel.
 
 const MODULE_ID := &"mountainness"
@@ -106,6 +109,8 @@ const VARIATION_HIGH := 1.0
 ## visibly, small enough that a range stays where the belt put it.
 const WARP_AMPLITUDE := 120.0
 
+var _morphology: MountainMorphology
+
 var _spine: FastNoiseLite
 var _warp: FastNoiseLite
 var _secondary: FastNoiseLite
@@ -127,6 +132,9 @@ func _init() -> void:
 
 func configure(context: GenerationContext) -> void:
 	var config := context.config
+	_morphology = null
+	if config.mountain_morphology_enabled and config.density_mode == 1:
+		_morphology = MountainMorphology.new(config.mountain_profiles)
 	var base := config.mountain_frequency
 	_landmass_index = dependency_index(&"landmass")
 	_tectonics_index = dependency_index(&"tectonics")
@@ -136,16 +144,16 @@ func configure(context: GenerationContext) -> void:
 			version,
 			1,
 			base,
-			3,
+			1 if _morphology != null else 3,
 			FastNoiseLite.TYPE_SIMPLEX_SMOOTH,
 			FastNoiseLite.FRACTAL_RIDGED
 	)
-	_warp = context.make_noise_stream(MODULE_ID, version, 2, base * 1.3, 2)
+	_warp = context.make_noise_stream(MODULE_ID, version, 2, base * (0.55 if _morphology != null else 1.3), 2)
 	_secondary = context.make_noise_stream(
 			MODULE_ID,
 			version,
 			3,
-			base * 3.2,
+			base * (1.4 if _morphology != null else 3.2),
 			2,
 			FastNoiseLite.TYPE_SIMPLEX_SMOOTH,
 			FastNoiseLite.FRACTAL_RIDGED
@@ -160,12 +168,13 @@ func evaluate_node(x: int, z: int, values: PackedFloat32Array) -> void:
 
 	# Warped lookup coordinates. Two offsets of one noise give the two components,
 	# which is cheaper than a second generator and just as independent.
-	var warp_x := _warp.get_noise_2d(x + 3711, z) * WARP_AMPLITUDE
-	var warp_z := _warp.get_noise_2d(x, z + 7331) * WARP_AMPLITUDE
+	var warp_x := _warp.get_noise_2d(x + 3711, z) * (60.0 if _morphology != null else WARP_AMPLITUDE)
+	var warp_z := _warp.get_noise_2d(x, z + 7331) * (60.0 if _morphology != null else WARP_AMPLITUDE)
 	var wx := x + warp_x
 	var wz := z + warp_z
 
-	var raw_spine := clampf(_spine.get_noise_2d(wx, wz) * 0.5 + 0.5, 0.0, 1.0)
+	var spine_noise := _spine.get_noise_2d(wx,wz)
+	var raw_spine := clampf(spine_noise * 0.5 + 0.5, 0.0, 1.0)
 	var spine := smoothstep(SPINE_LOW, SPINE_HIGH, raw_spine)
 
 	var ribs := smoothstep(
@@ -206,10 +215,17 @@ func evaluate_node(x: int, z: int, values: PackedFloat32Array) -> void:
 	# A rift cuts through a belt rather than crossing it.
 	var province := 1.0 - RIFT_SUPPRESSION * clampf(-tectonic, 0.0, 1.0)
 
+	var variation_noise := _variation.get_noise_2d(x,z)
+	if _morphology != null:
+		var form := _morphology.evaluate(absf(spine_noise),ribs,2*ribs-1,clampf(0.5+variation_noise*1.8,0,1))
+		# Preserve M2 structural/province support, but smoothly combine support
+		# instead of intersecting hard max ridges at the summit.
+		var support := 1-(1-band)*(1-belt*belt)
+		relief = form*(0.20+0.80*support)
 	var variation := lerpf(
 			VARIATION_LOW,
 			VARIATION_HIGH,
-			clampf(_variation.get_noise_2d(x, z) * 0.5 + 0.5, 0.0, 1.0)
+			clampf(variation_noise * 0.5 + 0.5, 0.0, 1.0)
 	)
 
 	values[get_output_index()] = relief * inland * province * variation

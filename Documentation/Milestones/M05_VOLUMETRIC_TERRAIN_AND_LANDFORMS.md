@@ -1,5 +1,10 @@
 # M5 — Volumetric Terrain Foundation and Landform Architecture
 
+> Historical M5 report. The owner subsequently confirmed M5 works on Android.
+> Mountain refinement is documented in M051_ADVANCED_MOUNTAIN_MORPHOLOGY.md;
+> that follow-up does not close the deferred M4/M5 issues listed here.
+
+
 ## 1. Status and implemented features
 
 **Substantial implemented foundation; full M5 acceptance is not claimed.** This is working code and rendered evidence, not only a design proposal. Both scenes use shared density, ten blended configurable profiles shape the existing geography, genuine local volumetric recesses exist, legacy comparison remains available, and hydrology remains in the shared pipeline.

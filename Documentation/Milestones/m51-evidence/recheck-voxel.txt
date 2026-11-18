@@ -1,0 +1,49 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+libxkbcommon.so.0: cannot open shared object file: No such file or directory
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+
+==========================================================
+ Procedural World Generator - test run
+ Godot 4.7.2-stable (official)
+ Voxel Tools extension loaded: true
+ display server: X11
+ suite: voxel
+==========================================================
+
+-- voxel integration -------------------------------------
+  PASS  Voxel Tools GDExtension classes are registered   (missing: [])
+  PASS  main scene wires its world reference
+  PASS  main scene wires its camera reference
+  PASS  VoxelTerrain node was created
+  PASS  terrain has a generator
+  PASS  generator is our custom TerrainBlockGenerator
+  PASS  terrain uses the blocky mesher
+  PASS  blocky mesher has a library
+  PASS  block library contains every palette type plus air   (actual=4 expected=4)
+  PASS  terrain format uses a 16-bit type channel   (actual=1 expected=1)
+  PASS  terrain block generation completes   (statistics={ "time_detect_required_blocks": 11, "time_request_blocks_to_load": 2, "time_process_load_responses": 0, "time_request_blocks_to_update": 2233, "dropped_block_loads": 0, "dropped_block_meshs": 0, "updated_blocks": 0 })
+  PASS  terrain mesh blocks are meshed around the origin   (area=[P: (-32.0, 32.0, -32.0), S: (64.0, 64.0, 64.0)])
+  PASS  terrain voxel data exists around the origin   (data block at origin)
+  PASS  live samples above carved base match shared materials   (actual=0 expected=0)
+  PASS  live samples below carved base match shared materials   (actual=0 expected=0)
+  PASS  base-height samples match final density materials   (actual=0 expected=0)
+        checked 49 columns through the live terrain
+  PASS  live terrain has no seam across block boundaries   (actual=0 expected=0)
+        scanned 201 columns across three block boundaries
+  PASS  terrain was ready for determinism sampling
+  PASS  terrain was ready for repeat sampling
+  PASS  same seed reproduces identical terrain   (actual=1222758932 expected=1222758932)
+  PASS  terrain was ready for alternate-seed sampling
+  PASS  changing the seed changes the terrain   (seed 4242 -> 4243, hash 1222758932 vs 1981546572)
+  PASS  the world puts a sea plane in the scene
+  PASS  the sea plane is centred under the streaming viewer   (plane (38, 76) viewer (38, 76), origin distance 87)
+  PASS  the sea plane sits at sea level   (y=20.02 expected 20.02)
+  PASS  camera responds to inspection input   (moved from (37.506245, 83.909317, 76.414833) to (-7.869651, 83.909317, 92.930313))
+  PASS  camera zooms on wheel input   (110.0 -> 98.2)
+
+----------------------------------------------------------
+RESULT: PASS  (27 checks)
+----------------------------------------------------------

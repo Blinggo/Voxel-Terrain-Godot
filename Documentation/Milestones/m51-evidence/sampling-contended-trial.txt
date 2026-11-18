@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+M51_COMPONENT blended_profile_us=17.9901 checksum=7383.44672333391
+M51_COMPONENT profile=alpine evaluation_us=4.5663
+M51_COMPONENT profile=massif evaluation_us=3.7506
+M51_COMPONENT profile=rounded evaluation_us=3.8925
+M51_COMPONENT profile=rugged evaluation_us=3.2873
+M51_COMPONENT profile=eroded evaluation_us=3.0336
+M51_COMPONENT profile=highland evaluation_us=4.0358
+M51_PERF enabled=false first_base_16sq_us=633
+M51_PERF enabled=false first_carved_16sq_us=861171
+M51_PERF enabled=false warm_base_16sq_us=189.19
+M51_PERF enabled=false density_us_per_block=3179.14 origin=(-96, 62, -1472)
+M51_ADAPTER enabled=false smooth=false us_per_block=4964.92
+M51_ADAPTER enabled=false smooth=true us_per_block=3404.78
+M51_PERF enabled=true first_base_16sq_us=756
+M51_PERF enabled=true first_carved_16sq_us=1159758
+M51_PERF enabled=true warm_base_16sq_us=167.7
+M51_PERF enabled=true density_us_per_block=3136.33 origin=(-96, 89, -1472)
+M51_ADAPTER enabled=true smooth=false us_per_block=4689.26
+M51_ADAPTER enabled=true smooth=true us_per_block=3791.06

@@ -1,5 +1,11 @@
 # Architecture Overview
 
+> **M5.1:** existing MountainModule now optionally evaluates resource-defined
+> mountain cross-sections and vertical profiles. SurfaceModule composes broad
+> mountain mass before carving. See [MOUNTAIN_MORPHOLOGY.md](MOUNTAIN_MORPHOLOGY.md)
+> and ADR-0020. Shared density/adapters and hydrology remain in place.
+
+
 > **M5 update:** authoritative current solid pipeline is geographical fields →
 > blended landform profiles / base composition → surface detail → M4 carving →
 > shared TerrainDensity → TYPE or SDF adapter. Read
